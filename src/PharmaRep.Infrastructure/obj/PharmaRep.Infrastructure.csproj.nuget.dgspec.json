@@ -1,33 +1,39 @@
 {
   "format": 1,
   "restore": {
-    "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Infrastructure/PharmaRep.Infrastructure.csproj": {}
+    "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Infrastructure\\PharmaRep.Infrastructure.csproj": {}
   },
   "projects": {
-    "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Application/PharmaRep.Application.csproj": {
+    "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Application\\PharmaRep.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Application/PharmaRep.Application.csproj",
+        "projectUniqueName": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Application\\PharmaRep.Application.csproj",
         "projectName": "PharmaRep.Application",
-        "projectPath": "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Application/PharmaRep.Application.csproj",
-        "packagesPath": "/home/spyros/.nuget/packages/",
-        "outputPath": "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Application/obj/",
+        "projectPath": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Application\\PharmaRep.Application.csproj",
+        "packagesPath": "C:\\Users\\s.paterakis\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Application\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "/home/spyros/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\s.paterakis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "https://api.nuget.org/v3/index.json": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.kaizengaming.eu/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/PharmaRep.Domain.csproj": {
-                "projectPath": "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/PharmaRep.Domain.csproj"
+              "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Domain\\PharmaRep.Domain.csproj": {
+                "projectPath": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Domain\\PharmaRep.Domain.csproj"
               }
             }
           }
@@ -72,27 +78,33 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.301/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/PharmaRep.Domain.csproj": {
+    "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Domain\\PharmaRep.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/PharmaRep.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Domain\\PharmaRep.Domain.csproj",
         "projectName": "PharmaRep.Domain",
-        "projectPath": "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/PharmaRep.Domain.csproj",
-        "packagesPath": "/home/spyros/.nuget/packages/",
-        "outputPath": "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/",
+        "projectPath": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Domain\\PharmaRep.Domain.csproj",
+        "packagesPath": "C:\\Users\\s.paterakis\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "/home/spyros/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\s.paterakis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "https://api.nuget.org/v3/index.json": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.kaizengaming.eu/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -136,34 +148,40 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.301/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Infrastructure/PharmaRep.Infrastructure.csproj": {
+    "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Infrastructure\\PharmaRep.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Infrastructure/PharmaRep.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Infrastructure\\PharmaRep.Infrastructure.csproj",
         "projectName": "PharmaRep.Infrastructure",
-        "projectPath": "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Infrastructure/PharmaRep.Infrastructure.csproj",
-        "packagesPath": "/home/spyros/.nuget/packages/",
-        "outputPath": "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Infrastructure/obj/",
+        "projectPath": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Infrastructure\\PharmaRep.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\s.paterakis\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "/home/spyros/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\s.paterakis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "https://api.nuget.org/v3/index.json": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.kaizengaming.eu/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Application/PharmaRep.Application.csproj": {
-                "projectPath": "/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Application/PharmaRep.Application.csproj"
+              "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Application\\PharmaRep.Application.csproj": {
+                "projectPath": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\src\\PharmaRep.Application\\PharmaRep.Application.csproj"
               }
             }
           }
@@ -214,7 +232,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.301/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
