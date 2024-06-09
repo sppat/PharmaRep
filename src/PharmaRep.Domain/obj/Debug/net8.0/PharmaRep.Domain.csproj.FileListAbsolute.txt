@@ -1,0 +1,12 @@
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/bin/Debug/net8.0/PharmaRep.Domain.deps.json
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/bin/Debug/net8.0/PharmaRep.Domain.dll
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/bin/Debug/net8.0/PharmaRep.Domain.pdb
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.csproj.AssemblyReference.cache
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.AssemblyInfoInputs.cache
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.AssemblyInfo.cs
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.csproj.CoreCompileInputs.cache
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.dll
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/refint/PharmaRep.Domain.dll
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.pdb
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/ref/PharmaRep.Domain.dll

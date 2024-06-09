@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "XPs7acIBTwLRSXBIiJsqWuHWYju1IWdGOSUFpggYODI=",
+  "Source": "PharmaRep.Api",
+  "BasePath": "_content/PharmaRep.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
