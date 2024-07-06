@@ -1,9 +1,3 @@
 namespace PharmaRep.Domain.Exceptions;
 
-public class InvalidRoleNameException : Exception
-{
-    public InvalidRoleNameException() : base("Invalid role name")
-    {
-        
-    }
-}
+public class InvalidRoleNameException() : Exception("Invalid role name");

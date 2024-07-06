@@ -4,10 +4,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PharmaRep.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrationWithIdentityCore : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -155,6 +157,15 @@ namespace PharmaRep.Infrastructure.Data.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "id", "concurrency_stamp", "name", "normalized_name" },
+                values: new object[,]
+                {
+                    { "3dad34c7-1574-49a0-8500-84f6851cd295", "", "PharmaceuticalRepresentative", null },
+                    { "6521685b-5e33-43d0-872b-e1873940fe29", "", "Midwife", null }
                 });
 
             migrationBuilder.CreateIndex(

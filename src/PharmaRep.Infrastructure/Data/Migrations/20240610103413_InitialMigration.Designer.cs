@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using PharmaRep.Infrastructure;
+using PharmaRep.Infrastructure.Data;
 
 #nullable disable
 
 namespace PharmaRep.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240602093042_InitialMigrationWithIdentityCore")]
-    partial class InitialMigrationWithIdentityCore
+    [Migration("20240610103413_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,6 +54,20 @@ namespace PharmaRep.Infrastructure.Data.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "6521685b-5e33-43d0-872b-e1873940fe29",
+                            ConcurrencyStamp = "",
+                            Name = "Midwife"
+                        },
+                        new
+                        {
+                            Id = "3dad34c7-1574-49a0-8500-84f6851cd295",
+                            ConcurrencyStamp = "",
+                            Name = "PharmaceuticalRepresentative"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +29,7 @@ public static class DependencyInjection
                 };
             });
         services.AddAuthorization();
+        services.AddMediatR(config => config.RegisterServicesFromAssemblies(Assembly.GetCallingAssembly()));
 
         return services;
     }

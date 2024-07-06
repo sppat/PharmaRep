@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace PharmaRep.Domain;
+namespace PharmaRep.Domain.Entities;
 
 public class User : IdentityUser
 {
-
+    
 }

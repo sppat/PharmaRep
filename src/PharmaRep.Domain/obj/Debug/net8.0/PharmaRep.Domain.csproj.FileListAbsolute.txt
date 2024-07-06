@@ -10,3 +10,17 @@
 /home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/refint/PharmaRep.Domain.dll
 /home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.pdb
 /home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/ref/PharmaRep.Domain.dll
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/bin/Debug/net8.0/PharmaRep.Domain.deps.json
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/bin/Debug/net8.0/PharmaRep.Domain.dll
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/bin/Debug/net8.0/PharmaRep.Domain.pdb
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.csproj.AssemblyReference.cache
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.AssemblyInfoInputs.cache
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.AssemblyInfo.cs
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.csproj.CoreCompileInputs.cache
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.sourcelink.json
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.dll
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/refint/PharmaRep.Domain.dll
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.pdb
+C:/Users/s.paterakis/RiderProjects/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/ref/PharmaRep.Domain.dll
+/home/spyros/Workspaces/PharmaRep/src/PharmaRep.Domain/obj/Debug/net8.0/PharmaRep.Domain.sourcelink.json

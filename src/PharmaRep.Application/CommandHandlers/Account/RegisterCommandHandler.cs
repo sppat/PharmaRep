@@ -2,7 +2,7 @@ using MediatR;
 using PharmaRep.Application.Commands.Account;
 using PharmaRep.Application.Responses.Account;
 
-namespace PharmaRep.Application.CommnandHandlers.Account;
+namespace PharmaRep.Application.CommandHandlers.Account;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
 {
