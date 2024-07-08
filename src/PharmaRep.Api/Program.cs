@@ -1,18 +1,19 @@
-using PharmaRep.Api.Endpoints;
 using PharmaRep.Application;
 using PharmaRep.Infrastructure;
 using PharmaRep.Infrastructure.Data;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddControllers();
 
 builder.Services
     .AddApplication(builder.Configuration)
     .AddInfrastructure(builder.Configuration);
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
@@ -20,7 +21,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAccountEndpoints();
+app.UseRouting();
+app.MapControllers();
 
 AppDbContext.ApplyMigrations(app);
 

@@ -8,6 +8,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterR
 {
     public Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        return Task.FromResult(new RegisterResponse());
+        return Task.FromResult(new RegisterResponse(Id: Guid.NewGuid()));
     }
 }
