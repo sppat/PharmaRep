@@ -8,6 +8,16 @@ public class User : IdentityUser<Guid>
     public string LastName { get; private set; }
     public ICollection<UserRole> UserRoles { get; private set; }
     
+    private User()
+    {
+        
+    }
+
+    private User(string email, string firstName, string lastName)
+    {
+        
+    }
+    
     public static User Create(string email, string firstName, string lastName) => new()
     {
         Id = Guid.NewGuid(),
