@@ -18,6 +18,7 @@ public class PharmaRepIdentityDbContext : IdentityDbContext<User, Role, Guid, Id
     {
         base.OnModelCreating(builder);
         
+        builder.HasDefaultSchema("identity");
         builder.ApplyConfigurationsFromAssembly(typeof(PharmaRepIdentityDbContext).Assembly);
     }
     
