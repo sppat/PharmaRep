@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+YDYc+SBQgc=",
+  "dgSpecHash": "xn0v3XBnnec=",
   "success": true,
   "projectFilePath": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\PharmaRep.BE\\src\\Bootstrapper\\Bootstrapper\\Bootstrapper.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,8 @@
     "C:\\Users\\s.paterakis\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\s.paterakis\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\9.0.3\\microsoft.aspnetcore.cryptography.internal.9.0.3.nupkg.sha512",
     "C:\\Users\\s.paterakis\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\9.0.3\\microsoft.aspnetcore.cryptography.keyderivation.9.0.3.nupkg.sha512",
+    "C:\\Users\\s.paterakis\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.3.0\\microsoft.aspnetcore.http.abstractions.2.3.0.nupkg.sha512",
+    "C:\\Users\\s.paterakis\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.3.0\\microsoft.aspnetcore.http.features.2.3.0.nupkg.sha512",
     "C:\\Users\\s.paterakis\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\9.0.3\\microsoft.aspnetcore.identity.entityframeworkcore.9.0.3.nupkg.sha512",
     "C:\\Users\\s.paterakis\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.0\\microsoft.aspnetcore.openapi.9.0.0.nupkg.sha512",
     "C:\\Users\\s.paterakis\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
@@ -84,7 +86,7 @@
     "C:\\Users\\s.paterakis\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
     "C:\\Users\\s.paterakis\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
     "C:\\Users\\s.paterakis\\.nuget\\packages\\system.text.encoding.codepages\\6.0.0\\system.text.encoding.codepages.6.0.0.nupkg.sha512",
-    "C:\\Users\\s.paterakis\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
+    "C:\\Users\\s.paterakis\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512",
     "C:\\Users\\s.paterakis\\.nuget\\packages\\system.text.json\\9.0.3\\system.text.json.9.0.3.nupkg.sha512",
     "C:\\Users\\s.paterakis\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512",
     "C:\\Users\\s.paterakis\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",

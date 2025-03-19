@@ -8,4 +8,6 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+await app.UseIdentityMiddleware(app.Environment.IsDevelopment());
+
 app.Run();
