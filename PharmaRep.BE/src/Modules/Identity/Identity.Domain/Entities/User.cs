@@ -1,8 +1,11 @@
+using System.Text.RegularExpressions;
+using Identity.Domain.Exceptions.UserExceptions;
+using Identity.Domain.RegexConstants;
 using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Domain.Entities;
 
-public class User : IdentityUser<Guid>
+public partial class User : IdentityUser<Guid>
 {
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
@@ -15,7 +18,10 @@ public class User : IdentityUser<Guid>
 
     private User(string email, string firstName, string lastName)
     {
-        
+        if (!UserRegex.EmailFormat().IsMatch(email))
+        {
+            throw new InvalidUserEmailException();
+        }
     }
     
     public static User Create(string email, string firstName, string lastName) => new()
