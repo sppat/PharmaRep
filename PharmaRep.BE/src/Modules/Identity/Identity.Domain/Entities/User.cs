@@ -24,6 +24,16 @@ public partial class User : IdentityUser<Guid>
             throw new UserArgumentException(DomainErrorsConstants.UserDomainErrors.InvalidEmail, nameof(email));
         }
 
+        if (firstName is null || !UserRegex.NameFormat().IsMatch(firstName))
+        {
+            throw new UserArgumentException(DomainErrorsConstants.UserDomainErrors.InvalidFirstName, nameof(firstName));
+        }
+        
+        if (lastName is null || !UserRegex.NameFormat().IsMatch(lastName))
+        {
+            throw new UserArgumentException(DomainErrorsConstants.UserDomainErrors.InvalidLastName, nameof(lastName));
+        }
+
         base.Id = Guid.NewGuid();
         base.Email = email;
         base.UserName = email;
