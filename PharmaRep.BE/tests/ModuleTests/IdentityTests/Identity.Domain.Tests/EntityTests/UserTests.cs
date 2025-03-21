@@ -28,6 +28,7 @@ public class UserTests
     [InlineData("world  ")]
     [InlineData("hello world")]
     [InlineData("123email")]
+    [InlineData("123@ email")]
     public void Create_InvalidEmail_ThrowsInvalidUserEmailException(string email)
     {
         // Act
