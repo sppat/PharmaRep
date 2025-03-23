@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using Identity.Domain.DomainErrors;
 using Identity.Domain.Exceptions.UserExceptions;
 using Identity.Domain.RegexConstants;
