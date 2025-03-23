@@ -9,7 +9,10 @@ public class RegisterUserCommandHandler(UserManager<Domain.Entities.User> userMa
 {
     public async Task<Result<Guid>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        var user = Domain.Entities.User.Create(email: request.Email, firstName: request.FirstName, lastName: request.LastName);
+        var user = Domain.Entities.User.Create(email: request.Email,
+            firstName: request.FirstName,
+            lastName: request.LastName);
+        
         var registerResult = await userManager.CreateAsync(user, request.Password);
         if (!registerResult.Succeeded)
         {
