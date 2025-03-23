@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Infrastructure.Constants;
 
 namespace Identity.Infrastructure.Database;
 
@@ -17,7 +18,7 @@ public class PharmaRepIdentityDbContext : IdentityDbContext<User, Role, Guid, Id
     {
         base.OnModelCreating(builder);
         
-        builder.HasDefaultSchema("identity");
+        builder.HasDefaultSchema(EfConstants.Schemas.Identity);
         builder.ApplyConfigurationsFromAssembly(typeof(PharmaRepIdentityDbContext).Assembly);
     }
     

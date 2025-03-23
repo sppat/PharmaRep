@@ -3,6 +3,7 @@ using Identity.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Infrastructure.Constants;
 
 namespace Identity.Infrastructure;
 
@@ -12,7 +13,10 @@ public static class DependencyInjectionExtensions
     {
         services.AddDbContext<PharmaRepIdentityDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("IdentityConnection"));
+            options.UseSqlServer(configuration.GetConnectionString("IdentityConnection"), builder =>
+            {
+                builder.MigrationsHistoryTable(EfConstants.MigrationsHistoryTable, EfConstants.Schemas.Identity);
+            });
         });
 
         services.AddIdentityCore<User>()
