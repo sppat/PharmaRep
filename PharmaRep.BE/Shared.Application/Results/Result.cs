@@ -28,7 +28,7 @@ public class Result
     public static Result Failure(ICollection<string> errors, ResultType type) => new(errors, type);
 }
 
-public class Result<T> : Result where T : class
+public class Result<T> : Result
 {
     public T Value { get; init; }
 
@@ -41,7 +41,7 @@ public class Result<T> : Result where T : class
 
     private Result(ICollection<string> errors, ResultType type) : base(errors, type)
     {
-        Value = null;
+        Value = default;
     }
 
     public static Result<T> Success(T value, ResultType type) => new(value, type);
