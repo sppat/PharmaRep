@@ -1,3 +1,4 @@
+using Identity.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Shared.Application.Results;
@@ -12,13 +13,23 @@ public class RegisterUserCommandHandler(UserManager<Domain.Entities.User> userMa
         var registerResult = await userManager.CreateAsync(user, request.Password);
         if (!registerResult.Succeeded)
         {
-            var errors = registerResult.Errors
-                .Select(e => e.Description)
-                .ToList();
-
-            return Result<Guid>.Failure(errors, ResultType.ValidationError);
+            var registerErrors = GetIdentityResultErrors(registerResult);
+            
+            return Result<Guid>.Failure(registerErrors, ResultType.ValidationError);
         }
 
-        return Result<Guid>.Success(user.Id, ResultType.Created);
+        var addToRoleResult = await userManager.AddToRolesAsync(user, request.Roles);
+        if (addToRoleResult.Succeeded)
+        {
+            return Result<Guid>.Success(user.Id, ResultType.Created);
+        }
+
+        var addToRoleErrors = GetIdentityResultErrors(addToRoleResult);
+        
+        return Result<Guid>.Failure(addToRoleErrors, ResultType.ValidationError);
     }
+    
+    private static List<string> GetIdentityResultErrors(IdentityResult result) => result.Errors
+        .Select(e => e.Description)
+        .ToList();
 }
