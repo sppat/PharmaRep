@@ -14,7 +14,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         #region FirstName
 
         RuleFor(req => req.FirstName)
-            .NotEmpty()
+            .NotNull()
             .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidFirstName);
         
         When(req => req.FirstName is not null, () =>
@@ -33,7 +33,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         #region LastName
 
         RuleFor(req => req.LastName)
-            .NotEmpty()
+            .NotNull()
             .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidLastName);
         
         When(req => req.LastName is not null, () =>
@@ -52,7 +52,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         #region Email
 
         RuleFor(req => req.Email)
-            .NotEmpty()
+            .NotNull()
             .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidEmail);
 
         When(req => req.Email is not null, () =>
