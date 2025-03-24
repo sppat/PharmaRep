@@ -10,8 +10,20 @@ public static class EndpointResultMappings
         return serviceResult.Type switch
         {
             ResultType.Created => Results.Created(location, serviceResult.Value),
-            ResultType.ValidationError => Results.BadRequest(serviceResult.Errors),
+            ResultType.ValidationError => GetBadRequest(serviceResult),
             _ => throw new NotSupportedException("Result type not supported")
         };
+    }
+
+    private static IResult GetBadRequest<T>(Result<T> serviceResult)
+    {
+        var extensions = new Dictionary<string, object>
+        {
+            { "errors", serviceResult.Errors }
+        };
+
+        return Results.Problem(title: "Bad Request",
+            statusCode: StatusCodes.Status400BadRequest,
+            extensions: extensions);
     }
 }
