@@ -16,6 +16,6 @@ app.UseHttpsRedirection();
 app.UseExceptionHandler();
 
 var scope = app.Services.CreateScope();
-await app.UseIdentityMiddleware(scope, app.Environment.IsDevelopment());
+await app.UseIdentityMiddleware(scope);
 
 app.Run();
