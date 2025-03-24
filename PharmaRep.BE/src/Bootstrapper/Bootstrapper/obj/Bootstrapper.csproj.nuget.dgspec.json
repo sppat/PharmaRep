@@ -581,7 +581,11 @@
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\PharmaRep.BE\\Shared.Application\\Shared.Application.csproj": {
+                "projectPath": "C:\\Users\\s.paterakis\\RiderProjects\\PharmaRep\\PharmaRep.BE\\Shared.Application\\Shared.Application.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

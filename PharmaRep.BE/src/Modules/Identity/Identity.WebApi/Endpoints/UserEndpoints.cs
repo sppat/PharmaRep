@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Shared.WebApi.EndpointMappings;
 
 namespace Identity.WebApi.Endpoints;
 
@@ -21,6 +22,6 @@ public static class UserEndpoints
     {
         var result = await mediator.Send(command);
             
-        return Results.Created(string.Empty, result.Value);
+        return result.ToHttpResult();
     }
 }
