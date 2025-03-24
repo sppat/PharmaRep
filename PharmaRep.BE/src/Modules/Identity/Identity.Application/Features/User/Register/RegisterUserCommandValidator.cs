@@ -75,5 +75,13 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidPassword);
 
         #endregion
+        
+        #region Roles
+        
+        RuleFor(req => req.Roles)
+            .NotEmpty()
+            .WithMessage(DomainErrorsConstants.UserDomainErrors.EmptyRoles);
+        
+        #endregion
     }
 }

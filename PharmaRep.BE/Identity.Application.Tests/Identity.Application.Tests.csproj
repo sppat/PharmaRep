@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\src\Modules\Identity\Identity.Application\Identity.Application.csproj" />
       <ProjectReference Include="..\tests\SharedTests\Shared.Tests\Shared.Tests.csproj" />
     </ItemGroup>
 
