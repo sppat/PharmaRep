@@ -2,7 +2,6 @@ using Identity.Application.Features.User.Register;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Routing;
 
 namespace Identity.WebApi.Endpoints;

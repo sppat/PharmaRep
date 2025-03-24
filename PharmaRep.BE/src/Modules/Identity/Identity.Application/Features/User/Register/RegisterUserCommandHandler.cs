@@ -1,4 +1,3 @@
-using Identity.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Shared.Application.Results;
