@@ -6,14 +6,12 @@ namespace Shared.WebApi.EndpointMappings;
 public static class EndpointResultMappings
 {
     public static IResult ToHttpResult<T>(this Result<T> serviceResult, string location = null)
-    {
-        return serviceResult.Type switch
+        => serviceResult.Type switch 
         {
             ResultType.Created => Results.Created(location, serviceResult.Value),
             ResultType.ValidationError => GetBadRequest(serviceResult),
             _ => throw new NotSupportedException("Result type not supported")
         };
-    }
 
     private static IResult GetBadRequest<T>(Result<T> serviceResult)
     {
