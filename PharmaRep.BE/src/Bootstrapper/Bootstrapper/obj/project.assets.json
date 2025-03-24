@@ -1877,7 +1877,10 @@
         },
         "runtime": {
           "bin/placeholder/Shared.WebApi.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },

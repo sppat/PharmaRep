@@ -1,5 +1,8 @@
+using Identity.Application;
 using Identity.Infrastructure;
 using Identity.Infrastructure.Database;
+using Identity.WebApi.Endpoints;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,13 +13,16 @@ public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddIdentityWebApi(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentityInfrastructure(configuration);
+        services.AddIdentityInfrastructure(configuration)
+            .AddIdentityApplication();
+        
         return services;
     }
     
-    public static async  Task<IApplicationBuilder> UseIdentityMiddleware(this IApplicationBuilder app, bool isDevelopmentEnvironment)
+    public static async  Task<WebApplication> UseIdentityMiddleware(this WebApplication app, IServiceScope scope, bool isDevelopmentEnvironment)
     {
-        using var scope = app.ApplicationServices.CreateScope();
+        app.MapUserEndpoints();
+        
         await PharmaRepIdentityDbContext.ApplyMigrationsAsync(scope.ServiceProvider);
         
         if (isDevelopmentEnvironment) await PharmaRepIdentityDbContext.SeedAdminUserAsync(scope.ServiceProvider);
