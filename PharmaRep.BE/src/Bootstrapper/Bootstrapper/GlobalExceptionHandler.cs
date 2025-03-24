@@ -11,6 +11,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         
         var response = new ProblemDetails
         {
+            Type = "https://datatracker.ietf.org/doc/html/rfc9110#section-15.6.1",
             Title = "Server Side Error",
             Status = StatusCodes.Status500InternalServerError,
             Detail = exception.Message
