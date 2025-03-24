@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Application.Mediator;
 
@@ -9,6 +10,7 @@ public static class DependencyInjectionExtensions
     {
         services.AddMediatR(options =>
         {
+            options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             options.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
         
