@@ -1,27 +1,27 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Results;
 
 namespace Shared.WebApi.EndpointMappings;
 
 public static class EndpointResultMappings
 {
-    public static IResult ToHttpResult<T>(this Result<T> serviceResult, string location = null)
-        => serviceResult.Type switch 
-        {
-            ResultType.Created => Results.Created(location, serviceResult.Value),
-            ResultType.ValidationError => GetBadRequest(serviceResult),
-            _ => throw new NotSupportedException("Result type not supported")
-        };
-
-    private static IResult GetBadRequest<T>(Result<T> serviceResult)
+    public static IResult ToHttpResult<T, TResponse>(this Result<T> serviceResult, Func<T, TResponse> responseMapper, string createdAt = null)
     {
-        var extensions = new Dictionary<string, object>
-        {
-            { "errors", serviceResult.Errors }
-        };
+        var response = responseMapper(serviceResult.Value);
 
-        return Results.Problem(title: "Bad Request",
-            statusCode: StatusCodes.Status400BadRequest,
-            extensions: extensions);
+        return serviceResult.Type switch
+        {
+            ResultType.ValidationError => Results.Problem(title: "Bad Request", statusCode: StatusCodes.Status400BadRequest, extensions: serviceResult.GetErrors()),
+            ResultType.Created => Results.Created(createdAt, response),
+            _ => throw new InvalidOperationException("Invalid result type")
+        };
     }
+    
+    private static Dictionary<string, object> GetErrors<T>(this Result<T> serviceResult) => new() 
+    {
+        { "errors", serviceResult.Errors }
+    };
+
 }
