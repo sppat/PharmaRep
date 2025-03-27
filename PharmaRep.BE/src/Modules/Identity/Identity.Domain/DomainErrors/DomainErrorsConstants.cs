@@ -11,5 +11,6 @@ public static class DomainErrorsConstants
         public const string EmailOutOfRange = "Email is out of range";
         public const string InvalidPassword = "Invalid password";
         public const string EmptyRoles = "Empty roles";
+        public const string InvalidRole = "Invalid role";
     }
 }

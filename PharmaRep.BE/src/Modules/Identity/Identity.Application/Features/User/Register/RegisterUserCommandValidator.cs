@@ -1,5 +1,6 @@
 using FluentValidation;
 using Identity.Domain.DomainErrors;
+using Identity.Domain.Entities;
 using Identity.Domain.RegexConstants;
 
 namespace Identity.Application.Features.User.Register;
@@ -81,7 +82,27 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         RuleFor(req => req.Roles)
             .NotEmpty()
             .WithMessage(DomainErrorsConstants.UserDomainErrors.EmptyRoles);
-        
+
+        RuleFor(req => req.Roles)
+            .Must(RoleExist)
+            .When(req => req.Roles is not null)
+            .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidRole);
+
         #endregion
+    }
+
+    private static bool RoleExist(IEnumerable<string> roles)
+    {
+        var existingRoles = Role.All.Select(r => r.Name)
+            .ToList();
+
+        foreach (var role in roles)
+        {
+            var roleExist = existingRoles.Contains(role, StringComparer.InvariantCultureIgnoreCase);
+            
+            if (!roleExist) return false;
+        }
+
+        return true;
     }
 }

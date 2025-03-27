@@ -199,6 +199,23 @@ public class RegisterUserCommandValidatorTests
         Assert.False(result.IsValid);
         Assert.Contains(DomainErrorsConstants.UserDomainErrors.EmptyRoles, result.Errors.Select(e => e.ErrorMessage));
     }
+    
+    [Fact]
+    public void Validate_RolesNotExist_ReturnsInvalidResult()
+    {
+        // Arrange
+        var command = _validCommand with
+        {
+            Roles = ["Dummy Role One", "Dummy Role Two"]
+        };
+        
+        // Act
+        var result = _sut.TestValidate(command);
+        
+        // Assert
+        Assert.False(result.IsValid);
+        Assert.Contains(DomainErrorsConstants.UserDomainErrors.InvalidRole, result.Errors.Select(e => e.ErrorMessage));
+    }
 
     #endregion
 }
