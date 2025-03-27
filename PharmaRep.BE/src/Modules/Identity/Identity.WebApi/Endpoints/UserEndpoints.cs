@@ -1,4 +1,3 @@
-using Identity.Application.Features.User.Register;
 using Identity.WebApi.Mappings;
 using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Shared.Application.Results;
 using Shared.WebApi.EndpointMappings;
 
 namespace Identity.WebApi.Endpoints;

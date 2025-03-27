@@ -1,5 +1,4 @@
 using Identity.WebApi.Responses;
-using Shared.Application.Results;
 
 namespace Identity.WebApi.Mappings;
 
