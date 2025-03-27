@@ -16,8 +16,9 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
         .WithPassword("P@ssw0rd")
         .Build();
     
-    protected override void ConfigureWebHost(Microsoft.AspNetCore.Hosting.IWebHostBuilder builder)
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.UseEnvironment(Environments.Staging);
         builder.ConfigureTestServices(services =>
         {
             var identityDbContext = services.FirstOrDefault(s => s.ServiceType == typeof(PharmaRepIdentityDbContext));
@@ -25,13 +26,12 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
 
             services.AddDbContext<PharmaRepIdentityDbContext>(options => options.UseSqlServer(_container.GetConnectionString()));
         });
-        
-        builder.UseEnvironment(Environments.Staging);
     }
 
     public async Task InitializeAsync()
     {
         await _container.StartAsync();
+        var connectionString = _container.GetConnectionString();
     }
 
     public new async Task DisposeAsync()
