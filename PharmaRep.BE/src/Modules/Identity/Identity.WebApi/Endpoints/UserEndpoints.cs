@@ -1,4 +1,6 @@
 using Identity.Application.Features.User.Register;
+using Identity.WebApi.Mappings;
+using Identity.WebApi.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -18,8 +20,9 @@ public static class UserEndpoints
         return endpoints;
     }
 
-    private static async Task<IResult> Register(RegisterUserCommand command, IMediator mediator)
+    private static async Task<IResult> Register(RegisterUserRequest request, IMediator mediator)
     {
+        var command = request.ToCommand();
         var result = await mediator.Send(command);
             
         return result.ToHttpResult();
