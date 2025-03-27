@@ -3,6 +3,8 @@ using Identity.Infrastructure;
 using Identity.Infrastructure.Database;
 using Identity.WebApi.Endpoints;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,9 +26,9 @@ public static class DependencyInjectionExtensions
         app.MapUserEndpoints();
         
         if (app.Environment.IsProduction()) return app;
-        
-        await PharmaRepIdentityDbContext.ApplyMigrationsAsync(scope.ServiceProvider);
-        await PharmaRepIdentityDbContext.SeedAdminUserAsync(scope.ServiceProvider);
+
+        await using var identityDbContext = scope.ServiceProvider.GetRequiredService<PharmaRepIdentityDbContext>();
+        await identityDbContext.Database.MigrateAsync();
 
         return app;
     }
