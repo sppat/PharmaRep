@@ -21,5 +21,4 @@ public static class EndpointResultMappings
     {
         { "errors", serviceResult.Errors }
     };
-
 }

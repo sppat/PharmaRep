@@ -23,7 +23,7 @@ public static class DependencyInjectionExtensions
     {
         app.MapUserEndpoints();
         
-        if (!app.Environment.IsDevelopment()) return app;
+        if (app.Environment.IsProduction()) return app;
         
         await PharmaRepIdentityDbContext.ApplyMigrationsAsync(scope.ServiceProvider);
         await PharmaRepIdentityDbContext.SeedAdminUserAsync(scope.ServiceProvider);

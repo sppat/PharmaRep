@@ -19,3 +19,5 @@ var scope = app.Services.CreateScope();
 await app.UseIdentityMiddleware(scope);
 
 app.Run();
+
+public partial class Program {}

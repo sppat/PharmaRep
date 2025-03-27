@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\Modules\Identity\Identity.WebApi\Identity.WebApi.csproj" />
     <ProjectReference Include="..\..\..\SharedTests\Shared.Tests\Shared.Tests.csproj" />
   </ItemGroup>
 
