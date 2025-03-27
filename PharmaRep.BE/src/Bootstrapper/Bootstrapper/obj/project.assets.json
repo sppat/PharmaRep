@@ -5230,8 +5230,8 @@
     },
     "Shared.Application/1.0.0": {
       "type": "project",
-      "path": "../../../Shared.Application/Shared.Application.csproj",
-      "msbuildProject": "../../../Shared.Application/Shared.Application.csproj"
+      "path": "../../Shared/Shared.Application/Shared.Application.csproj",
+      "msbuildProject": "../../Shared/Shared.Application/Shared.Application.csproj"
     },
     "Shared.Infrastructure/1.0.0": {
       "type": "project",
