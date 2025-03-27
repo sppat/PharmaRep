@@ -24,14 +24,14 @@ public class PharmaRepIdentityDbContext : IdentityDbContext<User, Role, Guid, Id
     
     public static async Task ApplyMigrationsAsync(IServiceProvider serviceProvider)
     {
-        var dbContext = serviceProvider.GetRequiredService<PharmaRepIdentityDbContext>();
+        await using var dbContext = serviceProvider.GetRequiredService<PharmaRepIdentityDbContext>();
         await dbContext.Database.MigrateAsync();
     }
 
     public static async Task SeedAdminUserAsync(IServiceProvider serviceProvider)
     {
         var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+        using var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
         var adminEmail = configuration["AdminCredentials:Email"];
         var adminPassword = configuration["AdminCredentials:Password"];
         

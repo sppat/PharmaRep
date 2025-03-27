@@ -24,9 +24,11 @@ public static class DependencyInjectionExtensions
     {
         app.MapUserEndpoints();
         
-        await PharmaRepIdentityDbContext.ApplyMigrationsAsync(scope.ServiceProvider);
+        if (!app.Environment.IsDevelopment()) return app;
         
-        if (app.Environment.IsDevelopment()) await PharmaRepIdentityDbContext.SeedAdminUserAsync(scope.ServiceProvider);
+        await PharmaRepIdentityDbContext.ApplyMigrationsAsync(scope.ServiceProvider);
+        await PharmaRepIdentityDbContext.SeedAdminUserAsync(scope.ServiceProvider);
+
         return app;
     }
 }
