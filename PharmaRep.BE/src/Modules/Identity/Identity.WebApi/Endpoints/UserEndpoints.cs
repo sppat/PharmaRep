@@ -14,9 +14,7 @@ public static class UserEndpoints
 {
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var groupedEndpoints = endpoints.MapGroup("api/identity/users");
-
-        groupedEndpoints.MapPost("register", Register)
+        endpoints.MapPost(IdentityModuleUrls.User.Register, Register)
             .WithDescription("Registers a new user.")
             .Produces<RegisterUserResponse>(StatusCodes.Status201Created)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)

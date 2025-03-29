@@ -16,17 +16,17 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 
         RuleFor(req => req.FirstName)
             .NotNull()
-            .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidFirstName);
+            .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidFirstName);
         
         When(req => req.FirstName is not null, () =>
         {
             RuleFor(req => req.FirstName)
                 .MaximumLength(MaxNameLength)
-                .WithMessage(DomainErrorsConstants.UserDomainErrors.NameOutOfRange);
+                .WithMessage(IdentityModuleDomainErrors.UserErrors.NameOutOfRange);
             
             RuleFor(req => req.FirstName)
                 .Must(UserRegex.NameFormat().IsMatch)
-                .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidFirstName);
+                .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidFirstName);
         });
 
         #endregion
@@ -35,17 +35,17 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 
         RuleFor(req => req.LastName)
             .NotNull()
-            .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidLastName);
+            .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidLastName);
         
         When(req => req.LastName is not null, () =>
         {
             RuleFor(req => req.LastName)
                 .MaximumLength(MaxNameLength)
-                .WithMessage(DomainErrorsConstants.UserDomainErrors.NameOutOfRange);
+                .WithMessage(IdentityModuleDomainErrors.UserErrors.NameOutOfRange);
             
             RuleFor(req => req.LastName)
                 .Must(UserRegex.NameFormat().IsMatch)
-                .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidLastName);
+                .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidLastName);
         });
 
         #endregion
@@ -54,17 +54,17 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 
         RuleFor(req => req.Email)
             .NotNull()
-            .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidEmail);
+            .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidEmail);
 
         When(req => req.Email is not null, () =>
         {
             RuleFor(req => req.Email)
                 .MaximumLength(MaxEmailLength)
-                .WithMessage(DomainErrorsConstants.UserDomainErrors.EmailOutOfRange);
+                .WithMessage(IdentityModuleDomainErrors.UserErrors.EmailOutOfRange);
             
             RuleFor(req => req.Email)
                 .Must(UserRegex.EmailFormat().IsMatch)
-                .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidEmail);
+                .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidEmail);
         });
 
         #endregion
@@ -73,7 +73,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 
         RuleFor(req => req.Password)
             .NotEmpty()
-            .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidPassword);
+            .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidPassword);
 
         #endregion
         
@@ -81,12 +81,12 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         
         RuleFor(req => req.Roles)
             .NotEmpty()
-            .WithMessage(DomainErrorsConstants.UserDomainErrors.EmptyRoles);
+            .WithMessage(IdentityModuleDomainErrors.UserErrors.EmptyRoles);
 
         RuleFor(req => req.Roles)
             .Must(RoleExist)
             .When(req => req.Roles is not null)
-            .WithMessage(DomainErrorsConstants.UserDomainErrors.InvalidRole);
+            .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidRole);
 
         #endregion
     }

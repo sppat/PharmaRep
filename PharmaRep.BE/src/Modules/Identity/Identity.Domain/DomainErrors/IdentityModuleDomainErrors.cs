@@ -1,8 +1,8 @@
 namespace Identity.Domain.DomainErrors;
 
-public static class DomainErrorsConstants
+public static class IdentityModuleDomainErrors
 {
-    public static class UserDomainErrors
+    public static class UserErrors
     {
         public const string InvalidEmail = "Invalid user email";
         public const string InvalidFirstName = "Invalid user first name";

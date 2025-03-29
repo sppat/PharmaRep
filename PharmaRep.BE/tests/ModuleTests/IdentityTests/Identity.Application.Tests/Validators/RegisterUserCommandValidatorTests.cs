@@ -39,7 +39,7 @@ public class RegisterUserCommandValidatorTests
         
         // Assert
         Assert.False(result.IsValid);
-        Assert.Contains(DomainErrorsConstants.UserDomainErrors.NameOutOfRange, result.Errors.Select(e => e.ErrorMessage));
+        Assert.Contains(IdentityModuleDomainErrors.UserErrors.NameOutOfRange, result.Errors.Select(e => e.ErrorMessage));
     }
     
     [Theory]
@@ -62,7 +62,7 @@ public class RegisterUserCommandValidatorTests
         
         // Assert
         Assert.False(result.IsValid);
-        Assert.Contains(DomainErrorsConstants.UserDomainErrors.InvalidFirstName, result.Errors.Select(e => e.ErrorMessage));
+        Assert.Contains(IdentityModuleDomainErrors.UserErrors.InvalidFirstName, result.Errors.Select(e => e.ErrorMessage));
     }
 
     #endregion
@@ -83,7 +83,7 @@ public class RegisterUserCommandValidatorTests
         
         // Assert
         Assert.False(result.IsValid);
-        Assert.Contains(DomainErrorsConstants.UserDomainErrors.NameOutOfRange, result.Errors.Select(e => e.ErrorMessage));
+        Assert.Contains(IdentityModuleDomainErrors.UserErrors.NameOutOfRange, result.Errors.Select(e => e.ErrorMessage));
     }
     
     [Theory]
@@ -106,7 +106,7 @@ public class RegisterUserCommandValidatorTests
         
         // Assert
         Assert.False(result.IsValid);
-        Assert.Contains(DomainErrorsConstants.UserDomainErrors.InvalidLastName, result.Errors.Select(e => e.ErrorMessage));
+        Assert.Contains(IdentityModuleDomainErrors.UserErrors.InvalidLastName, result.Errors.Select(e => e.ErrorMessage));
     }
 
     #endregion
@@ -127,7 +127,7 @@ public class RegisterUserCommandValidatorTests
         
         // Assert
         Assert.False(result.IsValid);
-        Assert.Contains(DomainErrorsConstants.UserDomainErrors.EmailOutOfRange, result.Errors.Select(e => e.ErrorMessage));
+        Assert.Contains(IdentityModuleDomainErrors.UserErrors.EmailOutOfRange, result.Errors.Select(e => e.ErrorMessage));
     }
     
     [Theory]
@@ -152,7 +152,7 @@ public class RegisterUserCommandValidatorTests
         
         // Assert
         Assert.False(result.IsValid);
-        Assert.Contains(DomainErrorsConstants.UserDomainErrors.InvalidEmail, result.Errors.Select(e => e.ErrorMessage));
+        Assert.Contains(IdentityModuleDomainErrors.UserErrors.InvalidEmail, result.Errors.Select(e => e.ErrorMessage));
     }
 
     #endregion
@@ -176,7 +176,7 @@ public class RegisterUserCommandValidatorTests
         
         // Assert
         Assert.False(result.IsValid);
-        Assert.Contains(DomainErrorsConstants.UserDomainErrors.InvalidPassword, result.Errors.Select(e => e.ErrorMessage));
+        Assert.Contains(IdentityModuleDomainErrors.UserErrors.InvalidPassword, result.Errors.Select(e => e.ErrorMessage));
     }
 
     #endregion
@@ -197,7 +197,7 @@ public class RegisterUserCommandValidatorTests
         
         // Assert
         Assert.False(result.IsValid);
-        Assert.Contains(DomainErrorsConstants.UserDomainErrors.EmptyRoles, result.Errors.Select(e => e.ErrorMessage));
+        Assert.Contains(IdentityModuleDomainErrors.UserErrors.EmptyRoles, result.Errors.Select(e => e.ErrorMessage));
     }
     
     [Fact]
@@ -214,7 +214,7 @@ public class RegisterUserCommandValidatorTests
         
         // Assert
         Assert.False(result.IsValid);
-        Assert.Contains(DomainErrorsConstants.UserDomainErrors.InvalidRole, result.Errors.Select(e => e.ErrorMessage));
+        Assert.Contains(IdentityModuleDomainErrors.UserErrors.InvalidRole, result.Errors.Select(e => e.ErrorMessage));
     }
 
     #endregion
