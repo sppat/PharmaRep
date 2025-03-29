@@ -18,7 +18,6 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment(Environments.Staging);
         builder.ConfigureTestServices(services =>
         {
             var identityDbContext = services.FirstOrDefault(s => s.ServiceType == typeof(PharmaRepIdentityDbContext));
@@ -31,11 +30,16 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
     public async Task InitializeAsync()
     {
         await _container.StartAsync();
-        var connectionString = _container.GetConnectionString();
     }
 
     public new async Task DisposeAsync()
     {
         await _container.DisposeAsync();
     }
+}
+
+[CollectionDefinition(name: SharedTestConstants.WebApplicationCollectionName)]
+public class WebApplicationCollection
+{
+    
 }
