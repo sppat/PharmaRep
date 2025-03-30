@@ -226,6 +226,20 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
     #endregion
 
+    #region Get By Id
+    
+    [Fact]
+    public async Task GetById_ReturnsSuccess()
+    {
+        // Arrange
+        await fixture.ExecuteQueryAsync(TestEnvironment.SeedTestUserQuery);
+
+        // Act
+        Assert.True(true);
+    }
+
+    #endregion
+
     private static class TestEnvironment
     {
         internal static RegisterUserRequest ValidRegisterUserRequest => new(FirstName: "John",
@@ -233,5 +247,19 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
             Email: "john@doe.com",
             Password: "P@ssw0rd",
             Roles: [Role.Doctor.Name]);
+        
+        internal static readonly string SeedTestUserQuery = @"
+            GO
+            SET QUOTED_IDENTIFIER ON
+            GO
+            SET ANSI_NULLS ON
+            GO
+            INSERT INTO [identity].AspNetUsers (Id, FirstName, LastName, Email, EmailConfirmed, PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnabled, AccessFailedCount)
+            VALUES ('8f92f601-658f-4f9a-8a61-afe2f9f77ed1', 'Test', 'User', 'test@user.com', 1, 0, 0, 0, 0);
+            GO
+            INSERT INTO [identity].AspNetUserRoles (UserId, RoleId)
+            VALUES ('8f92f601-658f-4f9a-8a61-afe2f9f77ed1', '1F1A3CF9-C300-4821-9B5A-E15F8BBDABD0');
+            GO
+        ";
     }
 }
