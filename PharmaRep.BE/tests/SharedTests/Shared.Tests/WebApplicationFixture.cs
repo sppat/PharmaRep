@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Testcontainers.MsSql;
 using Xunit;
 
@@ -36,10 +35,4 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
     {
         await _container.DisposeAsync();
     }
-}
-
-[CollectionDefinition(name: SharedTestConstants.WebApplicationCollectionName)]
-public class WebApplicationCollection
-{
-    
 }

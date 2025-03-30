@@ -1,7 +1,5 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Identity.Domain.DomainErrors;
 using Identity.Domain.Entities;
 using Identity.WebApi.Endpoints;
@@ -13,7 +11,7 @@ using Shared.Tests;
 namespace Identity.WebApi.Tests.Endpoints;
 
 [Collection(name: SharedTestConstants.WebApplicationCollectionName)]
-public class UserEndpointsTests(WebApplicationFixture fixture) : IClassFixture<WebApplicationFixture>
+public class UserEndpointsTests(WebApplicationFixture fixture)
 {
     private readonly HttpClient _httpClient = fixture.CreateClient();
 
@@ -30,9 +28,9 @@ public class UserEndpointsTests(WebApplicationFixture fixture) : IClassFixture<W
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         Assert.NotEqual(Guid.Empty, responseContent.UserId);
     }
-    
+
     #region FirstName
-    
+
     [Theory]
     [InlineData("")]
     [InlineData("  ")]
@@ -53,7 +51,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture) : IClassFixture<W
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         ProblemDetailsAssert.HasErrors(expectedErrors, errors);
     }
-    
+
     [Fact]
     public async Task RegisterUser_FirstNameExceedsMaxLength_ReturnBadRequest()
     {
@@ -72,7 +70,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture) : IClassFixture<W
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         ProblemDetailsAssert.HasErrors(expectedErrors, errors);
     }
-    
+
     #endregion
 
     #region LastName
@@ -97,7 +95,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture) : IClassFixture<W
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         ProblemDetailsAssert.HasErrors(expectedErrors, errors);
     }
-    
+
     [Fact]
     public async Task RegisterUser_LastNameExceedsMaxLength_ReturnBadRequest()
     {
@@ -142,7 +140,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture) : IClassFixture<W
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         ProblemDetailsAssert.HasErrors(expectedErrors, errors);
     }
-    
+
     [Fact]
     public async Task RegisterUser_EmailExceedsMaxLength_ReturnBadRequest()
     {
@@ -173,7 +171,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture) : IClassFixture<W
     public async Task RegisterUser_InvalidPassword_ReturnBadRequest(string password)
     {
         // Arrange
-        var request = TestEnvironment.ValidRegisterUserRequest with { Password = password};
+        var request = TestEnvironment.ValidRegisterUserRequest with { Password = password };
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidPassword };
 
         // Act
@@ -206,12 +204,12 @@ public class UserEndpointsTests(WebApplicationFixture fixture) : IClassFixture<W
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         ProblemDetailsAssert.HasErrors(expectedErrors, errors);
     }
-    
+
     [Fact]
     public async Task RegisterUser_InvalidRole_ReturnBadRequest()
     {
         // Arrange
-        var request = TestEnvironment.ValidRegisterUserRequest with { Roles = [ Role.Doctor.Name, "TestRole" ] };
+        var request = TestEnvironment.ValidRegisterUserRequest with { Roles = [Role.Doctor.Name, "TestRole"] };
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidRole };
 
         // Act
