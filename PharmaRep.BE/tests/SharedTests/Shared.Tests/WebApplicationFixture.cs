@@ -29,14 +29,13 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
     public async Task ExecuteQueryAsync(string query)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(query);
-
-        var result = await _container.ExecScriptAsync(query);
+        
+        await _container.ExecScriptAsync(query);
     }
 
     public async Task InitializeAsync()
     {
         await _container.StartAsync();
-        var connectionString = _container.GetConnectionString();
     }
 
     public new async Task DisposeAsync()

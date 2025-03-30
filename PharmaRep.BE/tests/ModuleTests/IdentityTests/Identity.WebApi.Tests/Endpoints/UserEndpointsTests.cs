@@ -232,10 +232,17 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     public async Task GetById_ReturnsSuccess()
     {
         // Arrange
-        await fixture.ExecuteQueryAsync(TestEnvironment.SeedTestUserQuery);
+        await fixture.ExecuteQueryAsync(TestEnvironment.TestUserQuery());
+
+        var url = IdentityModuleUrls.User.GetById.Replace("{userId:guid}", TestEnvironment.ExpectedGetUserByIdResponse.Id.ToString());
 
         // Act
-        Assert.True(true);
+        var response = await _httpClient.GetAsync(url);
+        var responseContent = await response.Content.ReadFromJsonAsync<GetUserByIdResponse>();
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equivalent(TestEnvironment.ExpectedGetUserByIdResponse, responseContent);
     }
 
     #endregion
@@ -247,19 +254,25 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
             Email: "john@doe.com",
             Password: "P@ssw0rd",
             Roles: [Role.Doctor.Name]);
-        
-        internal static readonly string SeedTestUserQuery = @"
+
+        internal static GetUserByIdResponse ExpectedGetUserByIdResponse => new(Id: Guid.Parse("8f92f601-658f-4f9a-8a61-afe2f9f77ed1"),
+            FirstName: "Test",
+            LastName: "User",
+            Email: "test@user.com",
+            Roles: [Role.Doctor.Name]);
+
+        internal static string TestUserQuery() => $"""
             GO
             SET QUOTED_IDENTIFIER ON
             GO
             SET ANSI_NULLS ON
             GO
             INSERT INTO [identity].AspNetUsers (Id, FirstName, LastName, Email, EmailConfirmed, PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnabled, AccessFailedCount)
-            VALUES ('8f92f601-658f-4f9a-8a61-afe2f9f77ed1', 'Test', 'User', 'test@user.com', 1, 0, 0, 0, 0);
+            VALUES ('{ExpectedGetUserByIdResponse.Id}', '{ExpectedGetUserByIdResponse.FirstName}', '{ExpectedGetUserByIdResponse.LastName}', '{ExpectedGetUserByIdResponse.Email}', 1, 0, 0, 0, 0);
             GO
             INSERT INTO [identity].AspNetUserRoles (UserId, RoleId)
-            VALUES ('8f92f601-658f-4f9a-8a61-afe2f9f77ed1', '1F1A3CF9-C300-4821-9B5A-E15F8BBDABD0');
+            VALUES ('{ExpectedGetUserByIdResponse.Id}', '{Role.Doctor.Id}');
             GO
-        ";
+        """;
     }
 }
