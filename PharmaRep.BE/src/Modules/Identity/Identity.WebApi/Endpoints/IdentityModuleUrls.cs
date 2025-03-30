@@ -7,7 +7,8 @@ public static class IdentityModuleUrls
     public static class User
     {
         private const string UserBaseUrl = $"{ModuleBaseUrl}/users";
-        
+
+        public const string GetById = $"{UserBaseUrl}/{{userId:guid}}";
         public const string Register = $"{UserBaseUrl}/register";
     }
 }

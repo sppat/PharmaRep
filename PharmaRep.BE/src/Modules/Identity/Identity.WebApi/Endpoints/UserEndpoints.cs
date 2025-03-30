@@ -14,7 +14,13 @@ public static class UserEndpoints
 {
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost(IdentityModuleUrls.User.Register, Register)
+        endpoints.MapGet(IdentityModuleUrls.User.GetById, GetByIdAsync)
+            .WithDescription("Retrieves a user by id.")
+            .Produces<GetUserByIdResponse>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+
+        endpoints.MapPost(IdentityModuleUrls.User.Register, RegisterAsync)
             .WithDescription("Registers a new user.")
             .Produces<RegisterUserResponse>(StatusCodes.Status201Created)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
@@ -23,7 +29,12 @@ public static class UserEndpoints
         return endpoints;
     }
 
-    private static async Task<IResult> Register(RegisterUserRequest request, IMediator mediator)
+    private static async Task<IResult> GetByIdAsync(Guid userId, IMediator mediator)
+    {
+        return Results.Ok();
+    }
+
+    private static async Task<IResult> RegisterAsync(RegisterUserRequest request, IMediator mediator)
     {
         var command = request.ToCommand();
         var result = await mediator.Send(command);
