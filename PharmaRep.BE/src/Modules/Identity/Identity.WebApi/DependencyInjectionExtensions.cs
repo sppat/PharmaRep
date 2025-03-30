@@ -1,9 +1,10 @@
 using Identity.Application;
+using Identity.Domain.Entities;
 using Identity.Infrastructure;
 using Identity.Infrastructure.Database;
 using Identity.WebApi.Endpoints;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,11 @@ public static class DependencyInjectionExtensions
 
         await using var identityDbContext = scope.ServiceProvider.GetRequiredService<PharmaRepIdentityDbContext>();
         await identityDbContext.Database.MigrateAsync();
+
+        using var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+        var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+        await IdentitySeeder.SeedAdminUserAsync(configuration, userManager);
 
         return app;
     }

@@ -31,7 +31,7 @@ public static class UserEndpoints
 
     private static async Task<IResult> GetByIdAsync(Guid userId, IMediator mediator)
     {
-        return Results.Ok();
+        return await Task.FromResult(Results.Ok());
     }
 
     private static async Task<IResult> RegisterAsync(RegisterUserRequest request, IMediator mediator)

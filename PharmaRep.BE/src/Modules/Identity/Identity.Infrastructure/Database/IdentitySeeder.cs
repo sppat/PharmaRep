@@ -4,9 +4,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace Identity.Infrastructure.Database;
 
-public class IdentitySeeder(IConfiguration configuration, UserManager<User> userManager)
+public static class IdentitySeeder
 {
-    public async Task SeedAdminUserAsync()
+    public static async Task SeedAdminUserAsync(IConfiguration configuration, UserManager<User> userManager)
     {
         var adminEmail = configuration["AdminCredentials:Email"];
         var adminPassword = configuration["AdminCredentials:Password"];
