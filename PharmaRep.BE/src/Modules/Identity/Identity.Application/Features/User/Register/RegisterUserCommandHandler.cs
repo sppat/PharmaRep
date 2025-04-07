@@ -1,13 +1,25 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 
 namespace Identity.Application.Features.User.Register;
 
-public class RegisterUserCommandHandler(UserManager<Domain.Entities.User> userManager) : IRequestHandler<RegisterUserCommand, Result<Guid>>
+public class RegisterUserCommandHandler(IValidator<RegisterUserCommand> validator,
+    UserManager<Domain.Entities.User> userManager) : IRequestHandler<RegisterUserCommand, Result<Guid>>
 {
     public async Task<Result<Guid>> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            var validationErrors = validationResult.Errors
+                .Select(e => e.ErrorMessage)
+                .ToList();
+
+            return Result<Guid>.Failure(validationErrors, ResultType.ValidationError);
+        }
+
         var user = Domain.Entities.User.Create(email: request.Email,
             firstName: request.FirstName,
             lastName: request.LastName);
