@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Domain.Entities;
 
-public partial class User : IdentityUser<Guid>
+public class User : IdentityUser<Guid>
 {
     public string FirstName { get; private set; }
     public string LastName { get; private set; }

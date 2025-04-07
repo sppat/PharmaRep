@@ -1,11 +1,11 @@
 using Identity.WebApi.Mappings;
 using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Shared.Application.Mediator;
 using Shared.WebApi.EndpointMappings;
 
 namespace Identity.WebApi.Endpoints;
@@ -16,7 +16,7 @@ public static class UserEndpoints
     {
         endpoints.MapGet(IdentityModuleUrls.User.GetById, GetByIdAsync)
             .WithDescription("Retrieves a user by id.")
-            .Produces<GetUserByIdResponse>(StatusCodes.Status200OK)
+            .Produces<GetUserByIdResponse>()
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
@@ -29,15 +29,15 @@ public static class UserEndpoints
         return endpoints;
     }
 
-    private static async Task<IResult> GetByIdAsync(Guid userId, IMediator mediator)
+    private static async Task<IResult> GetByIdAsync(Guid userId, IDispatcher dispatcher)
     {
         return await Task.FromResult(Results.Ok());
     }
 
-    private static async Task<IResult> RegisterAsync(RegisterUserRequest request, IMediator mediator)
+    private static async Task<IResult> RegisterAsync(RegisterUserRequest request, IDispatcher dispatcher, CancellationToken cancellationToken)
     {
         var command = request.ToCommand();
-        var result = await mediator.Send(command);
+        var result = await dispatcher.SendAsync(command, cancellationToken);
 
         return result.ToHttpResult(UserResponseMappings.ToRegisterUserResponse, createdAt: string.Empty);
     }

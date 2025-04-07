@@ -1,4 +1,3 @@
-using System;
 using Shared.Tests;
 
 namespace Identity.WebApi.Tests;

@@ -34,7 +34,7 @@ public class RegisterUserCommandHandlerTests
             .ReturnsAsync(IdentityResult.Success);
         
         // Act
-        var result = await _sut.Handle(_command, CancellationToken.None);
+        var result = await _sut.HandleAsync(_command, CancellationToken.None);
         
         // Assert
         Assert.True(result.IsSuccess);
@@ -50,7 +50,7 @@ public class RegisterUserCommandHandlerTests
             .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Test Error" }));
         
         // Act
-        var result = await _sut.Handle(_command, CancellationToken.None);
+        var result = await _sut.HandleAsync(_command, CancellationToken.None);
         
         // Assert
         Assert.False(result.IsSuccess);
@@ -68,7 +68,7 @@ public class RegisterUserCommandHandlerTests
             .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Test Error" }));
         
         // Act
-        var result = await _sut.Handle(_command, CancellationToken.None);
+        var result = await _sut.HandleAsync(_command, CancellationToken.None);
         
         // Assert
         Assert.False(result.IsSuccess);
