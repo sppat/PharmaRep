@@ -1,5 +1,3 @@
-using FluentValidation;
-using FluentValidation.Results;
 using Identity.Application.Features.User.Register;
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
