@@ -15,7 +15,6 @@ public class RegisterUserCommandHandlerTests
         Email: "john@doe.com",
         Password: "P@ssw0rd",
         Roles: ["Doctor"]);
-    private readonly Mock<IValidator<RegisterUserCommand>> _validatorMock = new();
     private readonly Mock<UserManager<User>> _userManagerMock;
     private readonly RegisterUserCommandHandler _sut;
 
@@ -23,16 +22,13 @@ public class RegisterUserCommandHandlerTests
     {
         var userStoreMock = new Mock<IUserStore<User>>();
         _userManagerMock = new Mock<UserManager<User>>(userStoreMock.Object, null!, null!, null!, null!, null!, null!, null!, null!);
-        _sut = new RegisterUserCommandHandler(_validatorMock.Object, _userManagerMock.Object);
+        _sut = new RegisterUserCommandHandler(_userManagerMock.Object);
     }
 
     [Fact]
     public async Task HandleAsync_ValidCommand_ReturnsSuccessResult()
     {
         // Arrange
-        _validatorMock.Setup(v => v.ValidateAsync(It.IsAny<RegisterUserCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
-        
         _userManagerMock.Setup(u => u.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
             .ReturnsAsync(IdentityResult.Success);
 
@@ -49,27 +45,9 @@ public class RegisterUserCommandHandlerTests
     }
     
     [Fact]
-    public async Task HandleAsync_RequestValidationFailureInCreateUser_ReturnsValidationErrorResult()
-    {
-        // Arrange
-        _validatorMock.Setup(v => v.ValidateAsync(It.IsAny<RegisterUserCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult([new ValidationFailure()]));
-        
-        // Act
-        var result = await _sut.HandleAsync(_command, CancellationToken.None);
-        
-        // Assert
-        Assert.False(result.IsSuccess);
-        Assert.Equal(ResultType.ValidationError, result.Type);
-    }
-    
-    [Fact]
     public async Task HandleAsync_FailureIdentityResultInCreateUser_ReturnsValidationErrorResult()
     {
         // Arrange
-        _validatorMock.Setup(v => v.ValidateAsync(It.IsAny<RegisterUserCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
-        
         _userManagerMock.Setup(u => u.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
             .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Test Error" }));
         
@@ -85,9 +63,6 @@ public class RegisterUserCommandHandlerTests
     public async Task HandleAsync_FailureIdentityResultInAddToRoles_ReturnsValidationErrorResult()
     {
         // Arrange
-        _validatorMock.Setup(v => v.ValidateAsync(It.IsAny<RegisterUserCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
-        
         _userManagerMock.Setup(u => u.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
             .ReturnsAsync(IdentityResult.Success);
         

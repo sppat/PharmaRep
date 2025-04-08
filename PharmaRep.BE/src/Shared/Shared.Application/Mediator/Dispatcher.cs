@@ -1,22 +1,14 @@
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Shared.Application.Mediator;
 
 public class Dispatcher(IServiceProvider serviceProvider) : IDispatcher
 {
     public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
-        var genericHandlerType = typeof(IRequestHandler<,>).MakeGenericType(request.GetType(), typeof(TResponse));
-        
-        var handler = serviceProvider.GetRequiredService(genericHandlerType);
+        var handlerDecoratorType = typeof(RequestHandlerDecoratorImpl<,>).MakeGenericType(request.GetType(), typeof(TResponse));
+        var handlerDecorator = (RequestHandlerDecorator<TResponse>)Activator.CreateInstance(handlerDecoratorType);
+        if (handlerDecorator is null) throw new InvalidCastException("Could not create handler decorator instance.");
 
-        var handleAsync = genericHandlerType.GetMethod(nameof(IRequestHandler<object, object>.HandleAsync));
-        if (handleAsync is null) throw new InvalidOperationException("Could not resolve HandleAsync method");
-
-        var resultTask = (Task<TResponse>)handleAsync.Invoke(handler, [request, cancellationToken]);
-        if (resultTask is null) throw new InvalidOperationException("Could not invoke HandleAsync method");
-
-        return await resultTask;
+        return await handlerDecorator.HandleAsync(request, serviceProvider, cancellationToken);
     }
 
     public Task SendAsync(IRequest request, CancellationToken cancellationToken = default)
