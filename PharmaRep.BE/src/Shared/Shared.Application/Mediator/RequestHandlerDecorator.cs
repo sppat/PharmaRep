@@ -9,12 +9,9 @@ public abstract class RequestHandlerDecorator<TResponse>
 
 public class RequestHandlerDecoratorImpl<TRequest, TResponse> : RequestHandlerDecorator<TResponse>
 {
-    public override async Task<TResponse> HandleAsync(IRequest<TResponse> request, IServiceProvider serviceProvider, CancellationToken cancellationToken) 
-        => await Handle(request, serviceProvider, cancellationToken);
-    
-    private static Task<TResponse> Handle(IRequest<TResponse> request, IServiceProvider serviceProvider, CancellationToken cancellationToken)
+    public override async Task<TResponse> HandleAsync(IRequest<TResponse> request, IServiceProvider serviceProvider, CancellationToken cancellationToken)
     {
-        return serviceProvider.GetServices<IDispatcherMiddleware<TRequest, TResponse>>()
+        return await serviceProvider.GetServices<IDispatcherMiddleware<TRequest, TResponse>>()
             .Reverse()
             .Aggregate((RequestHandlerDelegate<TResponse>)Handler, Pipeline)(cancellationToken);
         
@@ -22,6 +19,6 @@ public class RequestHandlerDecoratorImpl<TRequest, TResponse> : RequestHandlerDe
             .HandleAsync((TRequest)request, ct == CancellationToken.None ? cancellationToken : ct);
         
         RequestHandlerDelegate<TResponse> Pipeline(RequestHandlerDelegate<TResponse> next, IDispatcherMiddleware<TRequest, TResponse> middleware)
-            => t => middleware.HandleAsync((TRequest)request, next, t == CancellationToken.None ? cancellationToken : t);
+            => t => middleware.HandleAsync((TRequest)request, next, t == CancellationToken.None ? cancellationToken : t);   
     }
 }
