@@ -1,3 +1,4 @@
+using Identity.Application.Features.User.GetById;
 using Identity.WebApi.Mappings;
 using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
@@ -29,9 +30,12 @@ public static class UserEndpoints
         return endpoints;
     }
 
-    private static async Task<IResult> GetByIdAsync(Guid userId, IDispatcher dispatcher)
+    private static async Task<IResult> GetByIdAsync(Guid userId, IDispatcher dispatcher, CancellationToken cancellationToken)
     {
-        return await Task.FromResult(Results.Ok());
+        var query = new GetUserByIdQuery(userId);
+        var result = await dispatcher.SendAsync(query, cancellationToken);
+        
+        return result.ToHttpResult(UserResponseMappings.ToGetUserByIdResponse);
     }
 
     private static async Task<IResult> RegisterAsync(RegisterUserRequest request, IDispatcher dispatcher, CancellationToken cancellationToken)

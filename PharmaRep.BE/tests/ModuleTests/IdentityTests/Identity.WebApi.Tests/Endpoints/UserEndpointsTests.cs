@@ -233,8 +233,8 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     {
         // Arrange
         await fixture.ExecuteQueryAsync(TestEnvironment.TestUserQuery());
-
-        var url = IdentityModuleUrls.User.GetById.Replace("{userId:guid}", TestEnvironment.ExpectedGetUserByIdResponse.Id.ToString());
+        var expectedUserId = TestEnvironment.ExpectedGetUserByIdResponse.Id.ToString();
+        var url = IdentityModuleUrls.User.GetById.Replace("{userId:guid}", expectedUserId);
 
         // Act
         var response = await _httpClient.GetAsync(url);
