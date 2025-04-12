@@ -1,11 +1,19 @@
 using Bootstrapper;
 using Identity.WebApi;
+using Microsoft.OpenApi.Models;
 using Shared.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "PharmaRep Web API",
+        Version = "v1"
+    });
+});
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddDispatcher();
