@@ -1,5 +1,7 @@
+using Identity.Application.Features.User.Interfaces;
 using Identity.Domain.Entities;
 using Identity.Infrastructure.Database;
+using Identity.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +30,8 @@ public static class DependencyInjectionExtensions
             })
             .AddRoles<Role>()
             .AddEntityFrameworkStores<PharmaRepIdentityDbContext>();
+
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }
