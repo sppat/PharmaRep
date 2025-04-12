@@ -13,6 +13,8 @@ public static class EndpointResultMappings
         {
             ResultType.ValidationError => Results.Problem(title: "Bad Request", statusCode: StatusCodes.Status400BadRequest, extensions: serviceResult.GetErrors()),
             ResultType.Created => Results.Created(createdAt, response),
+            ResultType.NotFound => Results.NotFound(),
+            ResultType.Success => Results.Ok(response),
             _ => throw new InvalidOperationException("Invalid result type")
         };
     }

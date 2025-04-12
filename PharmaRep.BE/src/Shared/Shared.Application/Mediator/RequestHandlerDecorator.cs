@@ -7,7 +7,7 @@ public abstract class RequestHandlerDecorator<TResponse>
     public abstract Task<TResponse> HandleAsync(IRequest<TResponse> request, IServiceProvider serviceProvider, CancellationToken cancellationToken);
 }
 
-public class RequestHandlerDecoratorImpl<TRequest, TResponse> : RequestHandlerDecorator<TResponse>
+public class RequestHandlerDecoratorImpl<TRequest, TResponse> : RequestHandlerDecorator<TResponse> where TRequest : IRequest<TResponse>
 {
     public override async Task<TResponse> HandleAsync(IRequest<TResponse> request, IServiceProvider serviceProvider, CancellationToken cancellationToken)
     {

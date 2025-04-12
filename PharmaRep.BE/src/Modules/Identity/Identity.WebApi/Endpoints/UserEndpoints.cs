@@ -19,7 +19,8 @@ public static class UserEndpoints
             .WithDescription("Retrieves a user by id.")
             .Produces<GetUserByIdResponse>()
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
+            .WithName(nameof(IdentityModuleUrls.User.GetById));
 
         endpoints.MapPost(IdentityModuleUrls.User.Register, RegisterAsync)
             .WithDescription("Registers a new user.")
@@ -43,6 +44,6 @@ public static class UserEndpoints
         var command = request.ToCommand();
         var result = await dispatcher.SendAsync(command, cancellationToken);
 
-        return result.ToHttpResult(UserResponseMappings.ToRegisterUserResponse, createdAt: string.Empty);
+        return result.ToHttpResult(UserResponseMappings.ToRegisterUserResponse, createdAt: IdentityModuleUrls.User.GetById);
     }
 }
