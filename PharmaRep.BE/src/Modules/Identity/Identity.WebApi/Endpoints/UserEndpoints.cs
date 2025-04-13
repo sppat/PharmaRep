@@ -20,7 +20,7 @@ public static class UserEndpoints
             .Produces<GetUserByIdResponse>()
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
-            .WithName(nameof(IdentityModuleUrls.User.GetById));
+            .WithName(nameof(GetByIdAsync));
 
         endpoints.MapPost(IdentityModuleUrls.User.Register, RegisterAsync)
             .WithDescription("Registers a new user.")
@@ -31,9 +31,9 @@ public static class UserEndpoints
         return endpoints;
     }
 
-    private static async Task<IResult> GetByIdAsync(Guid userId, IDispatcher dispatcher, CancellationToken cancellationToken)
+    private static async Task<IResult> GetByIdAsync(Guid id, IDispatcher dispatcher, CancellationToken cancellationToken)
     {
-        var query = new GetUserByIdQuery(userId);
+        var query = new GetUserByIdQuery(id);
         var result = await dispatcher.SendAsync(query, cancellationToken);
         
         return result.ToHttpResult(UserResponseMappings.ToGetUserByIdResponse);
@@ -44,6 +44,6 @@ public static class UserEndpoints
         var command = request.ToCommand();
         var result = await dispatcher.SendAsync(command, cancellationToken);
 
-        return result.ToHttpResult(UserResponseMappings.ToRegisterUserResponse, createdAt: IdentityModuleUrls.User.GetById);
+        return result.ToHttpResult(UserResponseMappings.ToRegisterUserResponse, createdAt: nameof(GetByIdAsync));
     }
 }
