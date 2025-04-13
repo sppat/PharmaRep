@@ -49,7 +49,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        ProblemDetailsAssert.HasErrors(expectedErrors, errors);
+        AssertProblemDetails.HasErrors(expectedErrors, errors);
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        ProblemDetailsAssert.HasErrors(expectedErrors, errors);
+        AssertProblemDetails.HasErrors(expectedErrors, errors);
     }
 
     #endregion
@@ -93,7 +93,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        ProblemDetailsAssert.HasErrors(expectedErrors, errors);
+        AssertProblemDetails.HasErrors(expectedErrors, errors);
     }
 
     [Fact]
@@ -112,7 +112,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        ProblemDetailsAssert.HasErrors(expectedErrors, errors);
+        AssertProblemDetails.HasErrors(expectedErrors, errors);
     }
 
     #endregion
@@ -138,7 +138,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        ProblemDetailsAssert.HasErrors(expectedErrors, errors);
+        AssertProblemDetails.HasErrors(expectedErrors, errors);
     }
 
     [Fact]
@@ -157,7 +157,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        ProblemDetailsAssert.HasErrors(expectedErrors, errors);
+        AssertProblemDetails.HasErrors(expectedErrors, errors);
     }
 
     #endregion
@@ -181,7 +181,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        ProblemDetailsAssert.HasErrors(expectedErrors, errors);
+        AssertProblemDetails.HasErrors(expectedErrors, errors);
     }
 
     #endregion
@@ -202,7 +202,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        ProblemDetailsAssert.HasErrors(expectedErrors, errors);
+        AssertProblemDetails.HasErrors(expectedErrors, errors);
     }
 
     [Fact]
@@ -219,7 +219,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        ProblemDetailsAssert.HasErrors(expectedErrors, errors);
+        AssertProblemDetails.HasErrors(expectedErrors, errors);
     }
 
     #endregion
@@ -243,6 +243,23 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equivalent(TestEnvironment.ExpectedGetUserByIdResponse, responseContent);
+    }
+
+    [Fact]
+    public async Task GetById_ReturnsNotFoundWithInvalidId()
+    {
+        // Arrange
+        var expectedErrors = new[] {IdentityModuleDomainErrors.UserErrors.UserNotFound};
+        var userId = Guid.NewGuid().ToString();
+        var url = IdentityModuleUrls.User.GetById.Replace("{userId:guid}", userId);
+        
+        // Act
+        var response = await _httpClient.GetAsync(url);
+        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
     }
 
     #endregion
