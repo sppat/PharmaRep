@@ -1,5 +1,5 @@
 services:
-  sqlserver:
+  postgres:
     image: postgres:alpine
     container_name: postgres
     environment:
@@ -8,6 +8,14 @@ services:
       - "5432:5432"
     volumes:
       - postgresdata:/var/lib/postgresql/data
-
+  pgadmin:
+    image: pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+      PGADMIN_DEFAULT_PASSWORD: "P@ssw0rd"
+    ports:
+      - "5001:80"
+      
 volumes:
   postgresdata:
