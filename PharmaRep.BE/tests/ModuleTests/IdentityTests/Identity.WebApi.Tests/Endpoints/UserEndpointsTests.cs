@@ -234,7 +234,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         // Arrange
         await fixture.ExecuteQueryAsync(TestEnvironment.TestUserQuery());
         var expectedUserId = TestEnvironment.ExpectedGetUserByIdResponse.Id.ToString();
-        var url = IdentityModuleUrls.User.GetById.Replace("{userId:guid}", expectedUserId);
+        var url = IdentityModuleUrls.User.GetById.Replace("{id:guid}", expectedUserId);
 
         // Act
         var response = await _httpClient.GetAsync(url);
@@ -251,7 +251,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         // Arrange
         var expectedErrors = new[] {IdentityModuleDomainErrors.UserErrors.UserNotFound};
         var userId = Guid.NewGuid().ToString();
-        var url = IdentityModuleUrls.User.GetById.Replace("{userId:guid}", userId);
+        var url = IdentityModuleUrls.User.GetById.Replace("{id:guid}", userId);
         
         // Act
         var response = await _httpClient.GetAsync(url);
@@ -264,6 +264,22 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
     #endregion
 
+    #region GetAll
+
+    [Fact]
+    public async Task GetAll_ReturnsListOfUsers()
+    {
+        // Arrange
+        
+        // Act
+        var response = await _httpClient.GetAsync(IdentityModuleUrls.User.GetAll);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    #endregion
+    
     private static class TestEnvironment
     {
         internal static RegisterUserRequest ValidRegisterUserRequest => new(FirstName: "John",
