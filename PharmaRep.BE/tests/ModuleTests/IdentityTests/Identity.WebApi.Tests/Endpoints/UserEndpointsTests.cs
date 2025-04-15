@@ -7,11 +7,12 @@ using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Tests;
+using Xunit.Abstractions;
 
 namespace Identity.WebApi.Tests.Endpoints;
 
 [Collection(name: SharedTestConstants.WebApplicationCollectionName)]
-public class UserEndpointsTests(WebApplicationFixture fixture)
+public class UserEndpointsTests(WebApplicationFixture fixture, ITestOutputHelper outputHelper)
 {
     private readonly HttpClient _httpClient = fixture.CreateClient();
 
@@ -232,7 +233,12 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     public async Task GetById_ReturnsSuccess()
     {
         // Arrange
-        await fixture.ExecuteQueryAsync(TestEnvironment.TestUserQuery());
+        var queryResult = await fixture.ExecuteQueryAsync(TestEnvironment.SeedTestUserQuery());
+        if (queryResult.ExitCode is 0)
+        {
+            outputHelper.WriteLine(queryResult.Stderr);
+        }
+        
         var expectedUserId = TestEnvironment.ExpectedGetUserByIdResponse.Id.ToString();
         var url = IdentityModuleUrls.User.GetById.Replace("{id:guid}", expectedUserId);
 
@@ -294,11 +300,11 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
             Email: "test@user.com",
             Roles: [Role.Doctor.Name]);
 
-        internal static string TestUserQuery() => $"""
-            INSERT INTO identity."AspNetUsers" (Id, FirstName, LastName, Email, EmailConfirmed, PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnabled, AccessFailedCount)
-            VALUES ('{ExpectedGetUserByIdResponse.Id}', '{ExpectedGetUserByIdResponse.FirstName}', '{ExpectedGetUserByIdResponse.LastName}', '{ExpectedGetUserByIdResponse.Email}', 1, 0, 0, 0, 0);
+        internal static string SeedTestUserQuery() => $"""
+            INSERT INTO identity."AspNetUsers" ("Id", "FirstName", "LastName", "Email", "EmailConfirmed", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnabled", "AccessFailedCount")
+            VALUES ('{ExpectedGetUserByIdResponse.Id}', '{ExpectedGetUserByIdResponse.FirstName}', '{ExpectedGetUserByIdResponse.LastName}', '{ExpectedGetUserByIdResponse.Email}', true, false, false, false, 0);
             
-            INSERT INTO identity."AspNetUserRoles" (UserId, RoleId)
+            INSERT INTO identity."AspNetUserRoles" ("UserId", "RoleId")
             VALUES ('{ExpectedGetUserByIdResponse.Id}', '{Role.Doctor.Id}');
         """;
     }

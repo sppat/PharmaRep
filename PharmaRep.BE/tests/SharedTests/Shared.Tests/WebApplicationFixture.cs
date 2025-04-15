@@ -1,11 +1,14 @@
+using DotNet.Testcontainers.Containers;
 using Identity.Infrastructure.Database;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Testcontainers.PostgreSql;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Shared.Tests;
 
@@ -27,11 +30,11 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
         });
     }
 
-    public async Task ExecuteQueryAsync(string query)
+    public async Task<ExecResult> ExecuteQueryAsync(string query)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(query);
         
-        await _container.ExecScriptAsync(query);
+        return await _container.ExecScriptAsync(query);
     }
 
     public async Task InitializeAsync()
