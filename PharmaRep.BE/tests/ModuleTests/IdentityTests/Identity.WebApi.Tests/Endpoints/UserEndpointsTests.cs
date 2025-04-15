@@ -295,17 +295,11 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
             Roles: [Role.Doctor.Name]);
 
         internal static string TestUserQuery() => $"""
-            GO
-            SET QUOTED_IDENTIFIER ON
-            GO
-            SET ANSI_NULLS ON
-            GO
-            INSERT INTO [identity].AspNetUsers (Id, FirstName, LastName, Email, EmailConfirmed, PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnabled, AccessFailedCount)
+            INSERT INTO identity."AspNetUsers" (Id, FirstName, LastName, Email, EmailConfirmed, PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnabled, AccessFailedCount)
             VALUES ('{ExpectedGetUserByIdResponse.Id}', '{ExpectedGetUserByIdResponse.FirstName}', '{ExpectedGetUserByIdResponse.LastName}', '{ExpectedGetUserByIdResponse.Email}', 1, 0, 0, 0, 0);
-            GO
-            INSERT INTO [identity].AspNetUserRoles (UserId, RoleId)
+            
+            INSERT INTO identity."AspNetUserRoles" (UserId, RoleId)
             VALUES ('{ExpectedGetUserByIdResponse.Id}', '{Role.Doctor.Id}');
-            GO
         """;
     }
 }

@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Testcontainers.MsSql;
+using Testcontainers.PostgreSql;
 using Xunit;
 
 namespace Shared.Tests;
 
 public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly MsSqlContainer _container = new MsSqlBuilder()
+    private readonly PostgreSqlContainer _container = new PostgreSqlBuilder()
+        .WithImage("postgres:alpine")
         .WithPassword("P@ssw0rd")
         .Build();
     
@@ -22,7 +23,7 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
             var identityDbContext = services.FirstOrDefault(s => s.ServiceType == typeof(PharmaRepIdentityDbContext));
             if (identityDbContext is not null) services.Remove(identityDbContext);
 
-            services.AddDbContext<PharmaRepIdentityDbContext>(options => options.UseSqlServer(_container.GetConnectionString()));
+            services.AddDbContext<PharmaRepIdentityDbContext>(options => options.UseNpgsql(_container.GetConnectionString()));
         });
     }
 

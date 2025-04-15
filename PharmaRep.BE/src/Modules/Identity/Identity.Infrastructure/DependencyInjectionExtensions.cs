@@ -15,7 +15,7 @@ public static class DependencyInjectionExtensions
     {
         services.AddDbContext<PharmaRepIdentityDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("IdentityConnection"), builder =>
+            options.UseNpgsql(configuration.GetConnectionString("IdentityConnection"), builder =>
             {
                 builder.MigrationsHistoryTable(EfConstants.MigrationsHistoryTable, EfConstants.Schemas.Identity);
             });
