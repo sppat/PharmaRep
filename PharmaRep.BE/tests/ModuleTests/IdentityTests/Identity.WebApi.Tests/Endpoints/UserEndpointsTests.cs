@@ -1,12 +1,16 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text;
+using Identity.Application.Features.User.Dtos;
 using Identity.Domain.DomainErrors;
 using Identity.Domain.Entities;
 using Identity.WebApi.Endpoints;
 using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Shared.Tests;
+using Shared.WebApi;
 using Xunit.Abstractions;
 
 namespace Identity.WebApi.Tests.Endpoints;
@@ -234,7 +238,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture, ITestOutputHelper
     {
         // Arrange
         var queryResult = await fixture.ExecuteQueryAsync(TestEnvironment.SeedTestUserQuery());
-        if (queryResult.ExitCode is 0)
+        if (queryResult.ExitCode is not 0)
         {
             outputHelper.WriteLine(queryResult.Stderr);
         }
@@ -276,12 +280,31 @@ public class UserEndpointsTests(WebApplicationFixture fixture, ITestOutputHelper
     public async Task GetAll_ReturnsListOfUsers()
     {
         // Arrange
+        var queryResult = await fixture.ExecuteQueryAsync(TestEnvironment.SeedGetAllTestUsersQuery());
+        if (queryResult.ExitCode is not 0)
+        {
+            outputHelper.WriteLine(queryResult.Stderr);
+        }
+        const int pageNumber = 2;
+        const int pageSize = 2;
+        var queryParams = new Dictionary<string, string>
+        {
+            { nameof(pageNumber), pageNumber.ToString() },
+            { nameof(pageSize), pageSize.ToString() }
+        };
+        var uri = QueryHelpers.AddQueryString(IdentityModuleUrls.User.GetAll, queryParams);
         
         // Act
-        var response = await _httpClient.GetAsync(IdentityModuleUrls.User.GetAll);
+        var response = await _httpClient.GetAsync(uri);
+        var responseContent = await response.Content.ReadFromJsonAsync<PaginatedResponse<UserDto>>();
         
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(pageNumber, responseContent.PageNumber);
+        Assert.Equal(pageSize, responseContent.PageSize);
+        Assert.True(responseContent.HasNext);
+        Assert.True(responseContent.HasPrevious);
+        Assert.Equivalent(TestEnvironment.GetAllUsersTestData, responseContent.Items);
     }
 
     #endregion
@@ -300,12 +323,59 @@ public class UserEndpointsTests(WebApplicationFixture fixture, ITestOutputHelper
             Email: "test@user.com",
             Roles: [Role.Doctor.Name]);
 
+        internal static IEnumerable<UserDto> GetAllUsersTestData => 
+        [
+            new(Id: Guid.NewGuid(),
+                FirstName: "User",
+                LastName: "One",
+                Email: "user@one.com",
+                Roles: [Role.MedicalRepresentative.Name]),
+            new(Id: Guid.NewGuid(),
+                FirstName: "User",
+                LastName: "Two",
+                Email: "user@two.com",
+                Roles: [Role.MedicalRepresentative.Name]),
+            new(Id: Guid.NewGuid(),
+                FirstName: "User",
+                LastName: "Three",
+                Email: "user@three.com",
+                Roles: [Role.MedicalRepresentative.Name]),
+            new(Id: Guid.NewGuid(),
+                FirstName: "User",
+                LastName: "Four",
+                Email: "user@four.com",
+                Roles: [Role.MedicalRepresentative.Name]),
+            new(Id: Guid.NewGuid(),
+                FirstName: "User",
+                LastName: "Five",
+                Email: "user@five.com",
+                Roles: [Role.MedicalRepresentative.Name])
+        ];
+
         internal static string SeedTestUserQuery() => $"""
-            INSERT INTO identity."AspNetUsers" ("Id", "FirstName", "LastName", "Email", "EmailConfirmed", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnabled", "AccessFailedCount")
-            VALUES ('{ExpectedGetUserByIdResponse.Id}', '{ExpectedGetUserByIdResponse.FirstName}', '{ExpectedGetUserByIdResponse.LastName}', '{ExpectedGetUserByIdResponse.Email}', true, false, false, false, 0);
+                                                       INSERT INTO identity."AspNetUsers" ("Id", "FirstName", "LastName", "Email", "EmailConfirmed", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnabled", "AccessFailedCount")
+                                                       VALUES ('{ExpectedGetUserByIdResponse.Id}', '{ExpectedGetUserByIdResponse.FirstName}', '{ExpectedGetUserByIdResponse.LastName}', '{ExpectedGetUserByIdResponse.Email}', true, false, false, false, 0);
+                                                       
+                                                       INSERT INTO identity."AspNetUserRoles" ("UserId", "RoleId")
+                                                       VALUES ('{ExpectedGetUserByIdResponse.Id}', '{Role.Doctor.Id}');
+                                                       """;
+
+        internal static string SeedGetAllTestUsersQuery()
+        {
+            var queryBuilder = new StringBuilder();
+            foreach (var user in GetAllUsersTestData)
+            {
+                var addUserQuery = $"""
+                                    INSERT INTO identity."AspNetUsers" ("Id", "FirstName", "LastName", "Email", "EmailConfirmed", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnabled", "AccessFailedCount")
+                                    VALUES ('{user.Id}', '{user.FirstName}', '{user.LastName}', '{user.Email}', true, false, false, false, 0);
+                                    INSERT INTO identity."AspNetUserRoles" ("UserId", "RoleId")
+                                    VALUES ('{user.Id}', '{Role.MedicalRepresentative.Id}');
+                                    """;
+                queryBuilder.Append(addUserQuery);
+                queryBuilder.AppendLine();
+            }
             
-            INSERT INTO identity."AspNetUserRoles" ("UserId", "RoleId")
-            VALUES ('{ExpectedGetUserByIdResponse.Id}', '{Role.Doctor.Id}');
-        """;
+            return queryBuilder.ToString();
+        }
     }
 }
