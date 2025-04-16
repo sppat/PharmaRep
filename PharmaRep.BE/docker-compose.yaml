@@ -9,6 +9,8 @@ services:
     volumes:
       - postgresdata:/var/lib/postgresql/data
   pgadmin:
+    depends_on:
+      - postgres
     image: pgadmin4
     container_name: pgadmin
     environment:
