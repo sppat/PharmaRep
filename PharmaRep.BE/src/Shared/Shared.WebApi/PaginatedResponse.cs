@@ -2,25 +2,27 @@ using System.Collections.Immutable;
 
 namespace Shared.WebApi;
 
-public record PaginatedResponse<T> where T : class
+public record PaginatedResponse<T>
 {
     public readonly int PageNumber;
     public readonly int PageSize;
     public readonly int Total;
-    public bool HasNext => PageNumber < Total / PageSize;
+    public bool HasNext => PageNumber < Math.Ceiling((double)Total / PageSize);
     public bool HasPrevious => PageNumber > 1;
     public IReadOnlyCollection<T> Items;
 
-    public PaginatedResponse(int pageNumber, int pageSize, int total, ICollection<T> items)
+    private PaginatedResponse(int pageNumber, int pageSize, ICollection<T> items)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pageNumber, nameof(pageNumber));
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pageSize, nameof(pageSize));
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(total, nameof(total));
-        ArgumentNullException.ThrowIfNull(items);
+        ArgumentNullException.ThrowIfNull(items, nameof(items));
 
         PageNumber = pageNumber;
         PageSize = pageSize;
-        Total = total;
+        Total = items.Count;
         Items = items.ToImmutableList();
     }
+
+    public static PaginatedResponse<TResponse> Create<TResponse>(int pageNumber, int pageSize, ICollection<TResponse> items) =>
+        new(pageNumber, pageSize, items);
 }
