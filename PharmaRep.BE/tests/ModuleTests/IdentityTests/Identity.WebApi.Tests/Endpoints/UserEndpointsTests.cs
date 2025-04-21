@@ -10,7 +10,6 @@ using Identity.WebApi.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Shared.Tests;
-using Shared.WebApi;
 using Shared.WebApi.Responses;
 using Xunit.Abstractions;
 

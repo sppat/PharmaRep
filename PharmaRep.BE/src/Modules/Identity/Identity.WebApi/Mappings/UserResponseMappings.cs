@@ -1,8 +1,6 @@
 using Identity.Application.Dtos;
-using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
 using Shared.Application.Results;
-using Shared.WebApi.Responses;
 
 namespace Identity.WebApi.Mappings;
 

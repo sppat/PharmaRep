@@ -1,5 +1,4 @@
 using FluentValidation;
-using FluentValidation.Results;
 using Shared.Application.Results;
 
 namespace Shared.Application.Mediator.Pipeline;

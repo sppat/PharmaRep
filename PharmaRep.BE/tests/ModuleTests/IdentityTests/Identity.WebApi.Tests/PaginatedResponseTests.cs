@@ -1,4 +1,3 @@
-using Shared.WebApi;
 using Shared.WebApi.Responses;
 
 namespace Identity.WebApi.Tests;
