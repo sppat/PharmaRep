@@ -1,6 +1,7 @@
 using System.Reflection;
 using FluentValidation;
 using Identity.Application.Dtos;
+using Identity.Application.Features.User.GetAll;
 using Identity.Application.Features.User.GetById;
 using Identity.Application.Features.User.Register;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,7 @@ public static class DependencyInjectionExtensions
 
         // Queries
         services.AddScoped<IRequestHandler<GetUserByIdQuery, Result<UserDto>>, GetUserByIdQueryHandler>();
+        services.AddScoped<IRequestHandler<GetAllUsersQuery, Result<UsersPaginatedResult>>, GetAllUsersQueryHandler>();
         
         return services;
     }

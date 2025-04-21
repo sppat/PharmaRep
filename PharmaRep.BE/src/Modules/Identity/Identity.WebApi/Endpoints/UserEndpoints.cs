@@ -1,12 +1,15 @@
+using Identity.Application.Dtos;
 using Identity.Application.Features.User.GetById;
 using Identity.WebApi.Mappings;
 using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Shared.Application.Mediator;
 using Shared.WebApi.EndpointMappings;
+using Shared.WebApi.Responses;
 
 namespace Identity.WebApi.Endpoints;
 
@@ -16,6 +19,7 @@ public static class UserEndpoints
     {
         endpoints.MapGet(IdentityModuleUrls.User.GetAll, GetAllAsync)
             .WithDescription("Retrieves users")
+            .Produces<PaginatedResponse<UserDto>>()
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status500InternalServerError);
         
@@ -35,7 +39,7 @@ public static class UserEndpoints
         return endpoints;
     }
     
-    private static async Task<IResult> GetAllAsync(IDispatcher dispatcher, GetAllUsersRequest request, CancellationToken cancellationToken)
+    private static async Task<IResult> GetAllAsync(IDispatcher dispatcher,[AsParameters] GetAllUsersRequest request, CancellationToken cancellationToken)
     {
         var query = request.ToQuery();
         var result = await dispatcher.SendAsync(query, cancellationToken);

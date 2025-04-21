@@ -4,14 +4,14 @@ namespace Shared.WebApi.Responses;
 
 public record PaginatedResponse<T>
 {
-    public readonly int PageNumber;
-    public readonly int PageSize;
-    public readonly int Total;
+    public int PageNumber { get; }
+    public int PageSize { get; }
+    public int Total { get; }
     public bool HasNext => PageNumber < Math.Ceiling((double)Total / PageSize);
     public bool HasPrevious => PageNumber > 1;
-    public IReadOnlyCollection<T> Items;
+    public IReadOnlyCollection<T> Items { get; }
 
-    public PaginatedResponse(int pageNumber, int pageSize, int total, ICollection<T> items)
+public PaginatedResponse(int pageNumber, int pageSize, int total, IReadOnlyCollection<T> items)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pageNumber, nameof(pageNumber));
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pageSize, nameof(pageSize));
@@ -21,6 +21,6 @@ public record PaginatedResponse<T>
         PageNumber = pageNumber;
         PageSize = pageSize;
         Total = total;
-        Items = items.ToImmutableList();
+        Items = items;
     }
 }

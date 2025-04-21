@@ -5,19 +5,20 @@ using Shared.Application.Results;
 
 namespace Identity.Application.Features.User.GetAll;
 
-public class GetAllUserQueryHandler(IUserRepository userRepository) : IRequestHandler<GetAllUsersQuery, Result<IPaginatedResult<UserDto>>>
+public class GetAllUsersQueryHandler(IUserRepository userRepository) : IRequestHandler<GetAllUsersQuery, Result<UsersPaginatedResult>>
 {
-    public async Task<Result<IPaginatedResult<UserDto>>> HandleAsync(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public async Task<Result<UsersPaginatedResult>> HandleAsync(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
+        var totalUsers = await userRepository.CountAsync(cancellationToken);
         var users = await userRepository.GetAllUsersAsync(pageNumber: request.PageNumber, 
             pageSize: request.PageSize,
             cancellationToken);
 
         var paginatedResult = new UsersPaginatedResult(PageNumber: request.PageNumber, 
             PageSize: request.PageSize,
-            Total: users.Count,
+            Total: totalUsers,
             Items: users);
         
-        return Result<IPaginatedResult<UserDto>>.Success(paginatedResult);
+        return Result<UsersPaginatedResult>.Success(paginatedResult);
     }
 }

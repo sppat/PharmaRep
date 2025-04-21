@@ -8,6 +8,9 @@ namespace Identity.Infrastructure.Repositories;
 
 public class UserRepository(PharmaRepIdentityDbContext dbContext) : IUserRepository
 {
+    public async Task<int> CountAsync(CancellationToken cancellationToken)
+        => await dbContext.Users.CountAsync(cancellationToken);
+
     public async Task<ICollection<UserDto>> GetAllUsersAsync(int pageNumber, 
         int pageSize,
         CancellationToken cancellationToken)

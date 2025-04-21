@@ -1,6 +1,8 @@
 using Identity.Application.Dtos;
+using Identity.Application.Features.User.GetAll;
 using Identity.WebApi.Responses;
 using Shared.Application.Results;
+using Shared.WebApi.Responses;
 
 namespace Identity.WebApi.Mappings;
 
@@ -14,9 +16,9 @@ public static class UserResponseMappings
         Email: user.Email,
         Roles: user.Roles);
 
-    internal static GetAllUsersResponse ToGetAllUsersResponse(IPaginatedResult<UserDto> paginatedUsers) 
-        => new(PageNumber: paginatedUsers.PageNumber, 
-            PageSize: paginatedUsers.PageSize, 
-            Total: paginatedUsers.Total,
-            Users: paginatedUsers.Items);
+    internal static PaginatedResponse<UserDto> ToGetAllUsersResponse(UsersPaginatedResult paginatedUsers)
+        => new(pageNumber: paginatedUsers.PageNumber,
+            pageSize: paginatedUsers.PageSize,
+            total: paginatedUsers.Total,
+            items: paginatedUsers.Items.ToList());
 }

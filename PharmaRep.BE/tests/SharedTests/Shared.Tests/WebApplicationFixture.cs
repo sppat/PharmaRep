@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Tests.Database;
 using Testcontainers.PostgreSql;
 using Xunit;
 
@@ -28,16 +29,10 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
         });
     }
 
-    public async Task<ExecResult> ExecuteQueryAsync(string query)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(query);
-        
-        return await _container.ExecScriptAsync(query);
-    }
-
     public async Task InitializeAsync()
     {
         await _container.StartAsync();
+        var result = await _container.ExecScriptAsync(DatabaseSeeder.SeedGetAllTestUsersQuery());
     }
 
     public new async Task DisposeAsync()
