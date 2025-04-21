@@ -1,3 +1,4 @@
+using Identity.Application.Features.User.GetAll;
 using Identity.Application.Features.User.Register;
 using Identity.WebApi.Requests;
 
@@ -10,4 +11,7 @@ public static class UserRequestMappings
         Email: request.Email,
         Password: request.Password,
         Roles: request.Roles);
+
+    public static GetAllUsersQuery ToQuery(this GetAllUsersRequest request) => new(PageNumber: request.PageNumber, 
+        PageSize: request.PageSize);
 }

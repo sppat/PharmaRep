@@ -15,20 +15,33 @@ public static class UserEndpoints
 {
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
     {
+        endpoints.MapGet(IdentityModuleUrls.User.GetAll, GetAllAsync)
+            .WithDescription("Retrieves users")
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
+        
         endpoints.MapGet(IdentityModuleUrls.User.GetById, GetByIdAsync)
             .WithDescription("Retrieves a user by id.")
             .Produces<GetUserByIdResponse>()
-            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithName(nameof(GetByIdAsync));
 
         endpoints.MapPost(IdentityModuleUrls.User.Register, RegisterAsync)
             .WithDescription("Registers a new user.")
             .Produces<RegisterUserResponse>(StatusCodes.Status201Created)
-            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
 
         return endpoints;
+    }
+    
+    private static async Task<IResult> GetAllAsync(IDispatcher dispatcher, GetAllUsersRequest request, CancellationToken cancellationToken)
+    {
+        var query = request.ToQuery();
+        var result = await dispatcher.SendAsync(query, cancellationToken);
+
+        return result.ToHttpResult(UserResponseMappings.ToGetAllUsersResponse);
     }
 
     private static async Task<IResult> GetByIdAsync(Guid id, IDispatcher dispatcher, CancellationToken cancellationToken)

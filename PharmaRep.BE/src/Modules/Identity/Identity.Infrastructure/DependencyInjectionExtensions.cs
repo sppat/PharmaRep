@@ -1,4 +1,4 @@
-using Identity.Application.Features.User.Interfaces;
+using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
 using Identity.Infrastructure.Database;
 using Identity.Infrastructure.Repositories;

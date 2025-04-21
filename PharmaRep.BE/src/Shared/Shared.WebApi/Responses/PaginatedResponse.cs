@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace Shared.WebApi;
+namespace Shared.WebApi.Responses;
 
 public record PaginatedResponse<T>
 {
@@ -11,18 +11,16 @@ public record PaginatedResponse<T>
     public bool HasPrevious => PageNumber > 1;
     public IReadOnlyCollection<T> Items;
 
-    private PaginatedResponse(int pageNumber, int pageSize, ICollection<T> items)
+    public PaginatedResponse(int pageNumber, int pageSize, int total, ICollection<T> items)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pageNumber, nameof(pageNumber));
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pageSize, nameof(pageSize));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(total, nameof(total));
         ArgumentNullException.ThrowIfNull(items, nameof(items));
 
         PageNumber = pageNumber;
         PageSize = pageSize;
-        Total = items.Count;
+        Total = total;
         Items = items.ToImmutableList();
     }
-
-    public static PaginatedResponse<TResponse> Create<TResponse>(int pageNumber, int pageSize, ICollection<TResponse> items) =>
-        new(pageNumber, pageSize, items);
 }

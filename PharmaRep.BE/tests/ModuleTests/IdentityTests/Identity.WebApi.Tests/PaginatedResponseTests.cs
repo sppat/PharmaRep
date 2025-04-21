@@ -1,4 +1,5 @@
 using Shared.WebApi;
+using Shared.WebApi.Responses;
 
 namespace Identity.WebApi.Tests;
 
@@ -10,7 +11,7 @@ public class PaginatedResponseTests
     public void Create_PageNumberNonPositive_ThrowsException(int pageNumber, int pageSize, int[] items)
     {
         // Arrange
-        PaginatedResponse<int> Create() => PaginatedResponse<int>.Create(pageNumber, pageSize, items);
+        PaginatedResponse<int> Create() => new(pageNumber, pageSize, items);
         
         // Assert
         Assert.Throws<ArgumentOutOfRangeException>(nameof(pageNumber), Create);

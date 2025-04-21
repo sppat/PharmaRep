@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text;
-using Identity.Application.Features.User.Dtos;
+using Identity.Application.Dtos;
 using Identity.Domain.DomainErrors;
 using Identity.Domain.Entities;
 using Identity.WebApi.Endpoints;
@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Shared.Tests;
 using Shared.WebApi;
+using Shared.WebApi.Responses;
 using Xunit.Abstractions;
 
 namespace Identity.WebApi.Tests.Endpoints;

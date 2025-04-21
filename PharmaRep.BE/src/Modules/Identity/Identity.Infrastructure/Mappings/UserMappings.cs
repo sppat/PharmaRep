@@ -1,4 +1,4 @@
-﻿using Identity.Application.Features.User.Dtos;
+﻿using Identity.Application.Dtos;
 using Identity.Domain.Entities;
 
 namespace Identity.Infrastructure.Mappings;

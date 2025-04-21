@@ -1,4 +1,4 @@
-﻿using Identity.Application.Features.User.Dtos;
+﻿using Identity.Application.Dtos;
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 

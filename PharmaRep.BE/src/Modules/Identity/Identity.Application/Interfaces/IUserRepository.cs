@@ -1,6 +1,6 @@
-﻿using Identity.Application.Features.User.Dtos;
+﻿using Identity.Application.Dtos;
 
-namespace Identity.Application.Features.User.Interfaces;
+namespace Identity.Application.Interfaces;
 
 public interface IUserRepository
 {

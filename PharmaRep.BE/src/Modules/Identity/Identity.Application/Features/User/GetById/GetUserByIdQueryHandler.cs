@@ -1,5 +1,5 @@
-﻿using Identity.Application.Features.User.Dtos;
-using Identity.Application.Features.User.Interfaces;
+﻿using Identity.Application.Dtos;
+using Identity.Application.Interfaces;
 using Identity.Domain.DomainErrors;
 using Shared.Application.Mediator;
 using Shared.Application.Results;

@@ -1,6 +1,6 @@
 using System.Reflection;
 using FluentValidation;
-using Identity.Application.Features.User.Dtos;
+using Identity.Application.Dtos;
 using Identity.Application.Features.User.GetById;
 using Identity.Application.Features.User.Register;
 using Microsoft.Extensions.DependencyInjection;
