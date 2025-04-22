@@ -17,7 +17,7 @@ public static class UserEndpoints
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapGet(IdentityModuleUrls.User.GetAll, GetAllAsync)
-            .WithDescription("Retrieves users")
+            .WithDescription("Retrieves a list of users.")
             .Produces<PaginatedResponse<UserDto>>()
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status500InternalServerError);
@@ -28,6 +28,12 @@ public static class UserEndpoints
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithName(nameof(GetByIdAsync));
+        
+        endpoints.MapPost(IdentityModuleUrls.User.Login, LoginAsync)
+            .WithDescription("Logs in a user.")
+            .Produces<LoginUserResponse>()
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
 
         endpoints.MapPost(IdentityModuleUrls.User.Register, RegisterAsync)
             .WithDescription("Registers a new user.")
@@ -52,6 +58,11 @@ public static class UserEndpoints
         var result = await dispatcher.SendAsync(query, cancellationToken);
         
         return result.ToHttpResult(UserResponseMappings.ToGetUserByIdResponse);
+    }
+
+    private static async Task<IResult> LoginAsync(IDispatcher dispatcher, LoginUserRequest request, CancellationToken cancellationToken)
+    {
+        return Results.Ok();
     }
 
     private static async Task<IResult> RegisterAsync(RegisterUserRequest request, IDispatcher dispatcher, CancellationToken cancellationToken)
