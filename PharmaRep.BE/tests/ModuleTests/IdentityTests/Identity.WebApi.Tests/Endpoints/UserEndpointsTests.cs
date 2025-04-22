@@ -17,7 +17,7 @@ using Xunit.Abstractions;
 namespace Identity.WebApi.Tests.Endpoints;
 
 [Collection(name: SharedTestConstants.WebApplicationCollectionName)]
-public class UserEndpointsTests(WebApplicationFixture fixture, ITestOutputHelper outputHelper)
+public class UserEndpointsTests(WebApplicationFixture fixture)
 {
     private readonly HttpClient _httpClient = fixture.CreateClient();
 
