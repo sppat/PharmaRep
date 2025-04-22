@@ -12,7 +12,6 @@ using Shared.Application.Errors;
 using Shared.Tests;
 using Shared.Tests.Database;
 using Shared.WebApi.Responses;
-using Xunit.Abstractions;
 
 namespace Identity.WebApi.Tests.Endpoints;
 
