@@ -1,6 +1,5 @@
 using FluentValidation.TestHelper;
 using Identity.Application.Features.User.Login;
-using Identity.Application.Features.User.Register;
 using Identity.Domain.DomainErrors;
 
 namespace Identity.Application.Tests.Validators;
