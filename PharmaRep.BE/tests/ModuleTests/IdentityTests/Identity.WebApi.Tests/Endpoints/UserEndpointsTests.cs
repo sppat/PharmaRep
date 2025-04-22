@@ -302,7 +302,9 @@ public class UserEndpointsTests(WebApplicationFixture fixture, ITestOutputHelper
         Assert.True(responseContent.HasPrevious);
         Assert.Equivalent(expectedUsers, responseContent.Items);
     }
-    
+
+    #region PageNumber
+
     [Theory]
     [InlineData(0, 2)]
     [InlineData(-1, 2)]
@@ -325,7 +327,11 @@ public class UserEndpointsTests(WebApplicationFixture fixture, ITestOutputHelper
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
     }
-    
+
+    #endregion
+
+    #region PageSize
+
     [Theory]
     [InlineData(1, 0)]
     [InlineData(1, -1)]
@@ -350,6 +356,35 @@ public class UserEndpointsTests(WebApplicationFixture fixture, ITestOutputHelper
     }
 
     #endregion
+
+    #endregion
+
+    #region Login
+
+    [Fact]
+    public async Task Login_ValidRequest_ReturnSuccessResponse()
+    {
+        // Arrange
+        var registerRequest = new RegisterUserRequest(FirstName: "Test",
+            LastName: "Login",
+            Email: "test@login.com",
+            Password: "P@ssw0rd",
+            Roles: [Role.Doctor.Name]);
+        await _httpClient.PostAsJsonAsync(IdentityModuleUrls.User.Register, registerRequest);
+        
+        var loginRequest = new LoginUserRequest(Email: registerRequest.Email,
+            Password: registerRequest.Password);
+        
+        // Act
+        var response = await _httpClient.PostAsJsonAsync(IdentityModuleUrls.User.Login, loginRequest);
+        var responseContent = await response.Content.ReadFromJsonAsync<LoginUserResponse>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.NotEmpty(responseContent.Token);
+    }
+
+    #endregion
     
     private static class TestEnvironment
     {
@@ -358,5 +393,8 @@ public class UserEndpointsTests(WebApplicationFixture fixture, ITestOutputHelper
             Email: "john@doe.com",
             Password: "P@ssw0rd",
             Roles: [Role.Doctor.Name]);
+
+        internal static LoginUserRequest ValidLoginUserRequest => new(Email: "john@doe.com",
+            Password: "P@ssw0rd");
     }
 }
