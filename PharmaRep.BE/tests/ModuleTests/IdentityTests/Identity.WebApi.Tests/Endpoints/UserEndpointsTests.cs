@@ -1,6 +1,5 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Text;
 using Identity.Application.Dtos;
 using Identity.Domain.DomainErrors;
 using Identity.Domain.Entities;
@@ -9,6 +8,7 @@ using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Shared.Application.Errors;
 using Shared.Tests;
 using Shared.Tests.Database;
 using Shared.WebApi.Responses;
@@ -278,6 +278,10 @@ public class UserEndpointsTests(WebApplicationFixture fixture, ITestOutputHelper
         const int pageNumber = 2;
         const int pageSize = 2;
         var total = MockData.Users.Count();
+        var expectedUsers = MockData.Users.OrderBy(u => u.Id)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
         var queryParams = new Dictionary<string, string>
         {
             { nameof(pageNumber), pageNumber.ToString() },
@@ -296,7 +300,53 @@ public class UserEndpointsTests(WebApplicationFixture fixture, ITestOutputHelper
         Assert.Equal(total, responseContent.Total);
         Assert.True(responseContent.HasNext);
         Assert.True(responseContent.HasPrevious);
-        Assert.Equivalent(MockData.Users, responseContent.Items);
+        Assert.Equivalent(expectedUsers, responseContent.Items);
+    }
+    
+    [Theory]
+    [InlineData(0, 2)]
+    [InlineData(-1, 2)]
+    public async Task GetAll_NonPositivePageNumber_ReturnsBadRequest(int pageNumber, int pageSize)
+    {
+        // Arrange
+        var expectedErrors = new[] { ApplicationErrors.PaginationErrors.PageNumberOutOfRange };
+        var queryParams = new Dictionary<string, string>
+        {
+            { nameof(pageNumber), pageNumber.ToString() },
+            { nameof(pageSize), pageSize.ToString() }
+        };
+        var uri = QueryHelpers.AddQueryString(IdentityModuleUrls.User.GetAll, queryParams);
+
+        // Act
+        var response = await _httpClient.GetAsync(uri);
+        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
+    }
+    
+    [Theory]
+    [InlineData(1, 0)]
+    [InlineData(1, -1)]
+    public async Task GetAll_NonPositivePageSize_ReturnsBadRequest(int pageNumber, int pageSize)
+    {
+        // Arrange
+        var expectedErrors = new[] { ApplicationErrors.PaginationErrors.PageSizeOutOfRange };
+        var queryParams = new Dictionary<string, string>
+        {
+            { nameof(pageNumber), pageNumber.ToString() },
+            { nameof(pageSize), pageSize.ToString() }
+        };
+        var uri = QueryHelpers.AddQueryString(IdentityModuleUrls.User.GetAll, queryParams);
+
+        // Act
+        var response = await _httpClient.GetAsync(uri);
+        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
     }
 
     #endregion

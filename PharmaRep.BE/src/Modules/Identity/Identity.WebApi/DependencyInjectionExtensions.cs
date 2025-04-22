@@ -31,11 +31,6 @@ public static class DependencyInjectionExtensions
         await using var identityDbContext = scope.ServiceProvider.GetRequiredService<PharmaRepIdentityDbContext>();
         await identityDbContext.Database.MigrateAsync();
 
-        using var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-        var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-
-        await IdentitySeeder.SeedAdminUserAsync(configuration, userManager);
-
         return app;
     }
 }

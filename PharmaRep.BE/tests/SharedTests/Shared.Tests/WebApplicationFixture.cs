@@ -32,11 +32,20 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
     public async Task InitializeAsync()
     {
         await _container.StartAsync();
-        var result = await _container.ExecScriptAsync(DatabaseSeeder.SeedGetAllTestUsersQuery());
+        
+        using var scope = Services.CreateScope();
+        await SeedIdentityModule(scope);
     }
 
     public new async Task DisposeAsync()
     {
         await _container.DisposeAsync();
+    }
+
+    private static async Task SeedIdentityModule(IServiceScope scope)
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<PharmaRepIdentityDbContext>();
+        
+        await dbContext.Database.ExecuteSqlRawAsync(DatabaseSeeder.IdentityModuleSeeder.SeedTestUsersQuery());
     }
 }
