@@ -1,7 +1,6 @@
 using Identity.Application.Dtos;
 using Identity.Application.Features.User.GetAll;
 using Identity.WebApi.Responses;
-using Shared.Application.Results;
 using Shared.WebApi.Responses;
 
 namespace Identity.WebApi.Mappings;

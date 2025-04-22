@@ -1,5 +1,3 @@
-using System.Collections.Immutable;
-
 namespace Shared.WebApi.Responses;
 
 public record PaginatedResponse<T>

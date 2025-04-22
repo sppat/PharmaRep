@@ -1,4 +1,3 @@
-using DotNet.Testcontainers.Containers;
 using Identity.Infrastructure.Database;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

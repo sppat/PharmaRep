@@ -1,10 +1,8 @@
 using Identity.Application;
-using Identity.Domain.Entities;
 using Identity.Infrastructure;
 using Identity.Infrastructure.Database;
 using Identity.WebApi.Endpoints;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

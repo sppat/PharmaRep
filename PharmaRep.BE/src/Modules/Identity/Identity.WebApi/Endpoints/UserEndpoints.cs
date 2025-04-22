@@ -5,7 +5,6 @@ using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Shared.Application.Mediator;
 using Shared.WebApi.EndpointMappings;
