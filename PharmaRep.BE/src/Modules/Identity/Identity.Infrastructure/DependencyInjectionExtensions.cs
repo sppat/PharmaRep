@@ -1,10 +1,14 @@
+using System.Text;
 using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
+using Identity.Infrastructure.Authentication;
 using Identity.Infrastructure.Database;
 using Identity.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Shared.Infrastructure.Constants;
 
 namespace Identity.Infrastructure;
@@ -30,9 +34,29 @@ public static class DependencyInjectionExtensions
             })
             .AddRoles<Role>()
             .AddEntityFrameworkStores<PharmaRepIdentityDbContext>();
+        
+        var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
+                };
+            });
 
+        services.AddAuthorization();
+
+        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         services.AddScoped<IUserRepository, UserRepository>();
-
+        services.AddScoped<IAuthHandler, JwtHandler>();
+        
         return services;
     }
 }

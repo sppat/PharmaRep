@@ -23,6 +23,8 @@ public static class DependencyInjectionExtensions
     public static async  Task<WebApplication> UseIdentityMiddleware(this WebApplication app, IServiceScope scope)
     {
         app.MapUserEndpoints();
+        app.UseAuthentication();
+        app.UseAuthorization();
         
         if (app.Environment.IsProduction()) return app;
 
