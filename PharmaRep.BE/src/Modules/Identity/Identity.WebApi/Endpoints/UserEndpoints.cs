@@ -62,7 +62,10 @@ public static class UserEndpoints
 
     private static async Task<IResult> LoginAsync(IDispatcher dispatcher, LoginUserRequest request, CancellationToken cancellationToken)
     {
-        return Results.Ok();
+        var command = request.ToCommand();
+        var result = await dispatcher.SendAsync(command, cancellationToken);
+        
+        return result.ToHttpResult(UserResponseMappings.ToLoginUserResponse);
     }
 
     private static async Task<IResult> RegisterAsync(RegisterUserRequest request, IDispatcher dispatcher, CancellationToken cancellationToken)

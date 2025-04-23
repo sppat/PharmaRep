@@ -3,6 +3,7 @@ using FluentValidation;
 using Identity.Application.Dtos;
 using Identity.Application.Features.User.GetAll;
 using Identity.Application.Features.User.GetById;
+using Identity.Application.Features.User.Login;
 using Identity.Application.Features.User.Register;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Application.Mediator;
@@ -18,6 +19,7 @@ public static class DependencyInjectionExtensions
         
         // Commands
         services.AddScoped<IRequestHandler<RegisterUserCommand, Result<Guid>>, RegisterUserCommandHandler>();
+        services.AddScoped<IRequestHandler<LoginUserCommand, Result<string>>, LoginUserCommandHandler>();
 
         // Queries
         services.AddScoped<IRequestHandler<GetUserByIdQuery, Result<UserDto>>, GetUserByIdQueryHandler>();

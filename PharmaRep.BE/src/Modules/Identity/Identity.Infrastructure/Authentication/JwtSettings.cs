@@ -1,6 +1,9 @@
 ﻿namespace Identity.Infrastructure.Authentication;
 
-public record JwtSettings(string Secret,
-    string Issuer,
-    string Audience,
-    int ExpirationInDays);
+public class JwtSettings
+{
+    public string Secret { get; init; }
+    public string Issuer { get; init; }
+    public string Audience { get; init; }
+    public int ExpirationInDays { get; init; }
+}
