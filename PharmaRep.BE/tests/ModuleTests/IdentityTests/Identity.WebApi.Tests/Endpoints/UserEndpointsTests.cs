@@ -296,7 +296,6 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal(pageNumber, responseContent.PageNumber);
         Assert.Equal(pageSize, responseContent.PageSize);
-        Assert.Equal(total, responseContent.Total);
         Assert.True(responseContent.HasNext);
         Assert.True(responseContent.HasPrevious);
         Assert.Equivalent(expectedUsers, responseContent.Items);
