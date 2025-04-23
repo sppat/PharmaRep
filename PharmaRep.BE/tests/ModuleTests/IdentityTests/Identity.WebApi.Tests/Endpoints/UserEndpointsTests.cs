@@ -360,7 +360,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     #region Login
 
     [Fact]
-    public async Task Login_ValidRequest_ReturnSuccessResponse()
+    public async Task LoginUser_ValidRequest_ReturnSuccessResponse()
     {
         // Arrange
         var registerRequest = new RegisterUserRequest(FirstName: "Test",
@@ -381,6 +381,75 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.NotEmpty(responseContent.Token);
     }
+    
+    #region Email
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("  ")]
+    [InlineData(null)]
+    [InlineData("12a")]
+    [InlineData("a@b .c")]
+    public async Task LoginUser_InvalidEmail_ReturnBadRequest(string email)
+    {
+        // Arrange
+        var request = TestEnvironment.ValidLoginUserRequest with { Email = email };
+        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidEmail };
+
+        // Act
+        var response = await _httpClient.PostAsJsonAsync(IdentityModuleUrls.User.Login, request);
+        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        var errors = responseContent.GetErrors();
+
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, errors);
+    }
+
+    [Fact]
+    public async Task LoginUser_EmailExceedsMaxLength_ReturnBadRequest()
+    {
+        // Arrange
+        var emailAsEnumerable = Enumerable.Repeat("a", 101);
+        var email = string.Join(string.Empty, emailAsEnumerable);
+        var request = TestEnvironment.ValidLoginUserRequest with { Email = email };
+        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.EmailOutOfRange };
+
+        // Act
+        var response = await _httpClient.PostAsJsonAsync(IdentityModuleUrls.User.Login, request);
+        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        var errors = responseContent.GetErrors();
+
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, errors);
+    }
+
+    #endregion
+
+    #region Password
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("  ")]
+    [InlineData(null)]
+    public async Task LoginUser_InvalidPassword_ReturnBadRequest(string password)
+    {
+        // Arrange
+        var request = TestEnvironment.ValidLoginUserRequest with { Password = password };
+        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidPassword };
+
+        // Act
+        var response = await _httpClient.PostAsJsonAsync(IdentityModuleUrls.User.Login, request);
+        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        var errors = responseContent.GetErrors();
+
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, errors);
+    }
+
+    #endregion
 
     #endregion
     
