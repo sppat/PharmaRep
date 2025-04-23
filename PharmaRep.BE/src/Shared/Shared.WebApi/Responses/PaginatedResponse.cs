@@ -13,7 +13,7 @@ public PaginatedResponse(int pageNumber, int pageSize, int total, IReadOnlyColle
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pageNumber, nameof(pageNumber));
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pageSize, nameof(pageSize));
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(total, nameof(total));
+        ArgumentOutOfRangeException.ThrowIfNegative(total, nameof(total));
         ArgumentNullException.ThrowIfNull(items, nameof(items));
 
         PageNumber = pageNumber;

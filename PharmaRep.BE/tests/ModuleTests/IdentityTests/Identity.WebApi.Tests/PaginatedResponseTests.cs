@@ -29,7 +29,6 @@ public class PaginatedResponseTests
     }
 
     [Theory] 
-    [InlineData(1, 5, 0, new[] { 1, 2, 3, 4, 5 })] 
     [InlineData(1, 5, -1, new[] { 1, 2, 3, 4, 5 })]
     public void Create_TotalNonPositive_ThrowsException(int pageNumber, int pageSize, int total, int[] items)
     {
