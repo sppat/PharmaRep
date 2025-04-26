@@ -20,7 +20,7 @@ public static class DependencyInjectionExtensions
         return services;
     }
     
-    public static async  Task<WebApplication> UseIdentityMiddleware(this WebApplication app, IServiceScope scope)
+    public static async  Task<WebApplication> UseIdentityMiddleware(this WebApplication app)
     {
         app.MapUserEndpoints();
         app.UseAuthentication();
@@ -28,6 +28,7 @@ public static class DependencyInjectionExtensions
         
         if (app.Environment.IsProduction()) return app;
 
+        using var scope = app.Services.CreateScope();
         await using var identityDbContext = scope.ServiceProvider.GetRequiredService<PharmaRepIdentityDbContext>();
         await identityDbContext.Database.MigrateAsync();
 

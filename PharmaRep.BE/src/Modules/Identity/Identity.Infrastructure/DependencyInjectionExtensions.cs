@@ -53,7 +53,8 @@ public static class DependencyInjectionExtensions
                 };
             });
 
-        services.AddAuthorization();
+        services.AddAuthorizationBuilder()
+            .AddPolicy(AuthPolicy.AdminPolicy.Name, AuthPolicy.AdminPolicy.Configure);
 
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         services.AddScoped<IUserRepository, UserRepository>();

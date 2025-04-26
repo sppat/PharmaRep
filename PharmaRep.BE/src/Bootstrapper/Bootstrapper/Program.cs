@@ -1,5 +1,6 @@
 using Bootstrapper;
 using Identity.WebApi;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using Shared.Application;
 
@@ -12,6 +13,14 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "PharmaRep Web API",
         Version = "v1"
+    });
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authentication",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer 123\""
     });
 });
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -31,8 +40,7 @@ app.UseHttpsRedirection();
 
 app.UseExceptionHandler();
 
-using var scope = app.Services.CreateScope();
-await app.UseIdentityMiddleware(scope);
+await app.UseIdentityMiddleware();
 
 app.Run();
 

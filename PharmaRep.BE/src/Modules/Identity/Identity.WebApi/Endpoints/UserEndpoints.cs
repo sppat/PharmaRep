@@ -1,8 +1,11 @@
 using Identity.Application.Dtos;
 using Identity.Application.Features.User.GetById;
+using Identity.Domain.Entities;
+using Identity.Infrastructure;
 using Identity.WebApi.Mappings;
 using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -17,29 +20,31 @@ public static class UserEndpoints
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapGet(IdentityModuleUrls.User.GetAll, GetAllAsync)
-            .WithDescription("Retrieves a list of users.")
+            .RequireAuthorization(AuthPolicy.AdminPolicy.Name)
             .Produces<PaginatedResponse<UserDto>>()
             .ProducesProblem(StatusCodes.Status400BadRequest)
-            .ProducesProblem(StatusCodes.Status500InternalServerError);
-        
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithDescription("Retrieves a list of users.");
+
         endpoints.MapGet(IdentityModuleUrls.User.GetById, GetByIdAsync)
-            .WithDescription("Retrieves a user by id.")
+            .RequireAuthorization(Role.Admin.Name!)
             .Produces<GetUserByIdResponse>()
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithDescription("Retrieves a user by id.")
             .WithName(nameof(GetByIdAsync));
-        
+
         endpoints.MapPost(IdentityModuleUrls.User.Login, LoginAsync)
-            .WithDescription("Logs in a user.")
             .Produces<LoginUserResponse>()
             .ProducesProblem(StatusCodes.Status400BadRequest)
-            .ProducesProblem(StatusCodes.Status500InternalServerError);
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithDescription("Logs in a user.");
 
         endpoints.MapPost(IdentityModuleUrls.User.Register, RegisterAsync)
-            .WithDescription("Registers a new user.")
             .Produces<RegisterUserResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)
-            .ProducesProblem(StatusCodes.Status500InternalServerError);
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithDescription("Registers a new user.");
 
         return endpoints;
     }

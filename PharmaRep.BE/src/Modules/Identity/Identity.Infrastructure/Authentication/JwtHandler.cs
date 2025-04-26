@@ -26,6 +26,8 @@ public class JwtHandler(IOptions<JwtSettings> jwtSettings) : IAuthHandler
         
         var tokenDescriptor = new SecurityTokenDescriptor
         {
+            Issuer = jwtSettings.Value.Issuer,
+            Audience = jwtSettings.Value.Audience,
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddDays(jwtSettings.Value.ExpirationInDays),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
