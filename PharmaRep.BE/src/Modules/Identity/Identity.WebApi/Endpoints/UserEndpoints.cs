@@ -19,7 +19,11 @@ public static class UserEndpoints
 {
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapGet(IdentityModuleUrls.User.GetAll, GetAllAsync)
+        var groupedEndpoints = endpoints
+            .MapGroup(IdentityModuleUrls.ModuleBaseUrl)
+            .WithTags(nameof(User));
+        
+        groupedEndpoints.MapGet(IdentityModuleUrls.User.GetAll, GetAllAsync)
             .RequireAuthorization(AuthPolicy.AdminPolicy.Name)
             .Produces<PaginatedResponse<UserDto>>()
             .Produces(StatusCodes.Status401Unauthorized)
@@ -28,7 +32,7 @@ public static class UserEndpoints
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription("Retrieves a list of users.");
 
-        endpoints.MapGet(IdentityModuleUrls.User.GetById, GetByIdAsync)
+        groupedEndpoints.MapGet(IdentityModuleUrls.User.GetById, GetByIdAsync)
             .RequireAuthorization(Role.Admin.Name!)
             .Produces<GetUserByIdResponse>()
             .Produces(StatusCodes.Status401Unauthorized)
@@ -38,19 +42,19 @@ public static class UserEndpoints
             .WithDescription("Retrieves a user by id.")
             .WithName(nameof(GetByIdAsync));
 
-        endpoints.MapPost(IdentityModuleUrls.User.Login, LoginAsync)
+        groupedEndpoints.MapPost(IdentityModuleUrls.User.Login, LoginAsync)
             .Produces<LoginUserResponse>()
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription("Logs in a user.");
 
-        endpoints.MapPost(IdentityModuleUrls.User.Register, RegisterAsync)
+        groupedEndpoints.MapPost(IdentityModuleUrls.User.Register, RegisterAsync)
             .Produces<RegisterUserResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription("Registers a new user.");
 
-        return endpoints;
+        return groupedEndpoints;
     }
     
     private static async Task<IResult> GetAllAsync(IDispatcher dispatcher,[AsParameters] GetAllUsersRequest request, CancellationToken cancellationToken)
