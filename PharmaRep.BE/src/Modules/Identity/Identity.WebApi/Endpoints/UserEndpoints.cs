@@ -22,6 +22,8 @@ public static class UserEndpoints
         endpoints.MapGet(IdentityModuleUrls.User.GetAll, GetAllAsync)
             .RequireAuthorization(AuthPolicy.AdminPolicy.Name)
             .Produces<PaginatedResponse<UserDto>>()
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription("Retrieves a list of users.");
@@ -29,6 +31,8 @@ public static class UserEndpoints
         endpoints.MapGet(IdentityModuleUrls.User.GetById, GetByIdAsync)
             .RequireAuthorization(Role.Admin.Name!)
             .Produces<GetUserByIdResponse>()
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription("Retrieves a user by id.")
