@@ -1,9 +1,11 @@
 using Identity.Infrastructure.Database;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Tests.Auth;
 using Shared.Tests.Database;
 using Testcontainers.PostgreSql;
 using Xunit;
@@ -25,6 +27,8 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
             if (identityDbContext is not null) services.Remove(identityDbContext);
 
             services.AddDbContext<PharmaRepIdentityDbContext>(options => options.UseNpgsql(_container.GetConnectionString()));
+            services.AddAuthentication("TestScheme")
+                .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>("TestScheme", null);
         });
     }
 

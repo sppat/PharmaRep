@@ -18,21 +18,18 @@ namespace Identity.WebApi.Endpoints;
 public static class UserEndpoints
 {
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
-    {
-        var groupedEndpoints = endpoints
-            .MapGroup(IdentityModuleUrls.ModuleBaseUrl)
-            .WithTags(nameof(User));
-        
-        groupedEndpoints.MapGet(IdentityModuleUrls.User.GetAll, GetAllAsync)
+    {        
+        endpoints.MapGet(IdentityModuleUrls.User.GetAll, GetAllAsync)
             .RequireAuthorization(AuthPolicy.AdminPolicy.Name)
             .Produces<PaginatedResponse<UserDto>>()
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithTags(nameof(User))
             .WithDescription("Retrieves a list of users.");
 
-        groupedEndpoints.MapGet(IdentityModuleUrls.User.GetById, GetByIdAsync)
+        endpoints.MapGet(IdentityModuleUrls.User.GetById, GetByIdAsync)
             .RequireAuthorization(Role.Admin.Name!)
             .Produces<GetUserByIdResponse>()
             .Produces(StatusCodes.Status401Unauthorized)
@@ -40,21 +37,24 @@ public static class UserEndpoints
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription("Retrieves a user by id.")
+            .WithTags(nameof(User))
             .WithName(nameof(GetByIdAsync));
 
-        groupedEndpoints.MapPost(IdentityModuleUrls.User.Login, LoginAsync)
+        endpoints.MapPost(IdentityModuleUrls.User.Login, LoginAsync)
             .Produces<LoginUserResponse>()
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithTags(nameof(User))
             .WithDescription("Logs in a user.");
 
-        groupedEndpoints.MapPost(IdentityModuleUrls.User.Register, RegisterAsync)
+        endpoints.MapPost(IdentityModuleUrls.User.Register, RegisterAsync)
             .Produces<RegisterUserResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithTags(nameof(User))
             .WithDescription("Registers a new user.");
 
-        return groupedEndpoints;
+        return endpoints;
     }
     
     private static async Task<IResult> GetAllAsync(IDispatcher dispatcher,[AsParameters] GetAllUsersRequest request, CancellationToken cancellationToken)

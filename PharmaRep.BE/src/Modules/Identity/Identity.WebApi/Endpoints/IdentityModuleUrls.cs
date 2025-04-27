@@ -2,11 +2,11 @@ namespace Identity.WebApi.Endpoints;
 
 public static class IdentityModuleUrls
 {
-    internal const string ModuleBaseUrl = "api/identity";
+    private const string ModuleBaseUrl = "api/identity";
 
     public static class User
     {
-        private const string UserBaseUrl = $"users";
+        private const string UserBaseUrl = $"{ModuleBaseUrl}/users";
 
         public const string GetAll = UserBaseUrl;
         public const string GetById = $"{UserBaseUrl}/{{id:guid}}";

@@ -316,7 +316,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
             { nameof(pageSize), pageSize.ToString() }
         };
         var uri = QueryHelpers.AddQueryString(IdentityModuleUrls.User.GetAll, queryParams);
-
+        
         // Act
         var response = await _httpClient.GetAsync(uri);
         var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
