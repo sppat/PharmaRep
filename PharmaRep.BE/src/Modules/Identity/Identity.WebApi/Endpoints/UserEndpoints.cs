@@ -40,20 +40,6 @@ public static class UserEndpoints
             .WithTags(nameof(User))
             .WithName(nameof(GetByIdAsync));
 
-        endpoints.MapPost(IdentityModuleUrls.User.Login, LoginAsync)
-            .Produces<LoginUserResponse>()
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .ProducesProblem(StatusCodes.Status500InternalServerError)
-            .WithTags(nameof(User))
-            .WithDescription("Logs in a user.");
-
-        endpoints.MapPost(IdentityModuleUrls.User.Register, RegisterAsync)
-            .Produces<RegisterUserResponse>(StatusCodes.Status201Created)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .ProducesProblem(StatusCodes.Status500InternalServerError)
-            .WithTags(nameof(User))
-            .WithDescription("Registers a new user.");
-
         return endpoints;
     }
     
@@ -71,21 +57,5 @@ public static class UserEndpoints
         var result = await dispatcher.SendAsync(query, cancellationToken);
         
         return result.ToHttpResult(UserResponseMappings.ToGetUserByIdResponse);
-    }
-
-    private static async Task<IResult> LoginAsync(IDispatcher dispatcher, LoginUserRequest request, CancellationToken cancellationToken)
-    {
-        var command = request.ToCommand();
-        var result = await dispatcher.SendAsync(command, cancellationToken);
-        
-        return result.ToHttpResult(UserResponseMappings.ToLoginUserResponse);
-    }
-
-    private static async Task<IResult> RegisterAsync(RegisterUserRequest request, IDispatcher dispatcher, CancellationToken cancellationToken)
-    {
-        var command = request.ToCommand();
-        var result = await dispatcher.SendAsync(command, cancellationToken);
-
-        return result.ToHttpResult(UserResponseMappings.ToRegisterUserResponse, createdAt: nameof(GetByIdAsync));
     }
 }

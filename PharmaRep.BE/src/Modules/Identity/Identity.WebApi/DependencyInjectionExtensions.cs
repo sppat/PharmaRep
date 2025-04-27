@@ -22,7 +22,8 @@ public static class DependencyInjectionExtensions
     
     public static async  Task<WebApplication> UseIdentityMiddleware(this WebApplication app)
     {
-        app.MapUserEndpoints();
+        app.MapUserEndpoints()
+            .MapAuthenticationEndpoints();
         app.UseAuthentication();
         app.UseAuthorization();
         
