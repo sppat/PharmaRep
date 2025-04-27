@@ -321,6 +321,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
     #endregion
 
     #endregion
+    
     private static class TestEnvironment
     {
         internal static RegisterUserRequest ValidRegisterUserRequest => new(FirstName: "John",

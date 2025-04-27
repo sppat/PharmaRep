@@ -1,3 +1,4 @@
+using Identity.Domain.Entities;
 using Identity.Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
@@ -28,8 +29,19 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
 
             services.AddDbContext<PharmaRepIdentityDbContext>(options => options.UseNpgsql(_container.GetConnectionString()));
             services.AddAuthentication("TestScheme")
-                .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>("TestScheme", null);
+                .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>("TestScheme", _ => { });
         });
+    }
+
+    public HttpClient GetUnauthorizedClient() => CreateClient();
+
+    public HttpClient GetAuthorizedClient(string[] roles)
+    {
+        var client = CreateClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("TestScheme");
+        client.DefaultRequestHeaders.Add("roles", roles);
+
+        return client;
     }
 
     public async Task InitializeAsync()

@@ -18,8 +18,38 @@ namespace Identity.WebApi.Tests.Endpoints;
 [Collection(name: SharedTestConstants.WebApplicationCollectionName)]
 public class UserEndpointsTests(WebApplicationFixture fixture)
 {
-    private readonly HttpClient _httpClient = fixture.CreateClient();
+    private readonly HttpClient _authorizedHttpClient = fixture.GetAuthorizedClient([Role.Admin.Name]);
+    private readonly HttpClient _unauthorizedHttpClient = fixture.GetUnauthorizedClient();
+    
+    #region Authorization
 
+    [Fact]
+    public async Task GetAllUser_UnauthorizedUser_ReturnsForbidden()
+    {
+        // Arrange
+
+        // Act
+        var response = await _unauthorizedHttpClient.GetAsync(IdentityModuleUrls.User.GetAll);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+    }
+    
+    [Fact]
+    public async Task GetById_UnauthorizedUser_ReturnsForbidden()
+    {
+        // Arrange
+        var getByIdUrl = IdentityModuleUrls.User.GetById.Replace("{id:guid}", Guid.NewGuid().ToString());
+        
+        // Act
+        var response = await _unauthorizedHttpClient.GetAsync(getByIdUrl);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+    }
+
+    #endregion
+    
     #region Get By Id
     
     [Fact]
@@ -30,7 +60,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var url = IdentityModuleUrls.User.GetById.Replace("{id:guid}", expectedUser.Id.ToString());
 
         // Act
-        var response = await _httpClient.GetAsync(url);
+        var response = await _authorizedHttpClient.GetAsync(url);
         var responseContent = await response.Content.ReadFromJsonAsync<GetUserByIdResponse>();
 
         // Assert
@@ -47,7 +77,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var url = IdentityModuleUrls.User.GetById.Replace("{id:guid}", userId);
         
         // Act
-        var response = await _httpClient.GetAsync(url);
+        var response = await _authorizedHttpClient.GetAsync(url);
         var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
         
         // Assert
@@ -57,7 +87,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
     #endregion
 
-    #region GetAll
+    #region Get All
 
     [Fact]
     public async Task GetAll_ReturnsListOfUsers()
@@ -77,7 +107,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var uri = QueryHelpers.AddQueryString(IdentityModuleUrls.User.GetAll, queryParams);
 
         // Act
-        var response = await _httpClient.GetAsync(uri);
+        var response = await _authorizedHttpClient.GetAsync(uri);
         var responseContent = await response.Content.ReadFromJsonAsync<PaginatedResponse<UserDto>>();
         
         // Assert
@@ -106,7 +136,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var uri = QueryHelpers.AddQueryString(IdentityModuleUrls.User.GetAll, queryParams);
         
         // Act
-        var response = await _httpClient.GetAsync(uri);
+        var response = await _authorizedHttpClient.GetAsync(uri);
         var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
         
         // Assert
@@ -133,7 +163,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var uri = QueryHelpers.AddQueryString(IdentityModuleUrls.User.GetAll, queryParams);
 
         // Act
-        var response = await _httpClient.GetAsync(uri);
+        var response = await _authorizedHttpClient.GetAsync(uri);
         var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
         
         // Assert
@@ -144,6 +174,4 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     #endregion
 
     #endregion
-
-    
 }
