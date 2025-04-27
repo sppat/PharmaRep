@@ -1,4 +1,4 @@
-using Identity.Domain.Entities;
+using System.Net.Http.Headers;
 using Identity.Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
@@ -38,7 +38,7 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
     public HttpClient GetAuthorizedClient(string[] roles)
     {
         var client = CreateClient();
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("TestScheme");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("TestScheme");
         client.DefaultRequestHeaders.Add("roles", roles);
 
         return client;

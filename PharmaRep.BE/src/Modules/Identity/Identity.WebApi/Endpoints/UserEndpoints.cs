@@ -5,7 +5,6 @@ using Identity.Infrastructure;
 using Identity.WebApi.Mappings;
 using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;

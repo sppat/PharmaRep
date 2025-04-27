@@ -1,5 +1,4 @@
-﻿using Identity.Domain.Entities;
-using Identity.WebApi.Mappings;
+﻿using Identity.WebApi.Mappings;
 using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
 using Microsoft.AspNetCore.Builder;

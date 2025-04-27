@@ -4,7 +4,6 @@ using Identity.Application.Dtos;
 using Identity.Domain.DomainErrors;
 using Identity.Domain.Entities;
 using Identity.WebApi.Endpoints;
-using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
