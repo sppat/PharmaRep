@@ -4,13 +4,13 @@ using Identity.Domain.DomainErrors;
 
 namespace Identity.Application.Tests.Validators;
 
-public class RegisterUserCommandValidatorTests
+public class RegisterCommandValidatorTests
 {
     private readonly RegisterCommand _validCommand = new(FirstName: "John",
         LastName: "Doe",
         Email: "john@doe.com",
         Password: "P@ssw0rd");
-    private readonly RegisterUserCommandValidator _sut = new();
+    private readonly RegisterCommandValidator _sut = new();
 
     [Fact]
     public void Validate_ValidCommand_ReturnsValidResult()

@@ -5,12 +5,12 @@ using Identity.Domain.RegexConstants;
 
 namespace Identity.Application.Features.Auth.Register;
 
-public class RegisterUserCommandValidator : AbstractValidator<RegisterCommand>
+public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {
     private const int MaxNameLength = 50;
     private const int MaxEmailLength = 100;
     
-    public RegisterUserCommandValidator()
+    public RegisterCommandValidator()
     {
         #region FirstName
 

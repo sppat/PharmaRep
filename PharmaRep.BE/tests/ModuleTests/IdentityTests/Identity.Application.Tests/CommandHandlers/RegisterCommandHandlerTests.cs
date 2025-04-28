@@ -6,20 +6,20 @@ using Shared.Application.Results;
 
 namespace Identity.Application.Tests.CommandHandlers;
 
-public class RegisterUserCommandHandlerTests
+public class RegisterCommandHandlerTests
 {
     private readonly RegisterCommand _command = new(FirstName: "John",
         LastName: "Doe",
         Email: "john@doe.com",
         Password: "P@ssw0rd");
     private readonly Mock<UserManager<User>> _userManagerMock;
-    private readonly RegisterUserCommandHandler _sut;
+    private readonly RegisterCommandHandler _sut;
 
-    public RegisterUserCommandHandlerTests()
+    public RegisterCommandHandlerTests()
     {
         var userStoreMock = new Mock<IUserStore<User>>();
         _userManagerMock = new Mock<UserManager<User>>(userStoreMock.Object, null!, null!, null!, null!, null!, null!, null!, null!);
-        _sut = new RegisterUserCommandHandler(_userManagerMock.Object);
+        _sut = new RegisterCommandHandler(_userManagerMock.Object);
     }
 
     [Fact]

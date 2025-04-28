@@ -4,11 +4,10 @@ using Identity.Domain.DomainErrors;
 
 namespace Identity.Application.Tests.Validators;
 
-public class LoginUserCommandValidatorTests
+public class LoginCommandValidatorTests
 {
-    private readonly LoginCommand _validCommand = new(Email: "john@doe.com",
-        Password: "P@ssw0rd");
-    private readonly LoginUserCommandValidator _sut = new();
+    private readonly LoginCommand _validCommand = new(Email: "john@doe.com", Password: "P@ssw0rd");
+    private readonly LoginCommandValidator _sut = new();
 
     [Fact]
     public void Validate_ValidCommand_ReturnsValidResult()

@@ -6,7 +6,7 @@ using Shared.Application.Results;
 
 namespace Identity.Application.Features.Auth.Login;
 
-public class LoginUserCommandHandler(IAuthHandler authHandler,
+public class LoginCommandHandler(IAuthHandler authHandler,
     UserManager<Domain.Entities.User> userManager,
     SignInManager<Domain.Entities.User> signInManager) : IRequestHandler<LoginCommand, Result<string>>
 {

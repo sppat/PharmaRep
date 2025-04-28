@@ -4,11 +4,11 @@ using Identity.Domain.RegexConstants;
 
 namespace Identity.Application.Features.Auth.Login;
 
-public class LoginUserCommandValidator : AbstractValidator<LoginCommand>
+public class LoginCommandValidator : AbstractValidator<LoginCommand>
 {
     private const int MaxEmailLength = 100;
     
-    public LoginUserCommandValidator()
+    public LoginCommandValidator()
     {
         #region Email
 

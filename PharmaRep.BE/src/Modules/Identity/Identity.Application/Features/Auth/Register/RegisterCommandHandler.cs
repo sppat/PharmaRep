@@ -4,7 +4,7 @@ using Shared.Application.Results;
 
 namespace Identity.Application.Features.Auth.Register;
 
-public class RegisterUserCommandHandler(UserManager<Domain.Entities.User> userManager) : IRequestHandler<RegisterCommand, Result<Guid>>
+public class RegisterCommandHandler(UserManager<Domain.Entities.User> userManager) : IRequestHandler<RegisterCommand, Result<Guid>>
 {
     public async Task<Result<Guid>> HandleAsync(RegisterCommand request, CancellationToken cancellationToken)
     {
