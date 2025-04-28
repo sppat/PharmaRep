@@ -21,7 +21,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
     public async Task RegisterUser_ValidRequest_ReturnSuccessResponse()
     {
         // Act
-        var response = await _httpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, TestEnvironment.ValidRegisterUserRequest);
+        var response = await _httpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, TestEnvironment.ValidRegisterRequest);
         var responseContent = await response.Content.ReadFromJsonAsync<RegisterUserResponse>();
 
         // Assert
@@ -39,7 +39,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
     public async Task RegisterUser_InvalidFirstName_ReturnBadRequest(string firstName)
     {
         // Arrange
-        var request = TestEnvironment.ValidRegisterUserRequest with { FirstName = firstName };
+        var request = TestEnvironment.ValidRegisterRequest with { FirstName = firstName };
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidFirstName };
 
         // Act
@@ -58,7 +58,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
         // Arrange
         var firstNameAsEnumerable = Enumerable.Repeat("a", 101);
         var firstName = string.Join(string.Empty, firstNameAsEnumerable);
-        var request = TestEnvironment.ValidRegisterUserRequest with { FirstName = firstName };
+        var request = TestEnvironment.ValidRegisterRequest with { FirstName = firstName };
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.NameOutOfRange };
 
         // Act
@@ -83,7 +83,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
     public async Task RegisterUser_InvalidLastName_ReturnBadRequest(string lastName)
     {
         // Arrange
-        var request = TestEnvironment.ValidRegisterUserRequest with { LastName = lastName };
+        var request = TestEnvironment.ValidRegisterRequest with { LastName = lastName };
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidLastName };
 
         // Act
@@ -102,7 +102,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
         // Arrange
         var lastNameAsEnumerable = Enumerable.Repeat("a", 101);
         var lastName = string.Join(string.Empty, lastNameAsEnumerable);
-        var request = TestEnvironment.ValidRegisterUserRequest with { LastName = lastName };
+        var request = TestEnvironment.ValidRegisterRequest with { LastName = lastName };
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.NameOutOfRange };
 
         // Act
@@ -128,7 +128,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
     public async Task RegisterUser_InvalidEmail_ReturnBadRequest(string email)
     {
         // Arrange
-        var request = TestEnvironment.ValidRegisterUserRequest with { Email = email };
+        var request = TestEnvironment.ValidRegisterRequest with { Email = email };
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidEmail };
 
         // Act
@@ -147,7 +147,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
         // Arrange
         var emailAsEnumerable = Enumerable.Repeat("a", 101);
         var email = string.Join(string.Empty, emailAsEnumerable);
-        var request = TestEnvironment.ValidRegisterUserRequest with { Email = email };
+        var request = TestEnvironment.ValidRegisterRequest with { Email = email };
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.EmailOutOfRange };
 
         // Act
@@ -171,7 +171,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
     public async Task RegisterUser_InvalidPassword_ReturnBadRequest(string password)
     {
         // Arrange
-        var request = TestEnvironment.ValidRegisterUserRequest with { Password = password };
+        var request = TestEnvironment.ValidRegisterRequest with { Password = password };
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidPassword };
 
         // Act
@@ -194,13 +194,13 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
     public async Task LoginUser_ValidRequest_ReturnSuccessResponse()
     {
         // Arrange
-        var registerRequest = new RegisterUserRequest(FirstName: "Test",
+        var registerRequest = new RegisterRequest(FirstName: "Test",
             LastName: "Login",
             Email: "test@login.com",
             Password: "P@ssw0rd");
         await _httpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, registerRequest);
         
-        var loginRequest = new LoginUserRequest(Email: registerRequest.Email,
+        var loginRequest = new LoginRequest(Email: registerRequest.Email,
             Password: registerRequest.Password);
         
         // Act
@@ -223,7 +223,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
     public async Task LoginUser_InvalidEmail_ReturnBadRequest(string email)
     {
         // Arrange
-        var request = TestEnvironment.ValidLoginUserRequest with { Email = email };
+        var request = TestEnvironment.ValidLoginRequest with { Email = email };
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidEmail };
 
         // Act
@@ -242,7 +242,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
         // Arrange
         var emailAsEnumerable = Enumerable.Repeat("a", 101);
         var email = string.Join(string.Empty, emailAsEnumerable);
-        var request = TestEnvironment.ValidLoginUserRequest with { Email = email };
+        var request = TestEnvironment.ValidLoginRequest with { Email = email };
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.EmailOutOfRange };
 
         // Act
@@ -266,7 +266,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
     public async Task LoginUser_InvalidPassword_ReturnBadRequest(string password)
     {
         // Arrange
-        var request = TestEnvironment.ValidLoginUserRequest with { Password = password };
+        var request = TestEnvironment.ValidLoginRequest with { Password = password };
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidPassword };
 
         // Act
@@ -285,12 +285,12 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
     
     private static class TestEnvironment
     {
-        internal static RegisterUserRequest ValidRegisterUserRequest => new(FirstName: "John",
+        internal static RegisterRequest ValidRegisterRequest => new(FirstName: "John",
             LastName: "Doe",
             Email: "john@doe.com",
             Password: "P@ssw0rd");
 
-        internal static LoginUserRequest ValidLoginUserRequest => new(Email: "john@doe.com",
+        internal static LoginRequest ValidLoginRequest => new(Email: "john@doe.com",
             Password: "P@ssw0rd");
     }
 }

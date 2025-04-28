@@ -8,10 +8,10 @@ namespace Identity.WebApi.Mappings;
 
 public static class UserRequestMappings
 {
-    internal static LoginCommand ToCommand(this LoginUserRequest request) => new(Email: request.Email, 
+    internal static LoginCommand ToCommand(this LoginRequest request) => new(Email: request.Email, 
         Password: request.Password);
     
-    internal static RegisterCommand ToCommand(this RegisterUserRequest request) => new(FirstName: request.FirstName,
+    internal static RegisterCommand ToCommand(this RegisterRequest request) => new(FirstName: request.FirstName,
         LastName: request.LastName,
         Email: request.Email,
         Password: request.Password);

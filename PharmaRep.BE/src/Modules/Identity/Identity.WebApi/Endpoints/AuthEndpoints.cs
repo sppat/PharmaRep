@@ -30,7 +30,7 @@ public static class AuthEndpoints
         return endpoints;
     }
     
-    private static async Task<IResult> LoginAsync(IDispatcher dispatcher, LoginUserRequest request, CancellationToken cancellationToken)
+    private static async Task<IResult> LoginAsync(IDispatcher dispatcher, LoginRequest request, CancellationToken cancellationToken)
     {
         var command = request.ToCommand();
         var result = await dispatcher.SendAsync(command, cancellationToken);
@@ -38,7 +38,7 @@ public static class AuthEndpoints
         return result.ToHttpResult(UserResponseMappings.ToLoginUserResponse);
     }
 
-    private static async Task<IResult> RegisterAsync(RegisterUserRequest request, IDispatcher dispatcher, CancellationToken cancellationToken)
+    private static async Task<IResult> RegisterAsync(RegisterRequest request, IDispatcher dispatcher, CancellationToken cancellationToken)
     {
         var command = request.ToCommand();
         var result = await dispatcher.SendAsync(command, cancellationToken);

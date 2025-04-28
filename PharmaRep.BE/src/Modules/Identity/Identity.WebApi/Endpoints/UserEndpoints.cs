@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Shared.Application.Mediator;
+using Shared.Application.Results;
 using Shared.WebApi.EndpointMappings;
 using Shared.WebApi.Responses;
 
@@ -39,6 +40,8 @@ public static class UserEndpoints
             .WithTags(nameof(User))
             .WithName(nameof(GetByIdAsync));
 
+        endpoints.MapPut(IdentityModuleUrls.User.UpdateRoles, UpdateRolesAsync);
+
         return endpoints;
     }
     
@@ -56,5 +59,10 @@ public static class UserEndpoints
         var result = await dispatcher.SendAsync(query, cancellationToken);
         
         return result.ToHttpResult(UserResponseMappings.ToGetUserByIdResponse);
+    }
+
+    private static async Task<IResult> UpdateRolesAsync(IDispatcher dispatcher, UpdateRolesRequest request, CancellationToken cancellationToken)
+    {
+        return Results.Ok();
     }
 }

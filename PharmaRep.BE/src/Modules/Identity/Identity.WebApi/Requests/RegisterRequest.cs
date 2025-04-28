@@ -1,6 +1,6 @@
 namespace Identity.WebApi.Requests;
 
-public record RegisterUserRequest(string FirstName, 
+public record RegisterRequest(string FirstName, 
     string LastName,
     string Email,
     string Password);

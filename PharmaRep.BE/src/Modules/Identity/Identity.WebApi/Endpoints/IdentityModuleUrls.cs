@@ -10,6 +10,7 @@ public static class IdentityModuleUrls
 
         public const string GetAll = UserBaseUrl;
         public const string GetById = $"{UserBaseUrl}/{{id:guid}}";
+        public const string UpdateRoles = $"{UserBaseUrl}/{{id:guid}}/roles";
     }
 
     public static class Authentication
