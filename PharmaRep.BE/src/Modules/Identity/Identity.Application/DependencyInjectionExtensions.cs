@@ -5,7 +5,6 @@ using Identity.Application.Features.Auth.Login;
 using Identity.Application.Features.Auth.Register;
 using Identity.Application.Features.User.GetAll;
 using Identity.Application.Features.User.GetById;
-using Identity.Application.Features.User.Register;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Application.Mediator;
 using Shared.Application.Results;

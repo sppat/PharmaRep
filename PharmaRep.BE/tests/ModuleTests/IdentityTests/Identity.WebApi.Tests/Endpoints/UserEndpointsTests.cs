@@ -4,6 +4,7 @@ using Identity.Application.Dtos;
 using Identity.Domain.DomainErrors;
 using Identity.Domain.Entities;
 using Identity.WebApi.Endpoints;
+using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -171,6 +172,73 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     }
 
     #endregion
+
+    #endregion
+
+    #region Roles
+
+    [Fact]
+    public async Task UpdateRoles_ReturnsSuccess()
+    {
+        // Arrange
+        var user = MockData.Users.First();
+        var updateRolesUrl = IdentityModuleUrls.User.UpdateRoles.Replace("{id:guid}", user.Id.ToString());
+        var getUserByIdUrl = IdentityModuleUrls.User.GetById.Replace("{id:guid}", user.Id.ToString());
+        var expectedRoles = new[] { Role.Doctor.Name };
+        var request = new UpdateRolesRequest(expectedRoles);
+
+        // Act
+        var response = await _authorizedHttpClient.PutAsJsonAsync(updateRolesUrl, request);
+        var getUserByIdResponse = await _authorizedHttpClient.GetAsync(getUserByIdUrl);
+        var getUserByIdResponseContent = await getUserByIdResponse.Content.ReadFromJsonAsync<GetUserByIdResponse>();
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Equal(expectedRoles, getUserByIdResponseContent.Roles);
+    }
+    
+    [Fact]
+    public async Task UpdateRoles_InvalidRolesList_ReturnsBadRequest()
+    {
+        // Arrange
+        var user = MockData.Users.First();
+        var updateRolesUrl = IdentityModuleUrls.User.UpdateRoles.Replace("{id:guid}", user.Id.ToString());
+        var request = new UpdateRolesRequest(["Dummy Role One", "Dummy Role Two"]);
+        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidRole };
+        
+        // Act
+        var response = await _authorizedHttpClient.PutAsJsonAsync(updateRolesUrl, request);
+        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
+    }
+
+    [Theory]
+    [MemberData(nameof(EmptyRolesList))]
+    public async Task UpdateRoles_EmptyRolesList_ReturnsBadRequest(IEnumerable<string> roles)
+    {
+        // Arrange
+        var user = MockData.Users.First();
+        var updateRolesUrl = IdentityModuleUrls.User.UpdateRoles.Replace("{id:guid}", user.Id.ToString());
+        var request = new UpdateRolesRequest(roles.ToArray());
+        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.EmptyRoles };
+        
+        // Act
+        var response = await _authorizedHttpClient.PutAsJsonAsync(updateRolesUrl, request);
+        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
+    }
+    
+    public static TheoryData<string[]> EmptyRolesList =>
+    [
+        [],
+        null
+    ];
 
     #endregion
 }

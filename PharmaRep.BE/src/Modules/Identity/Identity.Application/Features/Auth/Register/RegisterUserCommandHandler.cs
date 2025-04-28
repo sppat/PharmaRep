@@ -1,9 +1,8 @@
-using Identity.Application.Features.Auth.Register;
 using Microsoft.AspNetCore.Identity;
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 
-namespace Identity.Application.Features.User.Register;
+namespace Identity.Application.Features.Auth.Register;
 
 public class RegisterUserCommandHandler(UserManager<Domain.Entities.User> userManager) : IRequestHandler<RegisterCommand, Result<Guid>>
 {
@@ -16,7 +15,7 @@ public class RegisterUserCommandHandler(UserManager<Domain.Entities.User> userMa
         var registerResult = await userManager.CreateAsync(user, request.Password);
         if (registerResult.Succeeded)
         {
-            return Result<Guid>.Success(user.Id);
+            return Result<Guid>.Success(user.Id, ResultType.Created);
         }
         
         var registerErrors = registerResult.Errors

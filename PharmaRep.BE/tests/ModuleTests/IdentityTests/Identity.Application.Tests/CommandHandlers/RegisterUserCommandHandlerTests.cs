@@ -1,5 +1,4 @@
 using Identity.Application.Features.Auth.Register;
-using Identity.Application.Features.User.Register;
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Moq;
@@ -29,9 +28,6 @@ public class RegisterUserCommandHandlerTests
         // Arrange
         _userManagerMock.Setup(u => u.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
             .ReturnsAsync(IdentityResult.Success);
-
-        _userManagerMock.Setup(u => u.AddToRolesAsync(It.IsAny<User>(), It.IsAny<IEnumerable<string>>()))
-            .ReturnsAsync(IdentityResult.Success);
         
         // Act
         var result = await _sut.HandleAsync(_command, CancellationToken.None);
@@ -47,24 +43,6 @@ public class RegisterUserCommandHandlerTests
     {
         // Arrange
         _userManagerMock.Setup(u => u.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
-            .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Test Error" }));
-        
-        // Act
-        var result = await _sut.HandleAsync(_command, CancellationToken.None);
-        
-        // Assert
-        Assert.False(result.IsSuccess);
-        Assert.Equal(ResultType.ValidationError, result.Type);
-    }
-    
-    [Fact]
-    public async Task HandleAsync_FailureIdentityResultInAddToRoles_ReturnsValidationErrorResult()
-    {
-        // Arrange
-        _userManagerMock.Setup(u => u.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
-            .ReturnsAsync(IdentityResult.Success);
-        
-        _userManagerMock.Setup(u => u.AddToRolesAsync(It.IsAny<User>(), It.IsAny<IEnumerable<string>>()))
             .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Test Error" }));
         
         // Act

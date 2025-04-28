@@ -1,7 +1,6 @@
 using Identity.Application.Features.Auth.Login;
 using Identity.Application.Features.Auth.Register;
 using Identity.Application.Features.User.GetAll;
-using Identity.Application.Features.User.Register;
 using Identity.WebApi.Requests;
 
 namespace Identity.WebApi.Mappings;
