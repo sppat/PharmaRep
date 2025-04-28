@@ -1,3 +1,5 @@
-﻿namespace Identity.WebApi.Requests;
+﻿using Shared.Application.Mediator;
 
-public record UpdateRolesRequest(string[] Roles);
+namespace Identity.WebApi.Requests;
+
+public record UpdateRolesRequest(IEnumerable<string> Roles);

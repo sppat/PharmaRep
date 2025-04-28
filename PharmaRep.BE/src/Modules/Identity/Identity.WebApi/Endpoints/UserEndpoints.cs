@@ -63,6 +63,9 @@ public static class UserEndpoints
 
     private static async Task<IResult> UpdateRolesAsync(IDispatcher dispatcher, UpdateRolesRequest request, CancellationToken cancellationToken)
     {
-        return Results.Ok();
+        var command = request.ToCommand();
+        var result = await dispatcher.SendAsync(command, cancellationToken);
+
+        return result.ToHttpResult();
     }
 }

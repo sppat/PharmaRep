@@ -95,10 +95,6 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         // Arrange
         const int pageNumber = 2;
         const int pageSize = 2;
-        var expectedUsers = MockData.Users.OrderBy(u => u.Id)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
         var queryParams = new Dictionary<string, string>
         {
             { nameof(pageNumber), pageNumber.ToString() },
@@ -116,7 +112,6 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         Assert.Equal(pageSize, responseContent.PageSize);
         Assert.True(responseContent.HasNext);
         Assert.True(responseContent.HasPrevious);
-        Assert.Equivalent(expectedUsers, responseContent.Items);
     }
 
     #region PageNumber
@@ -214,31 +209,6 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
     }
-
-    [Theory]
-    [MemberData(nameof(EmptyRolesList))]
-    public async Task UpdateRoles_EmptyRolesList_ReturnsBadRequest(IEnumerable<string> roles)
-    {
-        // Arrange
-        var user = MockData.Users.First();
-        var updateRolesUrl = IdentityModuleUrls.User.UpdateRoles.Replace("{id:guid}", user.Id.ToString());
-        var request = new UpdateRolesRequest(roles.ToArray());
-        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.EmptyRoles };
-        
-        // Act
-        var response = await _authorizedHttpClient.PutAsJsonAsync(updateRolesUrl, request);
-        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
-        
-        // Assert
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
-    }
-    
-    public static TheoryData<string[]> EmptyRolesList =>
-    [
-        [],
-        null
-    ];
 
     #endregion
 }

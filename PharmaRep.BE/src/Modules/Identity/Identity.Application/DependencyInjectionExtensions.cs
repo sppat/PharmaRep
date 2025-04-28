@@ -5,6 +5,7 @@ using Identity.Application.Features.Auth.Login;
 using Identity.Application.Features.Auth.Register;
 using Identity.Application.Features.User.GetAll;
 using Identity.Application.Features.User.GetById;
+using Identity.Application.Features.User.UpdateRoles;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Application.Mediator;
 using Shared.Application.Results;
@@ -20,6 +21,7 @@ public static class DependencyInjectionExtensions
         // Commands
         services.AddScoped<IRequestHandler<RegisterCommand, Result<Guid>>, RegisterUserCommandHandler>();
         services.AddScoped<IRequestHandler<LoginCommand, Result<string>>, LoginUserCommandHandler>();
+        services.AddScoped<IRequestHandler<UpdateRolesCommand, Result>, UpdateRolesCommandHandler>();
 
         // Queries
         services.AddScoped<IRequestHandler<GetUserByIdQuery, Result<UserDto>>, GetUserByIdQueryHandler>();

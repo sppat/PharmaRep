@@ -22,7 +22,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
     {
         // Act
         var response = await _httpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, TestEnvironment.ValidRegisterRequest);
-        var responseContent = await response.Content.ReadFromJsonAsync<RegisterUserResponse>();
+        var responseContent = await response.Content.ReadFromJsonAsync<RegisterResponse>();
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -205,7 +205,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
         
         // Act
         var response = await _httpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Login, loginRequest);
-        var responseContent = await response.Content.ReadFromJsonAsync<LoginUserResponse>();
+        var responseContent = await response.Content.ReadFromJsonAsync<LoginResponse>();
         
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

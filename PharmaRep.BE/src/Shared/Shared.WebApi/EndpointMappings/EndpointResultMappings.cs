@@ -15,7 +15,17 @@ public static class EndpointResultMappings
             _ => throw new InvalidOperationException("Invalid result type")
         };
     
-    private static Dictionary<string, object> GetErrors<T>(this Result<T> serviceResult) => new() 
+    public static IResult ToHttpResult(this Result serviceResult)
+        => serviceResult.Type switch
+        {
+            ResultType.ValidationError => Results.Problem(title: "Bad Request", statusCode: StatusCodes.Status400BadRequest, extensions: serviceResult.GetErrors()),
+            ResultType.NotFound => Results.Problem(title: "Not Found", statusCode: StatusCodes.Status404NotFound, extensions: serviceResult.GetErrors()),
+            ResultType.Success => Results.Ok(),
+            ResultType.Updated => Results.NoContent(),
+            _ => throw new InvalidOperationException("Invalid result type")
+        };
+    
+    private static Dictionary<string, object> GetErrors(this Result serviceResult) => new() 
     {
         { "errors", serviceResult.Errors }
     };

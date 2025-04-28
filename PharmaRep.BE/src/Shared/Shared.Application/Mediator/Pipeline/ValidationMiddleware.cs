@@ -9,16 +9,13 @@ public class ValidationMiddleware<TRequest, TResponse>(IEnumerable<IValidator<TR
     {
         var validationErrors = await GetValidationErrors(request, cancellationToken);
         if (validationErrors.Count == 0) return await next(cancellationToken); 
-        
-        var genericRequestType = request.GetType()
-            .GetInterfaces()
-            .FirstOrDefault(i => i.IsGenericType && typeof(IRequest<>) == i.GetGenericTypeDefinition());
-        if (genericRequestType is not null)
+
+        var responseType = typeof(TResponse);
+        if (responseType.IsGenericType)
         {
-            var responseTypeGenericArgument = typeof(TResponse).GetGenericArguments()[0];
-            var genericResponseType = typeof(Result<>).MakeGenericType(responseTypeGenericArgument);
+            var genericResponseType = typeof(Result<>).MakeGenericType(responseType.GenericTypeArguments);
             var genericFailureMethod = genericResponseType.GetMethod("Failure");
-            
+
             return (TResponse)genericFailureMethod?.Invoke(null, [validationErrors, ResultType.ValidationError]);
         }
         

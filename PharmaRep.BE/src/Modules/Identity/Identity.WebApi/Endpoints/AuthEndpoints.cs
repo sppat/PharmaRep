@@ -14,14 +14,14 @@ public static class AuthEndpoints
     public static IEndpointRouteBuilder MapAuthenticationEndpoints(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapPost(IdentityModuleUrls.Authentication.Login, LoginAsync)
-            .Produces<LoginUserResponse>()
+            .Produces<LoginResponse>()
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithTags("Auth")
             .WithDescription("Logs in a user.");
 
         endpoints.MapPost(IdentityModuleUrls.Authentication.Register, RegisterAsync)
-            .Produces<RegisterUserResponse>(StatusCodes.Status201Created)
+            .Produces<RegisterResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithTags("Auth")
@@ -35,7 +35,7 @@ public static class AuthEndpoints
         var command = request.ToCommand();
         var result = await dispatcher.SendAsync(command, cancellationToken);
         
-        return result.ToHttpResult(UserResponseMappings.ToLoginUserResponse);
+        return result.ToHttpResult(AuthResponseMappings.ToLoginResponse);
     }
 
     private static async Task<IResult> RegisterAsync(RegisterRequest request, IDispatcher dispatcher, CancellationToken cancellationToken)
@@ -43,6 +43,6 @@ public static class AuthEndpoints
         var command = request.ToCommand();
         var result = await dispatcher.SendAsync(command, cancellationToken);
 
-        return result.ToHttpResult(UserResponseMappings.ToRegisterUserResponse, createdAt: "GetByIdAsync");
+        return result.ToHttpResult(AuthResponseMappings.ToRegisterResponse, createdAt: "GetByIdAsync");
     }
 }

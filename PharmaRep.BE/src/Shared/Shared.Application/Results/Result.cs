@@ -53,5 +53,6 @@ public enum ResultType
     ValidationError,
     Created,
     NotFound,
-    Success
+    Success,
+    Updated
 }

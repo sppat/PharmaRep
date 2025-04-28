@@ -6,11 +6,7 @@ using Shared.WebApi.Responses;
 namespace Identity.WebApi.Mappings;
 
 public static class UserResponseMappings
-{
-    internal static LoginUserResponse ToLoginUserResponse(string token) => new(token);
-    
-    internal static RegisterUserResponse ToRegisterUserResponse(Guid userId) => new(userId);
-    
+{ 
     internal static GetUserByIdResponse ToGetUserByIdResponse(UserDto user) => new(Id: user.Id, 
         FirstName: user.FirstName, 
         LastName: user.LastName,
