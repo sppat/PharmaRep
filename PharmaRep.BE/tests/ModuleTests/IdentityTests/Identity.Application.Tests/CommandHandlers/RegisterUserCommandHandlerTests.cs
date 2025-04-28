@@ -12,8 +12,7 @@ public class RegisterUserCommandHandlerTests
     private readonly RegisterCommand _command = new(FirstName: "John",
         LastName: "Doe",
         Email: "john@doe.com",
-        Password: "P@ssw0rd",
-        Roles: ["Doctor"]);
+        Password: "P@ssw0rd");
     private readonly Mock<UserManager<User>> _userManagerMock;
     private readonly RegisterUserCommandHandler _sut;
 

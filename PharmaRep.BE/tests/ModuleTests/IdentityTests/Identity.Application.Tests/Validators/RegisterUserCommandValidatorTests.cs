@@ -10,8 +10,7 @@ public class RegisterUserCommandValidatorTests
     private readonly RegisterCommand _validCommand = new(FirstName: "John",
         LastName: "Doe",
         Email: "john@doe.com",
-        Password: "P@ssw0rd",
-        Roles: ["Doctor"]);
+        Password: "P@ssw0rd");
     private readonly RegisterUserCommandValidator _sut = new();
 
     [Fact]
@@ -178,44 +177,6 @@ public class RegisterUserCommandValidatorTests
         // Assert
         Assert.False(result.IsValid);
         Assert.Contains(IdentityModuleDomainErrors.UserErrors.InvalidPassword, result.Errors.Select(e => e.ErrorMessage));
-    }
-
-    #endregion
-
-    #region Roles
-
-    [Fact]
-    public void Validate_EmptyRoles_ReturnsInvalidResult()
-    {
-        // Arrange
-        var command = _validCommand with
-        {
-            Roles = []
-        };
-        
-        // Act
-        var result = _sut.TestValidate(command);
-        
-        // Assert
-        Assert.False(result.IsValid);
-        Assert.Contains(IdentityModuleDomainErrors.UserErrors.EmptyRoles, result.Errors.Select(e => e.ErrorMessage));
-    }
-    
-    [Fact]
-    public void Validate_RolesNotExist_ReturnsInvalidResult()
-    {
-        // Arrange
-        var command = _validCommand with
-        {
-            Roles = ["Dummy Role One", "Dummy Role Two"]
-        };
-        
-        // Act
-        var result = _sut.TestValidate(command);
-        
-        // Assert
-        Assert.False(result.IsValid);
-        Assert.Contains(IdentityModuleDomainErrors.UserErrors.InvalidRole, result.Errors.Select(e => e.ErrorMessage));
     }
 
     #endregion

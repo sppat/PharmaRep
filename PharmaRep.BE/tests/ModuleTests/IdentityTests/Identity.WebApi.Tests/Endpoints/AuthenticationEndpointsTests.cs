@@ -186,44 +186,6 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
 
     #endregion
 
-    #region Roles
-
-    [Fact]
-    public async Task RegisterUser_EmptyRoles_ReturnBadRequest()
-    {
-        // Arrange
-        var request = TestEnvironment.ValidRegisterUserRequest with { Roles = [] };
-        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.EmptyRoles };
-
-        // Act
-        var response = await _httpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, request);
-        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
-        var errors = responseContent.GetErrors();
-
-        // Assert
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        AssertProblemDetails.HasErrors(expectedErrors, errors);
-    }
-
-    [Fact]
-    public async Task RegisterUser_InvalidRole_ReturnBadRequest()
-    {
-        // Arrange
-        var request = TestEnvironment.ValidRegisterUserRequest with { Roles = [Role.Doctor.Name, "TestRole"] };
-        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidRole };
-
-        // Act
-        var response = await _httpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, request);
-        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
-        var errors = responseContent.GetErrors();
-
-        // Assert
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        AssertProblemDetails.HasErrors(expectedErrors, errors);
-    }
-
-    #endregion
-
     #endregion
     
     #region Login
@@ -235,8 +197,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
         var registerRequest = new RegisterUserRequest(FirstName: "Test",
             LastName: "Login",
             Email: "test@login.com",
-            Password: "P@ssw0rd",
-            Roles: [Role.Doctor.Name]);
+            Password: "P@ssw0rd");
         await _httpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, registerRequest);
         
         var loginRequest = new LoginUserRequest(Email: registerRequest.Email,
@@ -327,8 +288,7 @@ public class AuthenticationEndpointsTests(WebApplicationFixture fixture)
         internal static RegisterUserRequest ValidRegisterUserRequest => new(FirstName: "John",
             LastName: "Doe",
             Email: "john@doe.com",
-            Password: "P@ssw0rd",
-            Roles: [Role.Doctor.Name]);
+            Password: "P@ssw0rd");
 
         internal static LoginUserRequest ValidLoginUserRequest => new(Email: "john@doe.com",
             Password: "P@ssw0rd");
