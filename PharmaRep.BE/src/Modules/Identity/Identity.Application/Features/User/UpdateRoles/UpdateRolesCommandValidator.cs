@@ -8,6 +8,10 @@ public class UpdateRolesCommandValidator : AbstractValidator<UpdateRolesCommand>
 {
     public UpdateRolesCommandValidator()
     {
+        RuleFor(cmd => cmd.UserId)
+            .NotEmpty()
+            .WithMessage(IdentityModuleDomainErrors.UserErrors.EmptyId);
+        
         RuleFor(cmd => cmd.Roles)
             .Must(RolesExist)
             .When(cmd => cmd.Roles is not null)

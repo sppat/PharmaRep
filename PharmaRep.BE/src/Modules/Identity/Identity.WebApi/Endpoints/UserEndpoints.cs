@@ -61,9 +61,9 @@ public static class UserEndpoints
         return result.ToHttpResult(UserResponseMappings.ToGetUserByIdResponse);
     }
 
-    private static async Task<IResult> UpdateRolesAsync(IDispatcher dispatcher, UpdateRolesRequest request, CancellationToken cancellationToken)
+    private static async Task<IResult> UpdateRolesAsync(IDispatcher dispatcher, Guid id, UpdateRolesRequest request, CancellationToken cancellationToken)
     {
-        var command = request.ToCommand();
+        var command = request.ToCommand(id);
         var result = await dispatcher.SendAsync(command, cancellationToken);
 
         return result.ToHttpResult();

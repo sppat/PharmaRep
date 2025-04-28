@@ -4,4 +4,4 @@ using Shared.Application.Results;
 
 namespace Identity.Application.Features.User.UpdateRoles;
 
-public record UpdateRolesCommand(IEnumerable<string> Roles) : IRequest<Result>;
+public record UpdateRolesCommand(Guid UserId, IEnumerable<string> Roles) : IRequest<Result>;

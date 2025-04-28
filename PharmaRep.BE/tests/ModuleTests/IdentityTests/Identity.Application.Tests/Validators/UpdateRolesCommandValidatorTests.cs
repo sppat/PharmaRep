@@ -12,7 +12,7 @@ public class UpdateRolesCommandValidatorTests
     public void Validate_ValidCommand_ReturnsSuccess()
     {
         // Arrange
-        var command = new UpdateRolesCommand(["Admin", "Doctor"]);
+        var command = new UpdateRolesCommand(Guid.NewGuid(), ["Admin", "Doctor"]);
 
         // Act
         var result = _sut.TestValidate(command);
@@ -25,7 +25,7 @@ public class UpdateRolesCommandValidatorTests
     public void Validate_InvalidRoles_ReturnsFailure()
     {
         // Arrange
-        var command = new UpdateRolesCommand(["Dummy Role"]);
+        var command = new UpdateRolesCommand(Guid.NewGuid(), ["Dummy Role"]);
 
         // Act
         var result = _sut.TestValidate(command);
@@ -33,5 +33,19 @@ public class UpdateRolesCommandValidatorTests
         // Assert
         Assert.False(result.IsValid);
         Assert.Contains(IdentityModuleDomainErrors.UserErrors.InvalidRole, result.Errors.Select(e => e.ErrorMessage));
+    }
+    
+    [Fact]
+    public void Validate_EmptyId_ReturnsFailure()
+    {
+        // Arrange
+        var command = new UpdateRolesCommand(Guid.Empty, ["Dummy Role"]);
+
+        // Act
+        var result = _sut.TestValidate(command);
+
+        // Assert
+        Assert.False(result.IsValid);
+        Assert.Contains(IdentityModuleDomainErrors.UserErrors.EmptyId, result.Errors.Select(e => e.ErrorMessage));
     }
 }

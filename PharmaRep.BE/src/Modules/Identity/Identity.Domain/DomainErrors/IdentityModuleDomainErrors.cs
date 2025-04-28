@@ -13,5 +13,6 @@ public static class IdentityModuleDomainErrors
         public const string InvalidRole = "Invalid role";
         public const string UserNotFound = "User not found";
         public const string InvalidCredentials = "Email or password is incorrect";
+        public const string EmptyId = "Empty user id";
     }
 }

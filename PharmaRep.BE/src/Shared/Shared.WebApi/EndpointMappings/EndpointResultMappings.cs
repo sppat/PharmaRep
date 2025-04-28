@@ -9,6 +9,7 @@ public static class EndpointResultMappings
         => serviceResult.Type switch 
         {
             ResultType.ValidationError => Results.Problem(title: "Bad Request", statusCode: StatusCodes.Status400BadRequest, extensions: serviceResult.GetErrors()),
+            ResultType.BadRequest => Results.Problem(title: "Bad Request", statusCode: StatusCodes.Status400BadRequest, extensions: serviceResult.GetErrors()),
             ResultType.Created => Results.CreatedAtRoute(createdAt, new {Id = serviceResult.Value}, responseMapper(serviceResult.Value)),
             ResultType.NotFound => Results.Problem(title: "Not Found", statusCode: StatusCodes.Status404NotFound, extensions: serviceResult.GetErrors()),
             ResultType.Success => Results.Ok(responseMapper(serviceResult.Value)),
@@ -19,6 +20,7 @@ public static class EndpointResultMappings
         => serviceResult.Type switch
         {
             ResultType.ValidationError => Results.Problem(title: "Bad Request", statusCode: StatusCodes.Status400BadRequest, extensions: serviceResult.GetErrors()),
+            ResultType.BadRequest => Results.Problem(title: "Bad Request", statusCode: StatusCodes.Status400BadRequest, extensions: serviceResult.GetErrors()),
             ResultType.NotFound => Results.Problem(title: "Not Found", statusCode: StatusCodes.Status404NotFound, extensions: serviceResult.GetErrors()),
             ResultType.Success => Results.Ok(),
             ResultType.Updated => Results.NoContent(),

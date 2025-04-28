@@ -54,5 +54,6 @@ public enum ResultType
     Created,
     NotFound,
     Success,
-    Updated
+    Updated,
+    BadRequest
 }

@@ -209,6 +209,23 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
     }
+    
+    [Fact]
+    public async Task UpdateRoles_EmptyUserId_ReturnsBadRequest()
+    {
+        // Arrange
+        var updateRolesUrl = IdentityModuleUrls.User.UpdateRoles.Replace("{id:guid}", Guid.Empty.ToString());
+        var request = new UpdateRolesRequest([Role.Doctor.Name]);
+        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.EmptyId };
+        
+        // Act
+        var response = await _authorizedHttpClient.PutAsJsonAsync(updateRolesUrl, request);
+        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
+    }
 
     #endregion
 }
