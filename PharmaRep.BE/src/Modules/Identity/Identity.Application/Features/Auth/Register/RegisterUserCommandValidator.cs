@@ -3,9 +3,9 @@ using Identity.Domain.DomainErrors;
 using Identity.Domain.Entities;
 using Identity.Domain.RegexConstants;
 
-namespace Identity.Application.Features.User.Register;
+namespace Identity.Application.Features.Auth.Register;
 
-public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+public class RegisterUserCommandValidator : AbstractValidator<RegisterCommand>
 {
     private const int MaxNameLength = 50;
     private const int MaxEmailLength = 100;
@@ -74,19 +74,6 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         RuleFor(req => req.Password)
             .NotEmpty()
             .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidPassword);
-
-        #endregion
-        
-        #region Roles
-        
-        RuleFor(req => req.Roles)
-            .NotEmpty()
-            .WithMessage(IdentityModuleDomainErrors.UserErrors.EmptyRoles);
-
-        RuleFor(req => req.Roles)
-            .Must(RoleExist)
-            .When(req => req.Roles is not null)
-            .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidRole);
 
         #endregion
     }

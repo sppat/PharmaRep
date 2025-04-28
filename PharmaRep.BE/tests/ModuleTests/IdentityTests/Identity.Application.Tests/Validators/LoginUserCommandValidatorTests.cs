@@ -1,12 +1,12 @@
 using FluentValidation.TestHelper;
-using Identity.Application.Features.User.Login;
+using Identity.Application.Features.Auth.Login;
 using Identity.Domain.DomainErrors;
 
 namespace Identity.Application.Tests.Validators;
 
 public class LoginUserCommandValidatorTests
 {
-    private readonly LoginUserCommand _validCommand = new(Email: "john@doe.com",
+    private readonly LoginCommand _validCommand = new(Email: "john@doe.com",
         Password: "P@ssw0rd");
     private readonly LoginUserCommandValidator _sut = new();
 

@@ -1,4 +1,5 @@
 using FluentValidation.TestHelper;
+using Identity.Application.Features.Auth.Register;
 using Identity.Application.Features.User.Register;
 using Identity.Domain.DomainErrors;
 
@@ -6,7 +7,7 @@ namespace Identity.Application.Tests.Validators;
 
 public class RegisterUserCommandValidatorTests
 {
-    private readonly RegisterUserCommand _validCommand = new(FirstName: "John",
+    private readonly RegisterCommand _validCommand = new(FirstName: "John",
         LastName: "Doe",
         Email: "john@doe.com",
         Password: "P@ssw0rd",

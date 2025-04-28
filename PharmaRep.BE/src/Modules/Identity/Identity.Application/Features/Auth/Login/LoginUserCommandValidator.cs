@@ -2,9 +2,9 @@
 using Identity.Domain.DomainErrors;
 using Identity.Domain.RegexConstants;
 
-namespace Identity.Application.Features.User.Login;
+namespace Identity.Application.Features.Auth.Login;
 
-public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
+public class LoginUserCommandValidator : AbstractValidator<LoginCommand>
 {
     private const int MaxEmailLength = 100;
     

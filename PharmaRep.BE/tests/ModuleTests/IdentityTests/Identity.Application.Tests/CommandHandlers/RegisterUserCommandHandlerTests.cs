@@ -1,3 +1,4 @@
+using Identity.Application.Features.Auth.Register;
 using Identity.Application.Features.User.Register;
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +9,7 @@ namespace Identity.Application.Tests.CommandHandlers;
 
 public class RegisterUserCommandHandlerTests
 {
-    private readonly RegisterUserCommand _command = new(FirstName: "John",
+    private readonly RegisterCommand _command = new(FirstName: "John",
         LastName: "Doe",
         Email: "john@doe.com",
         Password: "P@ssw0rd",

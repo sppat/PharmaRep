@@ -1,9 +1,9 @@
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 
-namespace Identity.Application.Features.User.Register;
+namespace Identity.Application.Features.Auth.Register;
 
-public record RegisterUserCommand(string FirstName, 
+public record RegisterCommand(string FirstName, 
     string LastName,
     string Email,
     string Password) : IRequest<Result<Guid>>;

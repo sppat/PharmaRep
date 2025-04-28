@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Identity;
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 
-namespace Identity.Application.Features.User.Login;
+namespace Identity.Application.Features.Auth.Login;
 
 public class LoginUserCommandHandler(IAuthHandler authHandler,
     UserManager<Domain.Entities.User> userManager,
-    SignInManager<Domain.Entities.User> signInManager) : IRequestHandler<LoginUserCommand, Result<string>>
+    SignInManager<Domain.Entities.User> signInManager) : IRequestHandler<LoginCommand, Result<string>>
 {
-    public async Task<Result<string>> HandleAsync(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<string>> HandleAsync(LoginCommand request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByEmailAsync(request.Email);
         if (user is null)
