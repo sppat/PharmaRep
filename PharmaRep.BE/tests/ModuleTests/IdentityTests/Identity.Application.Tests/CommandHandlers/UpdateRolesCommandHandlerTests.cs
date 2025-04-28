@@ -27,6 +27,8 @@ public class UpdateRolesCommandHandlerTests
         var command = new UpdateRolesCommand(user.Id, roles);
         _userManagerMock.Setup(u => u.FindByIdAsync(user.Id.ToString()))
             .ReturnsAsync(user);
+        _userManagerMock.Setup(u => u.RemoveFromRolesAsync(user, It.IsAny<List<string>>()))
+            .ReturnsAsync(IdentityResult.Success);
         _userManagerMock.Setup(u => u.AddToRolesAsync(user, roles))
             .ReturnsAsync(IdentityResult.Success);
         
@@ -56,7 +58,7 @@ public class UpdateRolesCommandHandlerTests
     }
     
     [Fact]
-    public async Task HandleAsync_AddToRoleError_ReturnsBadRequestResult()
+    public async Task HandleAsync_AddToRoleError_ReturnsServerErrorResult()
     {
         // Arrange
         var user = User.Create(email: "user@test.com", firstName: "user", lastName: "test");
@@ -64,14 +66,36 @@ public class UpdateRolesCommandHandlerTests
         var command = new UpdateRolesCommand(user.Id, roles);
         _userManagerMock.Setup(u => u.FindByIdAsync(user.Id.ToString()))
             .ReturnsAsync(user);
+        _userManagerMock.Setup(u => u.RemoveFromRolesAsync(user, It.IsAny<List<string>>()))
+            .ReturnsAsync(IdentityResult.Success);
         _userManagerMock.Setup(u => u.AddToRolesAsync(user, roles))
-            .ReturnsAsync(IdentityResult.Failed());
+            .ReturnsAsync(IdentityResult.Failed([new IdentityError { Description = "Mock error" }]));
         
         // Act
         var result = await _sut.HandleAsync(command, CancellationToken.None);
         
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Equal(ResultType.BadRequest, result.Type);
+        Assert.Equal(ResultType.ServerError, result.Type);
+    }
+    
+    [Fact]
+    public async Task HandleAsync_RemoveFromRolesError_ReturnsServerErrorResult()
+    {
+        // Arrange
+        var user = User.Create(email: "user@test.com", firstName: "user", lastName: "test");
+        var roles = new[] { Role.Doctor.Name };
+        var command = new UpdateRolesCommand(user.Id, roles);
+        _userManagerMock.Setup(u => u.FindByIdAsync(user.Id.ToString()))
+            .ReturnsAsync(user);
+        _userManagerMock.Setup(u => u.RemoveFromRolesAsync(user, It.IsAny<List<string>>()))
+            .ReturnsAsync(IdentityResult.Failed([new IdentityError { Description = "Mock error" }]));
+        
+        // Act
+        var result = await _sut.HandleAsync(command, CancellationToken.None);
+        
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Equal(ResultType.ServerError, result.Type);
     }
 }

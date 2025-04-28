@@ -55,5 +55,6 @@ public enum ResultType
     NotFound,
     Success,
     Updated,
-    BadRequest
+    BadRequest,
+    ServerError
 }
