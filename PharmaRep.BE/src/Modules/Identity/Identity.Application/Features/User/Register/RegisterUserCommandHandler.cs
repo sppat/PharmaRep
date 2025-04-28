@@ -13,25 +13,15 @@ public class RegisterUserCommandHandler(UserManager<Domain.Entities.User> userMa
             lastName: request.LastName);
         
         var registerResult = await userManager.CreateAsync(user, request.Password);
-        if (!registerResult.Succeeded)
+        if (registerResult.Succeeded)
         {
-            var registerErrors = GetIdentityResultErrors(registerResult);
-            
-            return Result<Guid>.Failure(registerErrors, ResultType.ValidationError);
+            return Result<Guid>.Success(user.Id);
         }
-
-        var addToRoleResult = await userManager.AddToRolesAsync(user, request.Roles);
-        if (addToRoleResult.Succeeded)
-        {
-            return Result<Guid>.Success(user.Id, ResultType.Created);
-        }
-
-        var addToRoleErrors = GetIdentityResultErrors(addToRoleResult);
         
-        return Result<Guid>.Failure(addToRoleErrors, ResultType.ValidationError);
+        var registerErrors = registerResult.Errors
+            .Select(e => e.Description)
+            .ToList();
+        
+        return Result<Guid>.Failure(registerErrors, ResultType.ValidationError);
     }
-    
-    private static List<string> GetIdentityResultErrors(IdentityResult result) => result.Errors
-        .Select(e => e.Description)
-        .ToList();
 }
