@@ -27,7 +27,9 @@ public class UpdateRolesCommandHandlerTests
         var command = new UpdateRolesCommand(user.Id, roles);
         _userManagerMock.Setup(u => u.FindByIdAsync(user.Id.ToString()))
             .ReturnsAsync(user);
-        _userManagerMock.Setup(u => u.RemoveFromRolesAsync(user, It.IsAny<List<string>>()))
+        _userManagerMock.Setup(u => u.GetRolesAsync(user))
+            .ReturnsAsync([Role.MedicalRepresentative.Name]);
+        _userManagerMock.Setup(u => u.RemoveFromRolesAsync(user, It.IsAny<IEnumerable<string>>()))
             .ReturnsAsync(IdentityResult.Success);
         _userManagerMock.Setup(u => u.AddToRolesAsync(user, roles))
             .ReturnsAsync(IdentityResult.Success);
@@ -66,9 +68,11 @@ public class UpdateRolesCommandHandlerTests
         var command = new UpdateRolesCommand(user.Id, roles);
         _userManagerMock.Setup(u => u.FindByIdAsync(user.Id.ToString()))
             .ReturnsAsync(user);
-        _userManagerMock.Setup(u => u.RemoveFromRolesAsync(user, It.IsAny<List<string>>()))
+        _userManagerMock.Setup(u => u.GetRolesAsync(user))
+            .ReturnsAsync([Role.Doctor.Name]);
+        _userManagerMock.Setup(u => u.RemoveFromRolesAsync(user, It.IsAny<IEnumerable<string>>()))
             .ReturnsAsync(IdentityResult.Success);
-        _userManagerMock.Setup(u => u.AddToRolesAsync(user, roles))
+        _userManagerMock.Setup(u => u.AddToRolesAsync(user, It.IsAny<IEnumerable<string>>()))
             .ReturnsAsync(IdentityResult.Failed([new IdentityError { Description = "Mock error" }]));
         
         // Act
@@ -88,7 +92,9 @@ public class UpdateRolesCommandHandlerTests
         var command = new UpdateRolesCommand(user.Id, roles);
         _userManagerMock.Setup(u => u.FindByIdAsync(user.Id.ToString()))
             .ReturnsAsync(user);
-        _userManagerMock.Setup(u => u.RemoveFromRolesAsync(user, It.IsAny<List<string>>()))
+        _userManagerMock.Setup(u => u.GetRolesAsync(user))
+            .ReturnsAsync([Role.Admin.Name]);
+        _userManagerMock.Setup(u => u.RemoveFromRolesAsync(user, It.IsAny<IEnumerable<string>>()))
             .ReturnsAsync(IdentityResult.Failed([new IdentityError { Description = "Mock error" }]));
         
         // Act

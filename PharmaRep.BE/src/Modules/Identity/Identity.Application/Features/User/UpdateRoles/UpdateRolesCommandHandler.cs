@@ -16,14 +16,16 @@ public class UpdateRolesCommandHandler(UserManager<Domain.Entities.User> userMan
         }
         
         var existingRoles = await userManager.GetRolesAsync(user);
-        var removeRolesResult = await userManager.RemoveFromRolesAsync(user, existingRoles);
+        var rolesToRemove = existingRoles.Except(request.Roles);
+        var removeRolesResult = await userManager.RemoveFromRolesAsync(user, rolesToRemove);
         if (!removeRolesResult.Succeeded)
         {
             var removeRolesErrors = removeRolesResult.Errors.Select(e => e.Description).ToArray();
             return Result.Failure(removeRolesErrors, ResultType.ServerError);     
         }
         
-        var addRolesResult = await userManager.AddToRolesAsync(user, request.Roles);
+        var rolesToAdd = request.Roles.Except(existingRoles);
+        var addRolesResult = await userManager.AddToRolesAsync(user, rolesToAdd);
         if (addRolesResult.Succeeded)
         {
             return Result.Success(ResultType.Updated);
