@@ -30,7 +30,7 @@ public static class UserEndpoints
             .WithDescription("Retrieves a list of users.");
 
         endpoints.MapGet(IdentityModuleUrls.User.GetById, GetByIdAsync)
-            .RequireAuthorization(Role.Admin.Name!)
+            .RequireAuthorization(AuthPolicy.AdminPolicy.Name)
             .Produces<GetUserByIdResponse>()
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
@@ -40,7 +40,14 @@ public static class UserEndpoints
             .WithTags(nameof(User))
             .WithName(nameof(GetByIdAsync));
 
-        endpoints.MapPut(IdentityModuleUrls.User.UpdateRoles, UpdateRolesAsync);
+        endpoints.MapPut(IdentityModuleUrls.User.UpdateRoles, UpdateRolesAsync)
+            .RequireAuthorization(AuthPolicy.AdminPolicy.Name)
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
 
         return endpoints;
     }

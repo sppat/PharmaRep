@@ -47,6 +47,20 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
+    
+    [Fact]
+    public async Task UpdateRoles_UnauthorizedUser_ReturnsForbidden()
+    {
+        // Arrange
+        var updateRolesUrl = IdentityModuleUrls.User.UpdateRoles.Replace("{id:guid}", Guid.NewGuid().ToString());
+        var request = new UpdateRolesRequest([Role.Doctor.Name]);
+        
+        // Act
+        var response = await _unauthorizedHttpClient.PutAsJsonAsync(updateRolesUrl, request);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+    }
 
     #endregion
     
