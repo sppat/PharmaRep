@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Shared.Application.Mediator;
-using Shared.Application.Results;
 using Shared.WebApi.EndpointMappings;
 using Shared.WebApi.Responses;
 
