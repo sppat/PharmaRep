@@ -17,8 +17,7 @@ export default {
     <h2>Users</h2>
     <ul>
       <li v-for="user in users" :key="user.id">
-        <p>Name: {{ user.name }}</p>
-        <p>Age: {{ user.age }}</p>
+        <user :user="user"></user>
       </li>
     </ul>
   </section>
