@@ -26,6 +26,7 @@ public static class EndpointResultMappings
             ResultType.ServerError => Results.Problem(title: "Server Error", statusCode: StatusCodes.Status500InternalServerError, extensions: serviceResult.GetErrors()),
             ResultType.Success => Results.Ok(),
             ResultType.Updated => Results.NoContent(),
+            ResultType.Deleted => Results.NoContent(),
             _ => throw new InvalidOperationException("Invalid result type")
         };
     

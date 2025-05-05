@@ -3,6 +3,7 @@ using FluentValidation;
 using Identity.Application.Dtos;
 using Identity.Application.Features.Auth.Login;
 using Identity.Application.Features.Auth.Register;
+using Identity.Application.Features.User.Delete;
 using Identity.Application.Features.User.GetAll;
 using Identity.Application.Features.User.GetById;
 using Identity.Application.Features.User.UpdateRoles;
@@ -22,6 +23,7 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IRequestHandler<RegisterCommand, Result<Guid>>, RegisterCommandHandler>();
         services.AddScoped<IRequestHandler<LoginCommand, Result<string>>, LoginCommandHandler>();
         services.AddScoped<IRequestHandler<UpdateRolesCommand, Result>, UpdateRolesCommandHandler>();
+        services.AddScoped<IRequestHandler<DeleteUserCommand, Result>, DeleteUserCommandHandler>();
 
         // Queries
         services.AddScoped<IRequestHandler<GetUserByIdQuery, Result<UserDto>>, GetUserByIdQueryHandler>();

@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using Identity.Application.Dtos;
+using Identity.Application.Features.Auth.Register;
 using Identity.Domain.DomainErrors;
 using Identity.Domain.Entities;
 using Identity.WebApi.Endpoints;
@@ -262,14 +263,19 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     public async Task DeleteById_ValidRequest_ReturnsNoContent()
     {
         // Arrange
-        var userId = MockData.Users.First().Id.ToString(); 
-        var url = IdentityModuleUrls.User.Delete.Replace("{id:guid}", userId);
+        var registerCommand = new RegisterCommand(FirstName: "Delete", LastName: "User", Email: "delete@user.com", Password: "P@ssw0rd");
+        var registerResult = await _authorizedHttpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, registerCommand);
+        var registerResponse = await registerResult.Content.ReadFromJsonAsync<RegisterResponse>();
+        var deleteUrl = IdentityModuleUrls.User.Delete.Replace("{id:guid}", registerResponse.UserId.ToString());
         
         // Act
-        var result = await _authorizedHttpClient.DeleteAsync(url);
+        var result = await _authorizedHttpClient.DeleteAsync(deleteUrl);
+        var getByIdUrl = IdentityModuleUrls.User.GetById.Replace("{id:guid}", registerResponse.UserId.ToString());
+        var getByIdResult = await _authorizedHttpClient.GetAsync(getByIdUrl);
         
         // Assert
         Assert.Equal(HttpStatusCode.NoContent, result.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, getByIdResult.StatusCode);
     }
     
     [Fact]
@@ -304,22 +310,6 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
         AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
-    }
-    
-    [Fact]
-    public async Task DeleteById_HasError_ReturnsInternalServerError()
-    {
-        // Arrange
-        var userId = MockData.Users.First().Id.ToString();
-        var url = IdentityModuleUrls.User.Delete.Replace("{id:guid}", userId);
-        
-        // Act
-        var result = await _authorizedHttpClient.DeleteAsync(url);
-        var responseContent = await result.Content.ReadFromJsonAsync<ProblemDetails>();
-        
-        // Assert
-        Assert.Equal(HttpStatusCode.InternalServerError, result.StatusCode);
-        Assert.True(responseContent.GetErrors().Any());
     }
 
     #endregion

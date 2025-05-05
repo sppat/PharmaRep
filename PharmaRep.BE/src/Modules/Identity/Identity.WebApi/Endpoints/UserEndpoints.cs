@@ -1,4 +1,5 @@
 using Identity.Application.Dtos;
+using Identity.Application.Features.User.Delete;
 using Identity.Application.Features.User.GetById;
 using Identity.Domain.Entities;
 using Identity.Infrastructure;
@@ -90,6 +91,9 @@ public static class UserEndpoints
 
     private static async Task<IResult> DeleteAsync(Guid id, IDispatcher dispatcher, CancellationToken cancellationToken)
     {
-        return Results.Ok();
+        var command = new DeleteUserCommand(id);
+        var result = await dispatcher.SendAsync(command, cancellationToken);
+        
+        return result.ToHttpResult();
     }
 }
