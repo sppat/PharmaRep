@@ -61,6 +61,19 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
+    
+    [Fact]
+    public async Task DeleteById_UnauthorizedUser_ReturnsForbidden()
+    {
+        // Arrange
+        var deleteUrl = IdentityModuleUrls.User.Delete.Replace("{id:guid}", Guid.NewGuid().ToString());
+        
+        // Act
+        var response = await _unauthorizedHttpClient.DeleteAsync(deleteUrl);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+    }
 
     #endregion
     
@@ -128,7 +141,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         Assert.True(responseContent.HasPrevious);
     }
 
-    #region PageNumber
+    #region Page Number
 
     [Theory]
     [InlineData(0, 2)]
@@ -155,7 +168,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
 
     #endregion
 
-    #region PageSize
+    #region Page Size
 
     [Theory]
     [InlineData(1, 0)]
@@ -239,6 +252,74 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
+    }
+
+    #endregion
+
+    #region Delete User
+
+    [Fact]
+    public async Task DeleteById_ValidRequest_ReturnsNoContent()
+    {
+        // Arrange
+        var userId = MockData.Users.First().Id.ToString(); 
+        var url = IdentityModuleUrls.User.Delete.Replace("{id:guid}", userId);
+        
+        // Act
+        var result = await _authorizedHttpClient.DeleteAsync(url);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.NoContent, result.StatusCode);
+    }
+    
+    [Fact]
+    public async Task DeleteById_EmptyUserId_ReturnsBadRequest()
+    {
+        // Arrange
+        var userId = Guid.Empty.ToString();
+        var url = IdentityModuleUrls.User.Delete.Replace("{id:guid}", userId);
+        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.EmptyId };
+        
+        // Act
+        var result = await _authorizedHttpClient.DeleteAsync(url);
+        var responseContent = await result.Content.ReadFromJsonAsync<ProblemDetails>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
+    }
+    
+    [Fact]
+    public async Task DeleteById_UserNotExist_ReturnsNotFound()
+    {
+        // Arrange
+        var userId = Guid.NewGuid().ToString();
+        var url = IdentityModuleUrls.User.Delete.Replace("{id:guid}", userId);
+        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.UserNotFound };
+        
+        // Act
+        var result = await _authorizedHttpClient.DeleteAsync(url);
+        var responseContent = await result.Content.ReadFromJsonAsync<ProblemDetails>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
+    }
+    
+    [Fact]
+    public async Task DeleteById_HasError_ReturnsInternalServerError()
+    {
+        // Arrange
+        var userId = MockData.Users.First().Id.ToString();
+        var url = IdentityModuleUrls.User.Delete.Replace("{id:guid}", userId);
+        
+        // Act
+        var result = await _authorizedHttpClient.DeleteAsync(url);
+        var responseContent = await result.Content.ReadFromJsonAsync<ProblemDetails>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.InternalServerError, result.StatusCode);
+        Assert.True(responseContent.GetErrors().Any());
     }
 
     #endregion

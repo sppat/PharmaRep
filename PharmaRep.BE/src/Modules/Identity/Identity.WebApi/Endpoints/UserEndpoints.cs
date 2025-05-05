@@ -25,8 +25,8 @@ public static class UserEndpoints
             .Produces(StatusCodes.Status403Forbidden)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
-            .WithTags(nameof(User))
-            .WithDescription("Retrieves a list of users.");
+            .WithDescription("Retrieves a list of users.")
+            .WithTags(nameof(User));
 
         endpoints.MapGet(IdentityModuleUrls.User.GetById, GetByIdAsync)
             .RequireAuthorization(AuthPolicy.AdminPolicy.Name)
@@ -36,8 +36,8 @@ public static class UserEndpoints
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription("Retrieves a user by id.")
-            .WithTags(nameof(User))
-            .WithName(nameof(GetByIdAsync));
+            .WithName(nameof(GetByIdAsync))
+            .WithTags(nameof(User));
 
         endpoints.MapPut(IdentityModuleUrls.User.UpdateRoles, UpdateRolesAsync)
             .RequireAuthorization(AuthPolicy.AdminPolicy.Name)
@@ -47,8 +47,19 @@ public static class UserEndpoints
             .Produces(StatusCodes.Status403Forbidden)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
-            .WithTags(nameof(User))
-            .WithDescription("Update user roles.");
+            .WithDescription("Update user roles.")
+            .WithTags(nameof(User));
+
+        endpoints.MapDelete(IdentityModuleUrls.User.Delete, DeleteAsync)
+            .RequireAuthorization(AuthPolicy.AdminPolicy.Name)
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithDescription("Delete user by id.")
+            .WithTags(nameof(User));
 
         return endpoints;
     }
@@ -75,5 +86,10 @@ public static class UserEndpoints
         var result = await dispatcher.SendAsync(command, cancellationToken);
 
         return result.ToHttpResult();
+    }
+
+    private static async Task<IResult> DeleteAsync(Guid id, IDispatcher dispatcher, CancellationToken cancellationToken)
+    {
+        return Results.Ok();
     }
 }
