@@ -340,4 +340,80 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     }
 
     #endregion
+
+    #region Update Personal Info
+
+    [Fact]
+    public async Task UpdatePersonalInfo_ValidRequest_ReturnsNoContentAndUpdatedUserInfo()
+    {
+        // Arrange
+        var registerRequest = new RegisterRequest(FirstName: "Update", LastName: "User", Email: "update@user.com", Password: "P@ssw0rd");
+        var registerResult = await _adminHttpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, registerRequest);
+        var registerResponse = await registerResult.Content.ReadFromJsonAsync<RegisterResponse>();
+        var getByIdUrl = IdentityModuleUrls.User.GetById.Replace("{id:guid}", registerResponse.UserId.ToString());
+        var updatePersonalInfoUrl = IdentityModuleUrls.User.UpdatePersonalInfo.Replace("{id:guid}", registerResponse.UserId.ToString());
+        var updatePersonalInfoRequest = new UpdatePersonalInfoRequest("UpdatedFirstName", "UpdatedLastName");
+        
+        // Act
+        var updatePersonalInfoResult = await _adminHttpClient.PutAsJsonAsync(updatePersonalInfoUrl, updatePersonalInfoRequest);
+        var getByIdResult = await _adminHttpClient.GetAsync(getByIdUrl);
+        var userResponse = await getByIdResult.Content.ReadFromJsonAsync<GetUserByIdResponse>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.NoContent, updatePersonalInfoResult.StatusCode);
+        Assert.Equal(updatePersonalInfoRequest.FirstName, userResponse.FirstName);
+        Assert.Equal(updatePersonalInfoRequest.LastName, userResponse.LastName);
+    }
+    
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData("  ")]
+    [InlineData("1Test")]
+    [InlineData("_Hello_")]
+    public async Task UpdatePersonalInfo_InvalidFirstName_ReturnsBadRequest(string firstName)
+    {
+        // Arrange
+        var registerRequest = new RegisterRequest(FirstName: "Update", LastName: "User", Email: "update@user.com", Password: "P@ssw0rd");
+        var registerResult = await _adminHttpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, registerRequest);
+        var registerResponse = await registerResult.Content.ReadFromJsonAsync<RegisterResponse>();
+        var updatePersonalInfoUrl = IdentityModuleUrls.User.UpdatePersonalInfo.Replace("{id:guid}", registerResponse.UserId.ToString());
+        var updatePersonalInfoRequest = new UpdatePersonalInfoRequest(firstName, "UpdatedLastName");
+        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidFirstName };
+        
+        // Act
+        var updatePersonalInfoResult = await _adminHttpClient.PutAsJsonAsync(updatePersonalInfoUrl, updatePersonalInfoRequest);
+        var updatePersonalInfoResponse = await updatePersonalInfoResult.Content.ReadFromJsonAsync<ProblemDetails>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, updatePersonalInfoResult.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, updatePersonalInfoResponse.GetErrors());
+    }
+    
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData("  ")]
+    [InlineData("1Test")]
+    [InlineData("_Hello_")]
+    public async Task UpdatePersonalInfo_InvalidLastName_ReturnsBadRequest(string lastName)
+    {
+        // Arrange
+        var registerRequest = new RegisterRequest(FirstName: "Update", LastName: "User", Email: "update@user.com", Password: "P@ssw0rd");
+        var registerResult = await _adminHttpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, registerRequest);
+        var registerResponse = await registerResult.Content.ReadFromJsonAsync<RegisterResponse>();
+        var updatePersonalInfoUrl = IdentityModuleUrls.User.UpdatePersonalInfo.Replace("{id:guid}", registerResponse.UserId.ToString());
+        var updatePersonalInfoRequest = new UpdatePersonalInfoRequest("UpdatedFirstName", lastName);
+        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidFirstName };
+        
+        // Act
+        var updatePersonalInfoResult = await _adminHttpClient.PutAsJsonAsync(updatePersonalInfoUrl, updatePersonalInfoRequest);
+        var updatePersonalInfoResponse = await updatePersonalInfoResult.Content.ReadFromJsonAsync<ProblemDetails>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, updatePersonalInfoResult.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, updatePersonalInfoResponse.GetErrors());
+    }
+
+    #endregion
 }
