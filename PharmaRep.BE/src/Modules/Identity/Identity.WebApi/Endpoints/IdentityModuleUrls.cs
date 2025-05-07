@@ -11,6 +11,7 @@ public static class IdentityModuleUrls
         public const string GetAll = UserBaseUrl;
         public const string GetById = $"{UserBaseUrl}/{{id:guid}}";
         public const string UpdateRoles = $"{UserBaseUrl}/{{id:guid}}/roles";
+        public const string UpdatePersonalInfo = $"{UserBaseUrl}/{{id:guid}}/personal-info";
         public const string Delete = $"{UserBaseUrl}/{{id:guid}}";
     }
 

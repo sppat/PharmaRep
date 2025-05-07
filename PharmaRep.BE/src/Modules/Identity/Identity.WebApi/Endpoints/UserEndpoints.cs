@@ -50,6 +50,8 @@ public static class UserEndpoints
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription("Update user roles.")
             .WithTags(nameof(User));
+        
+        endpoints.MapPut(IdentityModuleUrls.User.UpdatePersonalInfo, UpdatePersonalInfoAsync);
 
         endpoints.MapDelete(IdentityModuleUrls.User.Delete, DeleteAsync)
             .RequireAuthorization(AuthPolicy.AdminPolicy.Name)
@@ -65,7 +67,7 @@ public static class UserEndpoints
         return endpoints;
     }
     
-    private static async Task<IResult> GetAllAsync(IDispatcher dispatcher,[AsParameters] GetAllUsersRequest request, CancellationToken cancellationToken)
+    private static async Task<IResult> GetAllAsync([AsParameters] GetAllUsersRequest request, IDispatcher dispatcher, CancellationToken cancellationToken)
     {
         var query = request.ToQuery();
         var result = await dispatcher.SendAsync(query, cancellationToken);
@@ -81,7 +83,15 @@ public static class UserEndpoints
         return result.ToHttpResult(UserResponseMappings.ToGetUserByIdResponse);
     }
 
-    private static async Task<IResult> UpdateRolesAsync(IDispatcher dispatcher, Guid id, UpdateRolesRequest request, CancellationToken cancellationToken)
+    private static async Task<IResult> UpdateRolesAsync(Guid id, IDispatcher dispatcher, UpdateRolesRequest request, CancellationToken cancellationToken)
+    {
+        var command = request.ToCommand(id);
+        var result = await dispatcher.SendAsync(command, cancellationToken);
+
+        return result.ToHttpResult();
+    }
+    
+    private static async Task<IResult> UpdatePersonalInfoAsync(Guid id, IDispatcher dispatcher, UpdatePersonalInfoRequest request, CancellationToken cancellationToken)
     {
         var command = request.ToCommand(id);
         var result = await dispatcher.SendAsync(command, cancellationToken);
