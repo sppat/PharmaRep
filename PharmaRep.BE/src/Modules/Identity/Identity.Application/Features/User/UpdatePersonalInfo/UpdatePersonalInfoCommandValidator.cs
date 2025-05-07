@@ -1,17 +1,23 @@
-using FluentValidation;
+﻿using FluentValidation;
 using Identity.Domain.DomainErrors;
-using Identity.Domain.Entities;
 using Identity.Domain.RegexConstants;
 
-namespace Identity.Application.Features.Auth.Register;
+namespace Identity.Application.Features.User.UpdatePersonalInfo;
 
-public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
+public class UpdatePersonalInfoCommandValidator : AbstractValidator<UpdatePersonalInfoCommand>
 {
     private const int MaxNameLength = 50;
-    private const int MaxEmailLength = 100;
     
-    public RegisterCommandValidator()
+    public UpdatePersonalInfoCommandValidator()
     {
+        #region Id
+        
+        RuleFor(req => req.UserId)
+            .NotEmpty()
+            .WithMessage(IdentityModuleDomainErrors.UserErrors.EmptyId);
+        
+        #endregion
+        
         #region FirstName
 
         RuleFor(req => req.FirstName)
@@ -47,33 +53,6 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
                 .Must(UserRegex.NameFormat().IsMatch)
                 .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidLastName);
         });
-
-        #endregion
-
-        #region Email
-
-        RuleFor(req => req.Email)
-            .NotNull()
-            .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidEmail);
-
-        When(req => req.Email is not null, () =>
-        {
-            RuleFor(req => req.Email)
-                .MaximumLength(MaxEmailLength)
-                .WithMessage(IdentityModuleDomainErrors.UserErrors.EmailOutOfRange);
-            
-            RuleFor(req => req.Email)
-                .Must(UserRegex.EmailFormat().IsMatch)
-                .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidEmail);
-        });
-
-        #endregion
-
-        #region Password
-
-        RuleFor(req => req.Password)
-            .NotEmpty()
-            .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidPassword);
 
         #endregion
     }
