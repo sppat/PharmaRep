@@ -19,58 +19,85 @@ namespace Identity.WebApi.Tests.Endpoints;
 [Collection(name: SharedTestConstants.WebApplicationCollectionName)]
 public class UserEndpointsTests(WebApplicationFixture fixture)
 {
-    private readonly HttpClient _authorizedHttpClient = fixture.GetAuthorizedClient([Role.Admin.Name]);
+    private readonly HttpClient _adminHttpClient = fixture.GetAuthorizedClient([Role.Admin.Name]);
+    private readonly HttpClient _authorizedHttpClient = fixture.GetAuthorizedClient([Role.Doctor.Name]);
     private readonly HttpClient _unauthorizedHttpClient = fixture.GetUnauthorizedClient();
     
     #region Authorization
 
-    [Fact]
-    public async Task GetAllUser_UnauthorizedUser_ReturnsForbidden()
+    [Theory]
+    [InlineData("Doctor")]
+    [InlineData("Midwife")]
+    public async Task GetAllUser_UnauthorizedUser_ReturnsForbidden(string role)
     {
         // Arrange
+        var client = fixture.GetAuthorizedClient([role]);
 
         // Act
-        var response = await _unauthorizedHttpClient.GetAsync(IdentityModuleUrls.User.GetAll);
+        var response = await client.GetAsync(IdentityModuleUrls.User.GetAll);
         
         // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
     
-    [Fact]
-    public async Task GetById_UnauthorizedUser_ReturnsForbidden()
+    [Theory]
+    [InlineData("Doctor")]
+    [InlineData("Midwife")]
+    public async Task GetById_UnauthorizedUser_ReturnsForbidden(string role)
     {
         // Arrange
+        var client = fixture.GetAuthorizedClient([role]);
         var getByIdUrl = IdentityModuleUrls.User.GetById.Replace("{id:guid}", Guid.NewGuid().ToString());
         
         // Act
-        var response = await _unauthorizedHttpClient.GetAsync(getByIdUrl);
+        var response = await client.GetAsync(getByIdUrl);
         
         // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
     
-    [Fact]
-    public async Task UpdateRoles_UnauthorizedUser_ReturnsForbidden()
+    [Theory]
+    [InlineData("Doctor")]
+    [InlineData("Midwife")]
+    public async Task UpdateRoles_UnauthorizedUser_ReturnsForbidden(string role)
     {
         // Arrange
+        var client = fixture.GetAuthorizedClient([role]);
         var updateRolesUrl = IdentityModuleUrls.User.UpdateRoles.Replace("{id:guid}", Guid.NewGuid().ToString());
         var request = new UpdateRolesRequest([Role.Doctor.Name]);
         
         // Act
-        var response = await _unauthorizedHttpClient.PutAsJsonAsync(updateRolesUrl, request);
+        var response = await client.PutAsJsonAsync(updateRolesUrl, request);
         
         // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
     
-    [Fact]
-    public async Task DeleteById_UnauthorizedUser_ReturnsForbidden()
+    [Theory]
+    [InlineData("Doctor")]
+    [InlineData("Midwife")]
+    public async Task DeleteById_UnauthorizedUser_ReturnsForbidden(string role)
     {
         // Arrange
+        var client = fixture.GetAuthorizedClient([role]);
         var deleteUrl = IdentityModuleUrls.User.Delete.Replace("{id:guid}", Guid.NewGuid().ToString());
         
         // Act
-        var response = await _unauthorizedHttpClient.DeleteAsync(deleteUrl);
+        var response = await client.DeleteAsync(deleteUrl);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task UpdatePersonalInfo_UnauthorizedUser_ReturnsForbidden()
+    {
+        // Arrange
+        var updatePersonalInfoUrl = IdentityModuleUrls.User.UpdatePersonalInfo.Replace("{id:guid}", Guid.NewGuid().ToString());
+        var request = new UpdatePersonalInfoRequest("FirstName", "LastName");
+        
+        // Act
+        var response = await _unauthorizedHttpClient.PutAsJsonAsync(updatePersonalInfoUrl, request);
         
         // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
@@ -88,7 +115,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var url = IdentityModuleUrls.User.GetById.Replace("{id:guid}", expectedUser.Id.ToString());
 
         // Act
-        var response = await _authorizedHttpClient.GetAsync(url);
+        var response = await _adminHttpClient.GetAsync(url);
         var responseContent = await response.Content.ReadFromJsonAsync<GetUserByIdResponse>();
 
         // Assert
@@ -105,7 +132,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var url = IdentityModuleUrls.User.GetById.Replace("{id:guid}", userId);
         
         // Act
-        var response = await _authorizedHttpClient.GetAsync(url);
+        var response = await _adminHttpClient.GetAsync(url);
         var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
         
         // Assert
@@ -131,7 +158,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var uri = QueryHelpers.AddQueryString(IdentityModuleUrls.User.GetAll, queryParams);
 
         // Act
-        var response = await _authorizedHttpClient.GetAsync(uri);
+        var response = await _adminHttpClient.GetAsync(uri);
         var responseContent = await response.Content.ReadFromJsonAsync<PaginatedResponse<UserDto>>();
         
         // Assert
@@ -159,7 +186,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var uri = QueryHelpers.AddQueryString(IdentityModuleUrls.User.GetAll, queryParams);
         
         // Act
-        var response = await _authorizedHttpClient.GetAsync(uri);
+        var response = await _adminHttpClient.GetAsync(uri);
         var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
         
         // Assert
@@ -186,7 +213,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var uri = QueryHelpers.AddQueryString(IdentityModuleUrls.User.GetAll, queryParams);
 
         // Act
-        var response = await _authorizedHttpClient.GetAsync(uri);
+        var response = await _adminHttpClient.GetAsync(uri);
         var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
         
         // Assert
@@ -211,8 +238,8 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var request = new UpdateRolesRequest(expectedRoles);
 
         // Act
-        var response = await _authorizedHttpClient.PutAsJsonAsync(updateRolesUrl, request);
-        var getUserByIdResponse = await _authorizedHttpClient.GetAsync(getUserByIdUrl);
+        var response = await _adminHttpClient.PutAsJsonAsync(updateRolesUrl, request);
+        var getUserByIdResponse = await _adminHttpClient.GetAsync(getUserByIdUrl);
         var getUserByIdResponseContent = await getUserByIdResponse.Content.ReadFromJsonAsync<GetUserByIdResponse>();
 
         // Assert
@@ -230,7 +257,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidRole };
         
         // Act
-        var response = await _authorizedHttpClient.PutAsJsonAsync(updateRolesUrl, request);
+        var response = await _adminHttpClient.PutAsJsonAsync(updateRolesUrl, request);
         var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
         
         // Assert
@@ -247,7 +274,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.EmptyId };
         
         // Act
-        var response = await _authorizedHttpClient.PutAsJsonAsync(updateRolesUrl, request);
+        var response = await _adminHttpClient.PutAsJsonAsync(updateRolesUrl, request);
         var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
         
         // Assert
@@ -264,14 +291,14 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     {
         // Arrange
         var registerCommand = new RegisterCommand(FirstName: "Delete", LastName: "User", Email: "delete@user.com", Password: "P@ssw0rd");
-        var registerResult = await _authorizedHttpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, registerCommand);
+        var registerResult = await _adminHttpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, registerCommand);
         var registerResponse = await registerResult.Content.ReadFromJsonAsync<RegisterResponse>();
         var deleteUrl = IdentityModuleUrls.User.Delete.Replace("{id:guid}", registerResponse.UserId.ToString());
         
         // Act
-        var result = await _authorizedHttpClient.DeleteAsync(deleteUrl);
+        var result = await _adminHttpClient.DeleteAsync(deleteUrl);
         var getByIdUrl = IdentityModuleUrls.User.GetById.Replace("{id:guid}", registerResponse.UserId.ToString());
-        var getByIdResult = await _authorizedHttpClient.GetAsync(getByIdUrl);
+        var getByIdResult = await _adminHttpClient.GetAsync(getByIdUrl);
         
         // Assert
         Assert.Equal(HttpStatusCode.NoContent, result.StatusCode);
@@ -287,7 +314,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.EmptyId };
         
         // Act
-        var result = await _authorizedHttpClient.DeleteAsync(url);
+        var result = await _adminHttpClient.DeleteAsync(url);
         var responseContent = await result.Content.ReadFromJsonAsync<ProblemDetails>();
         
         // Assert
@@ -304,7 +331,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.UserNotFound };
         
         // Act
-        var result = await _authorizedHttpClient.DeleteAsync(url);
+        var result = await _adminHttpClient.DeleteAsync(url);
         var responseContent = await result.Content.ReadFromJsonAsync<ProblemDetails>();
         
         // Assert
