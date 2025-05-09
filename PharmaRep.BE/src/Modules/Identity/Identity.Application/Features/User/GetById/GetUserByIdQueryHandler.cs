@@ -10,7 +10,7 @@ public class GetUserByIdQueryHandler(IUserRepository userRepository) : IRequestH
 {
     public async Task<Result<UserDto>> HandleAsync(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetUserAsync(request.UserId, cancellationToken);
+        var user = await userRepository.GetUserDtoAsync(request.UserId, cancellationToken);
         
         return user is null 
             ? Result<UserDto>.Failure([IdentityModuleDomainErrors.UserErrors.UserNotFound], ResultType.NotFound)

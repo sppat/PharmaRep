@@ -40,5 +40,25 @@ public class User : IdentityUser<Guid>
         LastName = lastName;
     }
     
+    public void UpdateFirstName(string firstName)
+    {
+        if (firstName is null || !UserRegex.NameFormat().IsMatch(firstName))
+        {
+            throw new UserArgumentException(IdentityModuleDomainErrors.UserErrors.InvalidFirstName, nameof(firstName));
+        }
+
+        FirstName = firstName;
+    }
+    
+    public void UpdateLastName(string lastName)
+    {
+        if (lastName is null || !UserRegex.NameFormat().IsMatch(lastName))
+        {
+            throw new UserArgumentException(IdentityModuleDomainErrors.UserErrors.InvalidFirstName, nameof(lastName));
+        }
+
+        LastName = lastName;
+    }
+    
     public static User Create(string email, string firstName, string lastName) => new(email, firstName, lastName);
 }

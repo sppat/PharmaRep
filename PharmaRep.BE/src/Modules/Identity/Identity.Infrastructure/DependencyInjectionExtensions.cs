@@ -1,4 +1,5 @@
 using System.Text;
+using Identity.Application;
 using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
 using Identity.Infrastructure.Authentication;
@@ -10,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Application;
+using Shared.Infrastructure;
 using Shared.Infrastructure.Constants;
 
 namespace Identity.Infrastructure;
@@ -57,6 +60,7 @@ public static class DependencyInjectionExtensions
             .AddPolicy(AuthPolicy.AdminPolicy.Name, AuthPolicy.AdminPolicy.Configure);
 
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+        services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IAuthHandler, JwtHandler>();
         
