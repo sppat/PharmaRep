@@ -51,7 +51,16 @@ public static class UserEndpoints
             .WithDescription("Update user roles.")
             .WithTags(nameof(User));
         
-        endpoints.MapPut(IdentityModuleUrls.User.UpdatePersonalInfo, UpdatePersonalInfoAsync);
+        endpoints.MapPut(IdentityModuleUrls.User.UpdatePersonalInfo, UpdatePersonalInfoAsync)
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithDescription("Update user personal info.")
+            .WithTags(nameof(User));
 
         endpoints.MapDelete(IdentityModuleUrls.User.Delete, DeleteAsync)
             .RequireAuthorization(AuthPolicy.AdminPolicy.Name)

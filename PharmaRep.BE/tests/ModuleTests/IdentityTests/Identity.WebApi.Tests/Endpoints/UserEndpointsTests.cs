@@ -100,7 +100,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var response = await _unauthorizedHttpClient.PutAsJsonAsync(updatePersonalInfoUrl, request);
         
         // Assert
-        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     #endregion
@@ -347,7 +347,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     public async Task UpdatePersonalInfo_ValidRequest_ReturnsNoContentAndUpdatedUserInfo()
     {
         // Arrange
-        var registerRequest = new RegisterRequest(FirstName: "Update", LastName: "User", Email: "update@user.com", Password: "P@ssw0rd");
+        var registerRequest = new RegisterRequest(FirstName: "Update", LastName: "User", Email: "update_one@user.com", Password: "P@ssw0rd");
         var registerResult = await _adminHttpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, registerRequest);
         var registerResponse = await registerResult.Content.ReadFromJsonAsync<RegisterResponse>();
         var getByIdUrl = IdentityModuleUrls.User.GetById.Replace("{id:guid}", registerResponse.UserId.ToString());
@@ -355,7 +355,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var updatePersonalInfoRequest = new UpdatePersonalInfoRequest("UpdatedFirstName", "UpdatedLastName");
         
         // Act
-        var updatePersonalInfoResult = await _adminHttpClient.PutAsJsonAsync(updatePersonalInfoUrl, updatePersonalInfoRequest);
+        var updatePersonalInfoResult = await _authorizedHttpClient.PutAsJsonAsync(updatePersonalInfoUrl, updatePersonalInfoRequest);
         var getByIdResult = await _adminHttpClient.GetAsync(getByIdUrl);
         var userResponse = await getByIdResult.Content.ReadFromJsonAsync<GetUserByIdResponse>();
         
@@ -374,7 +374,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     public async Task UpdatePersonalInfo_InvalidFirstName_ReturnsBadRequest(string firstName)
     {
         // Arrange
-        var registerRequest = new RegisterRequest(FirstName: "Update", LastName: "User", Email: "update@user.com", Password: "P@ssw0rd");
+        var registerRequest = new RegisterRequest(FirstName: "Update", LastName: "User", Email: "update_two@user.com", Password: "P@ssw0rd");
         var registerResult = await _adminHttpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, registerRequest);
         var registerResponse = await registerResult.Content.ReadFromJsonAsync<RegisterResponse>();
         var updatePersonalInfoUrl = IdentityModuleUrls.User.UpdatePersonalInfo.Replace("{id:guid}", registerResponse.UserId.ToString());
@@ -382,7 +382,7 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
         var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidFirstName };
         
         // Act
-        var updatePersonalInfoResult = await _adminHttpClient.PutAsJsonAsync(updatePersonalInfoUrl, updatePersonalInfoRequest);
+        var updatePersonalInfoResult = await _authorizedHttpClient.PutAsJsonAsync(updatePersonalInfoUrl, updatePersonalInfoRequest);
         var updatePersonalInfoResponse = await updatePersonalInfoResult.Content.ReadFromJsonAsync<ProblemDetails>();
         
         // Assert
@@ -399,15 +399,15 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     public async Task UpdatePersonalInfo_InvalidLastName_ReturnsBadRequest(string lastName)
     {
         // Arrange
-        var registerRequest = new RegisterRequest(FirstName: "Update", LastName: "User", Email: "update@user.com", Password: "P@ssw0rd");
+        var registerRequest = new RegisterRequest(FirstName: "Update", LastName: "User", Email: "update_three@user.com", Password: "P@ssw0rd");
         var registerResult = await _adminHttpClient.PostAsJsonAsync(IdentityModuleUrls.Authentication.Register, registerRequest);
         var registerResponse = await registerResult.Content.ReadFromJsonAsync<RegisterResponse>();
         var updatePersonalInfoUrl = IdentityModuleUrls.User.UpdatePersonalInfo.Replace("{id:guid}", registerResponse.UserId.ToString());
         var updatePersonalInfoRequest = new UpdatePersonalInfoRequest("UpdatedFirstName", lastName);
-        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidFirstName };
+        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.InvalidLastName };
         
         // Act
-        var updatePersonalInfoResult = await _adminHttpClient.PutAsJsonAsync(updatePersonalInfoUrl, updatePersonalInfoRequest);
+        var updatePersonalInfoResult = await _authorizedHttpClient.PutAsJsonAsync(updatePersonalInfoUrl, updatePersonalInfoRequest);
         var updatePersonalInfoResponse = await updatePersonalInfoResult.Content.ReadFromJsonAsync<ProblemDetails>();
         
         // Assert
