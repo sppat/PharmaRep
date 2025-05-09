@@ -42,7 +42,7 @@ public class UserTests
 
     #endregion
 
-    #region FirstName
+    #region First Name
 
     [Theory]
     [InlineData("")]
@@ -61,7 +61,7 @@ public class UserTests
 
     #endregion
 
-    #region LastName
+    #region Last Name
 
     [Theory]
     [InlineData("")]
@@ -76,6 +76,68 @@ public class UserTests
         
         // Assert
         Assert.Throws<UserArgumentException>(CreateUser);
+    }
+
+    #endregion
+
+    #region Update First Name
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData(null)]
+    [InlineData("1abc")]
+    public void UpdateFirstName_InvalidFirstName_ThrowsException(string firstName)
+    {
+        // Act
+        void UpdateFirstName() => _validUser.UpdateFirstName(firstName);
+        
+        // Assert
+        Assert.Throws<UserArgumentException>(UpdateFirstName);
+    }
+    
+    [Fact]
+    public void UpdateFirstName_ValidFirstName_UpdatesFirstName()
+    {
+        // Arrange
+        const string newFirstName = "Jane";
+        
+        // Act
+        _validUser.UpdateFirstName(newFirstName);
+        
+        // Assert
+        Assert.Equal(newFirstName, _validUser.FirstName);
+    }
+
+    #endregion
+    
+    #region Update Last Name
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData(null)]
+    [InlineData("1abc")]
+    public void UpdateFirstName_InvalidLastName_ThrowsException(string lastName)
+    {
+        // Act
+        void UpdateLastName() => _validUser.UpdateLastName(lastName);
+        
+        // Assert
+        Assert.Throws<UserArgumentException>(UpdateLastName);
+    }
+    
+    [Fact]
+    public void UpdateFirstName_ValidLastName_UpdatesLastName()
+    {
+        // Arrange
+        const string newLastName = "Jane";
+        
+        // Act
+        _validUser.UpdateLastName(newLastName);
+        
+        // Assert
+        Assert.Equal(newLastName, _validUser.LastName);
     }
 
     #endregion
