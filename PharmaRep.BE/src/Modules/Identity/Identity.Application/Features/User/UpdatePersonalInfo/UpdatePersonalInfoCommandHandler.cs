@@ -15,8 +15,7 @@ public class UpdatePersonalInfoCommandHandler(IUserRepository userRepository,
         var user = await userRepository.GetUserAsync(request.UserId, cancellationToken);
         if (user is null)
         {
-            var errors = new[] { IdentityModuleDomainErrors.UserErrors.UserNotFound };
-            return Result.Failure(errors, ResultType.NotFound);
+            return Result.Failure(errors: [IdentityModuleDomainErrors.UserErrors.UserNotFound], ResultType.NotFound);
         }
 
         if (string.Equals(user.FirstName, request.FirstName) && string.Equals(user.LastName, request.LastName))
