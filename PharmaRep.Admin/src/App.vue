@@ -1,5 +1,7 @@
 <script>
+import Sidebar from './components/Sidebar.vue'
 export default {
+  components: { Sidebar },
   data() {
     return {
       users: [
@@ -13,20 +15,32 @@ export default {
 </script>
 
 <template>
-  <section>
-    <h2>Users</h2>
-    <ul>
-      <li v-for="user in users" :key="user.id">
-        <user :user="user"></user>
-      </li>
-    </ul>
-  </section>
+  <div class="main-container">
+    <sidebar></sidebar>
+    <main class="main-content">main</main>
+  </div>
 </template>
 
-<style scoped>
+<style  >
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+body {
+  background-color: #393E46;
+  color: #fff;
+}
+
+.main-container {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 60px 1fr;
+}
+
+.main-side-bar {
+  background-color: #000;
 }
 </style>

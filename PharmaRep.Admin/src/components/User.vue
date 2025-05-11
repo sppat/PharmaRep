@@ -1,7 +1,7 @@
 <script>
 export default {
   props: {
-    user: Object
+    user: Object,
   },
   data() {
     return {}
@@ -10,8 +10,6 @@ export default {
 </script>
 
 <template>
-  <li>
-    <p>Name: {{ user.name }}</p>
-    <p>Age: {{ user.age }}</p>
-  </li>
+  <p>Name: {{ user.name }}</p>
+  <p>Age: {{ user.age }}</p>
 </template>
