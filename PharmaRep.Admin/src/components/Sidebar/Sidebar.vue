@@ -11,8 +11,12 @@ export default {
   <aside class="main-side-bar">
     <nav>
       <ul class="nav-list">
-        <li class="nav-list-item"><user-icon /></li>
-        <li class="nav-list-item"><appointment-icon /></li>
+        <li class="nav-list-item">
+          <router-link to="/users"><user-icon /></router-link>
+        </li>
+        <li class="nav-list-item">
+          <router-link to="/appointments"><appointment-icon /></router-link>
+        </li>
       </ul>
     </nav>
   </aside>
@@ -39,5 +43,15 @@ nav,
   justify-content: center;
   align-items: center;
   padding: 0.4rem;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+a:hover,
+a.router-link-active {
+  color: #948979;
 }
 </style>

@@ -10,7 +10,7 @@ export default {
         { id: 3, name: 'Alice Johnson', age: 28 },
       ],
     }
-  }
+  },
 }
 </script>
 
@@ -43,6 +43,6 @@ body {
 }
 
 .main-side-bar {
-  background-color: #000;
+  background-color: #222831;
 }
 </style>
