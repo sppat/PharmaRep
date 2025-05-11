@@ -10,18 +10,20 @@ export default {
         { id: 3, name: 'Alice Johnson', age: 28 },
       ],
     }
-  },
+  }
 }
 </script>
 
 <template>
   <div class="main-container">
     <sidebar></sidebar>
-    <main class="main-content">main</main>
+    <main class="main-content">
+      <router-view></router-view>
+    </main>
   </div>
 </template>
 
-<style  >
+<style>
 * {
   box-sizing: border-box;
   margin: 0;
@@ -29,7 +31,7 @@ export default {
 }
 
 body {
-  background-color: #393E46;
+  background-color: #393e46;
   color: #fff;
 }
 
