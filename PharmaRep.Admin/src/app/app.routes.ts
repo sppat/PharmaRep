@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 import { UserListComponent } from './user-list/user-list.component';
 import { EventListComponent } from './event-list/event-list.component';
-import { UserComponent } from './user-list/user/user.component';
+import { UserFormComponent } from './user-list/user-form/user-form.component';
 
 export const routes: Routes = [
   { path: 'users', component: UserListComponent },
-  { path: 'users/:id', component: UserComponent },
+  { path: 'users/:id', component: UserFormComponent },
   { path: 'events', component: EventListComponent },
 ];

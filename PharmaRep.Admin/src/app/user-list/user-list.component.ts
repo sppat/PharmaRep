@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { User } from '../models/user';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-user-list',
@@ -10,21 +11,14 @@ import { RouterModule } from '@angular/router';
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css',
 })
-export class UserListComponent {
-  users: User[] = [
-    {
-      id: 1,
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john@doe.com',
-      roles: [{ id: 2, name: 'Doctor' }],
-    },
-    {
-      id: 2,
-      firstName: 'John',
-      lastName: 'Foo',
-      email: 'john@foo.com',
-      roles: [{ id: 2, name: 'Medical Representative' }],
-    },
-  ];
+export class UserListComponent implements OnInit {
+  users: User[] = [];
+
+  constructor(private userService: UserService) {}
+
+  ngOnInit(): void {
+    this.userService
+      .getUsers()
+      .subscribe((response) => (this.users = response.items));
+  }
 }
