@@ -9,9 +9,9 @@ public record AppointmentDate
     
     private AppointmentDate(DateTime value)
     {
-        if (value < DateTime.UtcNow)
+        if (value == default)
         {
-            throw new AppointmentDateException(AppointmentsModuleDomainErrors.AppointmentErrors.PastDate);
+            throw new AppointmentDateException(AppointmentsModuleDomainErrors.AppointmentErrors.EmptyDate);
         }
 
         Value = value;
