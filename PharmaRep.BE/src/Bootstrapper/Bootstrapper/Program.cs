@@ -1,6 +1,8 @@
 using Bootstrapper;
+using Bootstrapper.Configurations;
 using Identity.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.OpenApi.Models;
 using Shared.Application;
 
@@ -37,6 +39,16 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PharmaRepClientPolicy", corsPolicyBuilder =>
+    {
+        var corsConfiguration = builder.Configuration.GetSection("Cors").Get<CorsConfiguration>();
+        corsPolicyBuilder.WithOrigins(corsConfiguration.AllowedOrigins.ToArray())
+            .WithMethods(corsConfiguration.AllowedMethods.ToArray())
+            .WithHeaders(corsConfiguration.AllowedHeaders.ToArray());
+    });
+});
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddDispatcher();
@@ -53,6 +65,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseExceptionHandler();
+
+app.UseCors("PharmaRepClientPolicy");
 
 await app.UseIdentityMiddleware();
 
