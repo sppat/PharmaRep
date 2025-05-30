@@ -18,19 +18,19 @@ services:
       PGADMIN_DEFAULT_PASSWORD: "P@ssw0rd"
     ports:
       - "5001:80"
-  pharmarepbe:
-    build:
-      context: .
-      dockerfile: PharmaRep.BE/Dockerfile
-    ports:
-      - "5000:8080"
-    container_name: pharmarepbe
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORT=8080
-      - ConnectionStrings__IdentityConnection=Server=postgres;Port=5432;Database=PharmaRep;User Id=postgres;Password=P@ssw0rd;
-    depends_on:
-      - postgres
+  # pharmarepbe:
+  #   build:
+  #     context: .
+  #     dockerfile: PharmaRep.BE/Dockerfile
+  #   ports:
+  #     - "5000:8080"
+  #   container_name: pharmarepbe
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #     - ASPNETCORE_HTTP_PORT=8080
+  #     - ConnectionStrings__IdentityConnection=Server=postgres;Port=5432;Database=PharmaRep;User Id=postgres;Password=P@ssw0rd;
+  #   depends_on:
+  #     - postgres
       
 volumes:
   postgresdata:
