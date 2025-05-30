@@ -2,4 +2,4 @@
 
 namespace Appointments.Domain.Exceptions;
 
-public class AppointmentEmptyAddressException() : Exception(AppointmentsModuleDomainErrors.AppointmentErrors.EmptyAddress);
+public class AppointmentEmptyAddressException() : Exception(AppointmentsModuleDomainErrors.AppointmentErrors.InvalidAddress);

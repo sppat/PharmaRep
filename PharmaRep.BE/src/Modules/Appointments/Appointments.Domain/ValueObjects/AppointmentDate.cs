@@ -5,18 +5,24 @@ namespace Appointments.Domain.ValueObjects;
 
 public record AppointmentDate
 {
-    public DateTime Value { get; }
+    public DateTime StartDate { get; }
+    public DateTime EndDate { get; }
     
-    private AppointmentDate(DateTime value)
+    private AppointmentDate(DateTime startDate, DateTime endDate)
     {
-        if (value == default)
+        StartDate = startDate;
+        EndDate = endDate;
+    }
+
+    public static bool TryCreate(DateTime startDate, DateTime endDate, out AppointmentDate appointmentDate)
+    {
+        if (startDate == default || endDate == default || startDate > endDate)
         {
-            throw new AppointmentDateException(AppointmentsModuleDomainErrors.AppointmentErrors.EmptyDate);
+            appointmentDate = null;
+            return false;
         }
 
-        Value = value;
+        appointmentDate = new AppointmentDate(startDate, endDate);
+        return true;
     }
-    
-    public static implicit operator AppointmentDate(DateTime date) => new(date);
-    public static implicit operator DateTime(AppointmentDate appointmentDate) => appointmentDate.Value;
 }

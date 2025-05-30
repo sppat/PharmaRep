@@ -1,21 +1,27 @@
-﻿using Appointments.Domain.Exceptions;
-
-namespace Appointments.Domain.ValueObjects;
+﻿namespace Appointments.Domain.ValueObjects;
 
 public record AppointmentAddress
 {
-    public string Value { get; }
+    public string Street { get; }
+    public ushort Number { get; }
+    public uint ZipCode { get; }
 
-    private AppointmentAddress(string value)
+    private AppointmentAddress(string street, ushort number, uint zipCode)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new AppointmentEmptyAddressException();
-        }
-
-        Value = value;
+        Street = street;
+        Number = number;
+        ZipCode = zipCode;
     }
     
-    public static implicit operator AppointmentAddress(string address) => new(address);
-    public static implicit operator string(AppointmentAddress address) => address.Value;
+    public static bool TryCreate(string street, ushort number, uint zipCode, out AppointmentAddress address)
+    {
+        if (string.IsNullOrWhiteSpace(street) || zipCode == 0)
+        {
+            address = null;
+            return false;
+        }
+
+        address = new AppointmentAddress(street, number, zipCode);
+        return true;
+    }
 }
