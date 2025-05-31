@@ -1,7 +1,4 @@
-﻿using Appointments.Domain.DomainErrors;
-using Appointments.Domain.Exceptions;
-
-namespace Appointments.Domain.ValueObjects;
+﻿namespace Appointments.Domain.ValueObjects;
 
 public record AppointmentDate
 {
