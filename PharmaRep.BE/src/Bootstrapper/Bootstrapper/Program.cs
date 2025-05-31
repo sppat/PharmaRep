@@ -2,7 +2,6 @@ using Bootstrapper;
 using Bootstrapper.Configurations;
 using Identity.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.OpenApi.Models;
 using Shared.Application;
 

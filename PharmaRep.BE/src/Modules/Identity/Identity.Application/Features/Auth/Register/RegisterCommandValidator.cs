@@ -1,6 +1,5 @@
 using FluentValidation;
 using Identity.Domain.DomainErrors;
-using Identity.Domain.Entities;
 using Identity.Domain.RegexConstants;
 
 namespace Identity.Application.Features.Auth.Register;

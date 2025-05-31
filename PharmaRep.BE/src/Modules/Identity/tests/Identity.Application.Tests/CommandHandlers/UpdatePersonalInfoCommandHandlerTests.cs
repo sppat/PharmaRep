@@ -5,7 +5,6 @@ using Identity.Domain.Entities;
 using Identity.Domain.Exceptions.UserExceptions;
 using Moq;
 using Shared.Application.Results;
-using Shared.Tests.Database;
 
 namespace Identity.Application.Tests.CommandHandlers;
 
