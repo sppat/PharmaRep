@@ -1,4 +1,5 @@
 ﻿using Appointments.Domain.Entities;
+using Appointments.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Constants;
 

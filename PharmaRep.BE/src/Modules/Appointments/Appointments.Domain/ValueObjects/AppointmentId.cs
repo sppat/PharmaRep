@@ -3,6 +3,8 @@
 public record AppointmentId
 {
     public Guid Value { get; private set; }
+    
+    private AppointmentId() { }
 
     private AppointmentId(Guid value)
     {

@@ -2,7 +2,9 @@
 
 public record UserId
 {
-    public Guid Value { get; }
+    public Guid Value { get; private set; }
+    
+    private UserId() { }
 
     private UserId(Guid value)
     {

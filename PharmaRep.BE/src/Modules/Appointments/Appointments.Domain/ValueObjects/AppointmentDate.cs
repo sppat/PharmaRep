@@ -2,13 +2,10 @@
 
 public record AppointmentDate
 {
-    public DateTime StartDate { get; }
-    public DateTime EndDate { get; }
+    public DateTime StartDate { get; private set; }
+    public DateTime EndDate { get; private set; }
 
-    private AppointmentDate()
-    {
-        
-    }
+    private AppointmentDate() { }
     
     private AppointmentDate(DateTime startDate, DateTime endDate)
     {

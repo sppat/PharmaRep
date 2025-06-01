@@ -8,6 +8,8 @@ public class Attendee
 {
     public UserId UserId { get; private set; }
     public AppointmentId AppointmentId { get; private set; }
+    
+    private Attendee() { }
 
     private Attendee(UserId userId, AppointmentId appointmentId)
     {

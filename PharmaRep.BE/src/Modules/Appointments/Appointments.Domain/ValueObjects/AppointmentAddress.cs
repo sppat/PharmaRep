@@ -2,9 +2,11 @@
 
 public record AppointmentAddress
 {
-    public string Street { get; }
-    public ushort Number { get; }
-    public uint ZipCode { get; }
+    public string Street { get; private set; }
+    public ushort Number { get; private set; }
+    public uint ZipCode { get; private set; }
+    
+    private AppointmentAddress() { }
 
     private AppointmentAddress(string street, ushort number, uint zipCode)
     {

@@ -16,6 +16,8 @@ public class Appointment
     public UserId UpdatedBy { get; private set; }
     public DateTime UpdatedAt { get; private set; }
 
+    private Appointment() { }
+    
     private Appointment(AppointmentId id,
         AppointmentDate date,
         AppointmentAddress address,

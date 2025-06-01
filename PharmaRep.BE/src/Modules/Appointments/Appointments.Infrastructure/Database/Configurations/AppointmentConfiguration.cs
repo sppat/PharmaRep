@@ -10,14 +10,17 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
     public void Configure(EntityTypeBuilder<Appointment> builder)
     {
         builder.HasKey(appointment => appointment.Id);
+        builder.Property(appointment => appointment.Id).HasConversion(new AppointmentIdConverter());
         
-        builder.Property(appointment => appointment.Id)
-            .HasConversion(new AppointmentIdConverter());
+        builder.ComplexProperty(appointment => appointment.Date).IsRequired();
+        builder.ComplexProperty(appointment => appointment.Address).IsRequired();
+        
+        builder.Property(appointment => appointment.CreatedBy).HasConversion(new UserIdConverter());
+        builder.Property(appointment => appointment.UpdatedBy).HasConversion(new UserIdConverter());
 
-        builder.ComplexProperty(appointment => appointment.Date);
-        builder.ComplexProperty(appointment => appointment.Address);
-
-        builder.HasMany(appointment => appointment.Attendees)
-            .WithMany();
+        builder.HasMany(appointment => appointment.Attendees).WithOne().HasForeignKey(attendee => attendee.AppointmentId).OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasIndex(appointment => appointment.Id).IsUnique();
+        builder.HasIndex(appointment => appointment.CreatedBy);
     }
 }
