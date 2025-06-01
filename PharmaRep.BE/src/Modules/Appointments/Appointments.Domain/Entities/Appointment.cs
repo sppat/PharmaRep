@@ -6,27 +6,28 @@ namespace Appointments.Domain.Entities;
 
 public class Appointment
 {
-    public Guid Id { get; private set; }
+    public AppointmentId Id { get; private set; }
     public AppointmentDate Date { get; private set; }
     public AppointmentAddress Address { get; private set; }
-    public IEnumerable<UserId> AttendeeIds { get; private set; }
+    public IEnumerable<Attendee> Attendees { get; private set; }
     
     public UserId CreatedBy { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public UserId UpdatedBy { get; private set; }
     public DateTime UpdatedAt { get; private set; }
 
-    private Appointment(AppointmentDate date,
+    private Appointment(AppointmentId id,
+        AppointmentDate date,
         AppointmentAddress address,
         UserId createdBy,
-        IEnumerable<UserId> attendeeIds)
+        IEnumerable<Attendee> attendees)
     {
-        Id = Guid.NewGuid();
+        Id = id;
         Date = date;
         Address = address;
         CreatedBy = createdBy;
         CreatedAt = DateTime.UtcNow;
-        AttendeeIds = attendeeIds ?? [];
+        Attendees = attendees ?? [];
     }
     
     public static DomainResult<Appointment> Create(DateTime startDate, 
@@ -55,15 +56,19 @@ public class Appointment
             return AppointmentsModuleDomainErrors.AppointmentErrors.EmptyOrganizerId;
         }
 
-        var attendees = new List<UserId>();
+        AppointmentId.TryCreate(Guid.NewGuid(), out var appointmentId);
+        var attendees = new List<Attendee>();
         foreach (var attendeeId in attendeeIds)
         {
-            var attendeeIdIsValid = UserId.TryCreate(attendeeId, out var attendee);
+            var attendeeIdIsValid = UserId.TryCreate(attendeeId, out _);
             if (!attendeeIdIsValid) return AppointmentsModuleDomainErrors.AppointmentErrors.AttendeeEmptyId;
             
-            attendees.Add(attendee);
+            var attendeeResult = Attendee.Create(userId: attendeeId, appointmentId: appointmentId.Value);
+            if (!attendeeResult.IsSuccess) return attendeeResult.ErrorMessage;
+            
+            attendees.Add(attendeeResult.Value);
         }
         
-        return new Appointment(date, address, organizer, attendees);
+        return new Appointment(appointmentId, date, address, organizer, attendees);
     }
 }
