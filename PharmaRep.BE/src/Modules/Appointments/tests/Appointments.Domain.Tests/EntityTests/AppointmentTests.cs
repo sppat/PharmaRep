@@ -36,14 +36,14 @@ public class AppointmentTests
         Assert.NotNull(result.Value);
         
         var appointment = result.Value;
-        Assert.NotEqual(Guid.Empty, appointment.Id);
+        Assert.NotEqual(Guid.Empty, appointment.Id.Value);
         Assert.Equal(_validStartDate, appointment.Date.StartDate);
         Assert.Equal(_validEndDate, appointment.Date.EndDate);
         Assert.Equal(ValidStreet, appointment.Address.Street);
         Assert.Equal(ValidNumber, appointment.Address.Number);
         Assert.Equal(ValidZipCode, appointment.Address.ZipCode);
         Assert.Equal(_validOrganizerId, appointment.CreatedBy.Value);
-        Assert.Equal(_validAttendeeIds, appointment.AttendeeIds.Select(id => id.Value).ToArray());
+        Assert.Equal(_validAttendeeIds, appointment.Attendees.Select(attendee => attendee.UserId.Value).ToArray());
     }
     
     [Fact]
@@ -132,5 +132,27 @@ public class AppointmentTests
         Assert.Null(result.Value);
         Assert.NotNull(result.ErrorMessage);
         Assert.Equal(AppointmentsModuleDomainErrors.AppointmentErrors.EmptyOrganizerId, result.ErrorMessage);
+    }
+    
+    [Fact]
+    public void Create_EmptyAttendeeId_ReturnFailDomainResult()
+    {
+        // Arrange
+        var attendeeIds = new[] { Guid.Empty };
+
+        // Act
+        var result = Appointment.Create(startDate: _validStartDate,
+            endDate: _validEndDate,
+            street: ValidStreet,
+            number: ValidNumber,
+            zipCode: ValidZipCode,
+            organizerId: _validOrganizerId,
+            attendeeIds: attendeeIds);
+        
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Null(result.Value);
+        Assert.NotNull(result.ErrorMessage);
+        Assert.Equal(AppointmentsModuleDomainErrors.AppointmentErrors.AttendeeEmptyId, result.ErrorMessage);
     }
 }
