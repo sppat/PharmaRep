@@ -1,3 +1,4 @@
+using Appointments.WebApi;
 using Bootstrapper;
 using Bootstrapper.Configurations;
 using Identity.WebApi;
@@ -51,7 +52,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddDispatcher();
-builder.Services.AddIdentityWebApi(builder.Configuration);
+builder.Services.AddIdentityWebApi(builder.Configuration)
+    .AddAppointmentsWebApi(builder.Configuration);
 
 var app = builder.Build();
 
