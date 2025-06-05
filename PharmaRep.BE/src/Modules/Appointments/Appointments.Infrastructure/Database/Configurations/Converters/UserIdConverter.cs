@@ -4,25 +4,21 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Appointments.Infrastructure.Database.Configurations.Converters;
 
-public class UserIdConverter : ValueConverter<UserId, Guid>
+public class UserIdConverter : ValueConverter<UserId, Guid?>
 {
     public UserIdConverter() : base(ToProviderExpression, FromProviderExpression)
     {
         
     }
 
-    private static readonly Expression<Func<UserId, Guid>> ToProviderExpression = userId => ToProvider(userId);
-    private static readonly Expression<Func<Guid, UserId>> FromProviderExpression = guid => FromProvider(guid);
+    private static readonly Expression<Func<UserId, Guid?>> ToProviderExpression = userId => ToProvider(userId);
+    private static readonly Expression<Func<Guid?, UserId>> FromProviderExpression = guid => FromProvider(guid);
     
-    private static Guid ToProvider(UserId userId) => userId.Value;
+    private static Guid? ToProvider(UserId userId) => userId?.Value;
     
-    private static UserId FromProvider(Guid guid)
+    private static UserId FromProvider(Guid? guid)
     {
-        var userIdIsValid = UserId.TryCreate(guid, out var userId);
-        if (!userIdIsValid)
-        {
-            throw new ArgumentException("Invalid UserId format", nameof(guid));
-        }
+        UserId.TryCreate(guid ?? Guid.Empty, out var userId);
 
         return userId;
     }

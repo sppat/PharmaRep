@@ -18,11 +18,7 @@ public class AppointmentIdConverter : ValueConverter<AppointmentId, Guid>
     
     private static AppointmentId FromProvider(Guid guid)
     {
-        var appointmentIdIsValid = AppointmentId.TryCreate(guid, out var appointmentId);
-        if (!appointmentIdIsValid)
-        {
-            throw new ArgumentException("Invalid AppointmentId format", nameof(guid));
-        }
+        AppointmentId.TryCreate(guid, out var appointmentId);
 
         return appointmentId;
     }

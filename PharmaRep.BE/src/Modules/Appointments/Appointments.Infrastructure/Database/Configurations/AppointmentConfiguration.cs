@@ -15,7 +15,7 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.ComplexProperty(appointment => appointment.Date).IsRequired();
         builder.ComplexProperty(appointment => appointment.Address).IsRequired();
         
-        builder.Property(appointment => appointment.CreatedBy).HasConversion(new UserIdConverter());
+        builder.Property(appointment => appointment.CreatedBy).IsRequired().HasConversion(new UserIdConverter());
         builder.Property(appointment => appointment.UpdatedBy).HasConversion(new UserIdConverter());
 
         builder.HasMany(appointment => appointment.Attendees).WithOne().HasForeignKey(attendee => attendee.AppointmentId).OnDelete(DeleteBehavior.Cascade);
