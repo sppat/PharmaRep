@@ -8,6 +8,8 @@ public class DomainResult<T> where T : class
 
     private DomainResult(T value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+        
         Value = value;
         ErrorMessage = string.Empty;
     }

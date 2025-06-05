@@ -1,4 +1,5 @@
-﻿using Appointments.Domain.DomainErrors;
+﻿using System.Collections.Concurrent;
+using Appointments.Domain.DomainErrors;
 using Appointments.Domain.ValueObjects;
 using Shared.Domain;
 
@@ -14,7 +15,7 @@ public class Appointment
     public UserId CreatedBy { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public UserId UpdatedBy { get; private set; }
-    public DateTime UpdatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
     private Appointment() { }
     
@@ -30,6 +31,8 @@ public class Appointment
         CreatedBy = createdBy;
         CreatedAt = DateTime.UtcNow;
         Attendees = attendees ?? [];
+        UpdatedBy = null;
+        UpdatedAt = null;
     }
     
     public static DomainResult<Appointment> Create(DateTime startDate, 
@@ -60,7 +63,7 @@ public class Appointment
 
         AppointmentId.TryCreate(Guid.NewGuid(), out var appointmentId);
         var attendees = new List<Attendee>();
-        foreach (var attendeeId in attendeeIds)
+        foreach (var attendeeId in attendeeIds ?? [])
         {
             var attendeeIdIsValid = UserId.TryCreate(attendeeId, out _);
             if (!attendeeIdIsValid) return AppointmentsModuleDomainErrors.AppointmentErrors.AttendeeEmptyId;
