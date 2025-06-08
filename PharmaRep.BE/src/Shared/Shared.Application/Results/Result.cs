@@ -30,7 +30,7 @@ public class Result
 
 public class Result<T> : Result
 {
-    public T Value { get; init; }
+    public T Value { get; }
 
     private Result(T value, ResultType type) : base(type)
     {

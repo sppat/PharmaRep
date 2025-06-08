@@ -23,10 +23,14 @@ public class CreateAppointmentCommandHandler(IAppointmentRepository appointmentR
         }
         
         var appointment = domainResult.Value;
+        if (appointment is null)
+        {
+            return Result<Guid>.Failure(["Failed to create appointment."], ResultType.ServerError);
+        }
         
         await appointmentRepository.AddAsync(appointment, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         
-        return Result<Guid>.Success(appointment!.Id.Value);
+        return Result<Guid>.Success(appointment.Id.Value);
     }
 }
