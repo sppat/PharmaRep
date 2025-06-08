@@ -13,9 +13,9 @@ public class Appointment
     public IEnumerable<Attendee> Attendees { get; private set; }
     
     public UserId CreatedBy { get; private set; }
-    public DateTime CreatedAt { get; private set; }
+    public DateTimeOffset CreatedAt { get; private set; }
     public UserId UpdatedBy { get; private set; }
-    public DateTime? UpdatedAt { get; private set; }
+    public DateTimeOffset? UpdatedAt { get; private set; }
 
     private Appointment() { }
     
@@ -29,7 +29,7 @@ public class Appointment
         Date = date;
         Address = address;
         CreatedBy = createdBy;
-        CreatedAt = DateTime.UtcNow;
+        CreatedAt = DateTimeOffset.UtcNow;
         Attendees = attendees ?? [];
         UpdatedBy = null;
         UpdatedAt = null;
