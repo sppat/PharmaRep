@@ -31,6 +31,6 @@ public class CreateAppointmentCommandHandler(IAppointmentRepository appointmentR
         await appointmentRepository.AddAsync(appointment, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         
-        return Result<Guid>.Success(appointment.Id.Value);
+        return Result<Guid>.Success(appointment.Id.Value, ResultType.Created);
     }
 }
