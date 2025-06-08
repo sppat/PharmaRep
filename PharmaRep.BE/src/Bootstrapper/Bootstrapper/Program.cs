@@ -70,6 +70,7 @@ app.UseExceptionHandler();
 app.UseCors("PharmaRepClientPolicy");
 
 await app.UseIdentityMiddleware();
+await app.UseAppointmentMiddleware();
 
 app.Run();
 

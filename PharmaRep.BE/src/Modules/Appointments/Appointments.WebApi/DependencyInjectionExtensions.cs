@@ -20,7 +20,7 @@ public static class DependencyInjectionExtensions
         return services;
     }
 
-    public static async  Task<WebApplication> UseIdentityMiddleware(this WebApplication app)
+    public static async  Task<WebApplication> UseAppointmentMiddleware(this WebApplication app)
     {
         app.MapAppointmentEndpoints();
         app.UseAuthentication();

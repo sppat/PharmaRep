@@ -35,8 +35,8 @@ public class Appointment
         UpdatedAt = null;
     }
     
-    public static DomainResult<Appointment> Create(DateTime startDate, 
-        DateTime endDate,
+    public static DomainResult<Appointment> Create(DateTimeOffset startDate, 
+        DateTimeOffset endDate,
         string street,
         ushort number,
         uint zipCode,

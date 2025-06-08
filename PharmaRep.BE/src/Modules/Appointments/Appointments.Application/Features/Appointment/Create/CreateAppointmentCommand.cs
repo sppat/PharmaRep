@@ -3,8 +3,8 @@ using Shared.Application.Results;
 
 namespace Appointments.Application.Features.Appointment.Create;
 
-public record CreateAppointmentCommand(DateTime StartDate,
-    DateTime EndDate,
+public record CreateAppointmentCommand(DateTimeOffset StartDate,
+    DateTimeOffset EndDate,
     string Street,
     ushort Number,
     uint ZipCode,

@@ -9,8 +9,8 @@ public class AppointmentTests
     private const ushort ValidNumber = 1;
     private const uint ValidZipCode = 12345;
     
-    private readonly DateTime _validStartDate = DateTime.UtcNow;
-    private readonly DateTime _validEndDate = DateTime.UtcNow.AddHours(1);
+    private readonly DateTimeOffset _validStartDate = DateTimeOffset.UtcNow;
+    private readonly DateTimeOffset _validEndDate = DateTimeOffset.UtcNow.AddHours(1);
     private readonly Guid _validOrganizerId = Guid.NewGuid();
     private readonly Guid[] _validAttendeeIds =
     [

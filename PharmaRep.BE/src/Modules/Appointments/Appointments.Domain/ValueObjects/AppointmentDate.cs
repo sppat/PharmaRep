@@ -2,18 +2,18 @@
 
 public record AppointmentDate
 {
-    public DateTime StartDate { get; private set; }
-    public DateTime EndDate { get; private set; }
+    public DateTimeOffset StartDate { get; private set; }
+    public DateTimeOffset EndDate { get; private set; }
 
     private AppointmentDate() { }
     
-    private AppointmentDate(DateTime startDate, DateTime endDate)
+    private AppointmentDate(DateTimeOffset startDate, DateTimeOffset endDate)
     {
         StartDate = startDate;
         EndDate = endDate;
     }
 
-    public static bool TryCreate(DateTime startDate, DateTime endDate, out AppointmentDate appointmentDate)
+    public static bool TryCreate(DateTimeOffset startDate, DateTimeOffset endDate, out AppointmentDate appointmentDate)
     {
         if (startDate == default || endDate == default || startDate > endDate)
         {
