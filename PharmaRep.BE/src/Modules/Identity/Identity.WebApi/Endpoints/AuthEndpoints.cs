@@ -43,6 +43,6 @@ public static class AuthEndpoints
         var command = request.ToCommand();
         var result = await dispatcher.SendAsync(command, cancellationToken);
 
-        return result.ToHttpResult(AuthResponseMappings.ToRegisterResponse, createdAt: "GetByIdAsync");
+        return result.ToHttpResult(AuthResponseMappings.ToRegisterResponse, createdAt: "Identity.GetByIdAsync");
     }
 }

@@ -37,7 +37,7 @@ public static class UserEndpoints
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription("Retrieves a user by id.")
-            .WithName(nameof(GetByIdAsync))
+            .WithName($"Identity.{nameof(GetByIdAsync)}")
             .WithTags(nameof(User));
 
         endpoints.MapPut(IdentityModuleUrls.User.UpdateRoles, UpdateRolesAsync)
