@@ -4,5 +4,5 @@ namespace Appointments.WebApi.Mappings;
 
 public static class AppointmentResponseMappings
 {
-    public static CreateAppointmentResponse ToResponse(this Guid appointmentId) => new(appointmentId);
+    public static CreateAppointmentResponse ToResponse(Guid appointmentId) => new(appointmentId);
 }

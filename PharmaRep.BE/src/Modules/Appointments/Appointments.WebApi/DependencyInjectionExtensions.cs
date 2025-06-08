@@ -1,4 +1,5 @@
-﻿using Appointments.Infrastructure;
+﻿using Appointments.Application;
+using Appointments.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +9,8 @@ public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddAppointmentsWebApi(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAppointmentsInfrastructure(configuration);
+        services.AddAppointmentsInfrastructure(configuration)
+            .AddAppointmentsApplication();
 
         return services;
     }
