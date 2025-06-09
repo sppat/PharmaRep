@@ -9,5 +9,6 @@ public static class AppointmentModuleUrls
         private const string AppointmentBaseUrl = $"{ModuleBaseUrl}/appointments";
 
         public const string Create = AppointmentBaseUrl;
+        public const string GetAll = AppointmentBaseUrl;
     }
 }

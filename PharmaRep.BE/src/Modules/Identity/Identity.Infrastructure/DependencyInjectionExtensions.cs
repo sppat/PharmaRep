@@ -4,6 +4,7 @@ using Identity.Domain.Entities;
 using Identity.Infrastructure.Authentication;
 using Identity.Infrastructure.Database;
 using Identity.Infrastructure.Repositories;
+using Identity.Public.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -59,6 +60,7 @@ public static class DependencyInjectionExtensions
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPublicUserRepository, PublicUserRepository>();
         services.AddScoped<IAuthHandler, JwtHandler>();
         
         return services;

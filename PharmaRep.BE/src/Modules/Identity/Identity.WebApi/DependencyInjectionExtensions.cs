@@ -1,6 +1,7 @@
 using Identity.Application;
 using Identity.Infrastructure;
 using Identity.Infrastructure.Database;
+using Identity.Public;
 using Identity.WebApi.Endpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,8 @@ public static class DependencyInjectionExtensions
     public static IServiceCollection AddIdentityWebApi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddIdentityInfrastructure(configuration)
-            .AddIdentityApplication();
+            .AddIdentityApplication()
+            .AddPublicIdentityModule();
         
         return services;
     }

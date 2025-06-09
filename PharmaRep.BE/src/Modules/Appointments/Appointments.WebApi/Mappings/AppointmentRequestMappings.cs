@@ -1,4 +1,5 @@
 ﻿using Appointments.Application.Features.Appointment.Create;
+using Appointments.Application.Features.Appointment.GetAll;
 using Appointments.WebApi.Requests;
 
 namespace Appointments.WebApi.Mappings;
@@ -12,4 +13,10 @@ public static class AppointmentRequestMappings
         ZipCode: request.ZipCode,
         OrganizerId: request.OrganizerId,
         AttendeeIds: request.AttendeeIds);
+
+    public static GetAppointmentsQuery ToQuery(this GetAppointmentsRequest request) => new(UserId: request.UserId,
+        From: request.From,
+        To: request.To,
+        PageNumber: request.PageNumber,
+        PageSize: request.PageSize);
 }

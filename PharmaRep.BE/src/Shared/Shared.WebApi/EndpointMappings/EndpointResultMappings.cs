@@ -6,7 +6,7 @@ namespace Shared.WebApi.EndpointMappings;
 public static class EndpointResultMappings
 {
     public static IResult ToHttpResult<T, TResponse>(this Result<T> serviceResult, Func<T, TResponse> responseMapper, string createdAt = null)
-        => serviceResult.Type switch 
+        => serviceResult.Type switch
         {
             ResultType.ValidationError => Results.Problem(title: "Bad Request", statusCode: StatusCodes.Status400BadRequest, extensions: serviceResult.GetErrors()),
             ResultType.BadRequest => Results.Problem(title: "Bad Request", statusCode: StatusCodes.Status400BadRequest, extensions: serviceResult.GetErrors()),
