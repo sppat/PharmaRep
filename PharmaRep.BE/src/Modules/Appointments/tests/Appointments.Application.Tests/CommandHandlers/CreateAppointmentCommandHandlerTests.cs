@@ -1,13 +1,16 @@
 ﻿using Appointments.Application.Abstractions;
+using Appointments.Application.Features;
 using Appointments.Application.Features.Appointment.Create;
 using Appointments.Domain.DomainErrors;
 using Moq;
 using Shared.Application.Results;
+using Shared.Application.Validation;
 
 namespace Appointments.Application.Tests.CommandHandlers;
 
 public class CreateAppointmentCommandHandlerTests
 {
+    private readonly Mock<IValidationOrchestrator<CreateAppointmentCommand>> _validationOrchestratorMock = new();
     private readonly Mock<IAppointmentRepository> _appointmentRepositoryMock = new();
     private readonly Mock<IAppointmentUnitOfWork> _unitOfWorkMock = new();
     private readonly CreateAppointmentCommandHandler _sut;
@@ -21,7 +24,29 @@ public class CreateAppointmentCommandHandlerTests
 
     public CreateAppointmentCommandHandlerTests()
     {
-        _sut = new CreateAppointmentCommandHandler(_appointmentRepositoryMock.Object, _unitOfWorkMock.Object);
+        _validationOrchestratorMock.Setup(mock => mock.ValidateAsync(It.IsAny<CreateAppointmentCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(ValidationResult.Valid);
+        
+        _sut = new CreateAppointmentCommandHandler(_validationOrchestratorMock.Object,
+            _appointmentRepositoryMock.Object,
+            _unitOfWorkMock.Object);
+    }
+
+    [Fact(DisplayName = "Verify that HandleAsync method returns failure when validator return error")]
+    public async Task HandleAsync_ValidatorError_ReturnsFailure()
+    {
+        // Arrange
+        const string expectedError = "Mock error";
+        _validationOrchestratorMock.Setup(mock => mock.ValidateAsync(It.IsAny<CreateAppointmentCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(ValidationResult.Failure([expectedError]));
+        
+        // Act
+        var result = await _sut.HandleAsync(_validCommand, CancellationToken.None);
+        
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Equal(ResultType.ValidationError, result.Type);
+        Assert.Contains(expectedError, result.Errors);
     }
     
     [Fact(DisplayName = "Verify that HandleAsync method returns success result for valid command")]

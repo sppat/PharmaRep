@@ -3,7 +3,7 @@ using Identity.Public.Contracts;
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 
-namespace Identity.Public.Features;
+namespace Identity.Public.Features.GetUsersBasicInfo;
 
 public class GetUsersBasicInfoQueryHandler(IPublicUserRepository publicUserRepository) : IRequestHandler<GetUsersBasicInfoQuery, Result<IEnumerable<UserBasicInfo>>>
 {

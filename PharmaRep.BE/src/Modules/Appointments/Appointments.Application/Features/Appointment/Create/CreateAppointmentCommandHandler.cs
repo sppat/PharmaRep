@@ -1,14 +1,22 @@
 ﻿using Appointments.Application.Abstractions;
 using Shared.Application.Mediator;
 using Shared.Application.Results;
+using Shared.Application.Validation;
 
 namespace Appointments.Application.Features.Appointment.Create;
 
-public class CreateAppointmentCommandHandler(IAppointmentRepository appointmentRepository, 
+public class CreateAppointmentCommandHandler(IValidationOrchestrator<CreateAppointmentCommand> validator,
+    IAppointmentRepository appointmentRepository, 
     IAppointmentUnitOfWork unitOfWork) : IRequestHandler<CreateAppointmentCommand, Result<Guid>>
 {
     public async Task<Result<Guid>> HandleAsync(CreateAppointmentCommand request, CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return Result<Guid>.Failure(validationResult.Errors, ResultType.ValidationError);
+        }
+        
         var domainResult = Domain.Entities.Appointment.Create(startDate: request.StartDate,
             endDate: request.EndDate,
             street: request.Street,
