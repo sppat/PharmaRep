@@ -12,33 +12,36 @@ public class GetAppointmentsQueryHandler(IDispatcher dispatcher,
 {
     public async Task<Result<AppointmentsPaginatedResult>> HandleAsync(GetAppointmentsQuery request, CancellationToken cancellationToken)
     {
-        var appointments = (await appointmentRepository.GetAllAsync(userId: request.UserId,
+        var appointments = await appointmentRepository.GetAllAsync(userId: request.UserId,
             from: request.From,
             to: request.To,
             pageNumber: request.PageNumber,
             pageSize: request.PageSize,
-            cancellationToken: cancellationToken)).ToList();
+            cancellationToken: cancellationToken);
 
-        var organizerIds = appointments.Select(appointment => appointment.CreatedBy.Value).ToList();
+        var organizerIds = appointments.Select(appointment => appointment.CreatedBy.Value);
         var attendeeIds = appointments.SelectMany(appointment => appointment.Attendees)
-            .Select(attendee => attendee.UserId.Value)
-            .ToList();
+            .Select(attendee => attendee.UserId.Value);
 
         var userIdsToRequest = new HashSet<Guid>(organizerIds);
-        attendeeIds.ForEach(attendeeId => userIdsToRequest.Add(attendeeId));
+        foreach (var attendeeId in attendeeIds)
+        {
+            userIdsToRequest.Add(attendeeId);
+        }
         
         var getUsersQuery = new GetUsersBasicInfoQuery(userIdsToRequest);
         var usersResult = await dispatcher.SendAsync(getUsersQuery, cancellationToken);
+        var usersInfo = usersResult.Value.ToList();
 
         var appointmentDtos = appointments.Select(appointment =>
         {
-            var organizer = usersResult.Value.SingleOrDefault(user => user.Id == appointment.CreatedBy.Value);
+            var organizer = usersInfo.SingleOrDefault(user => user.Id == appointment.CreatedBy.Value);
             var attendees = appointment.Attendees
-                .Select(attendee => usersResult.Value.SingleOrDefault(u => u.Id == attendee.UserId.Value))
+                .Select(attendee => usersInfo.SingleOrDefault(u => u.Id == attendee.UserId.Value))
                 .ToList();
             
             return appointment.ToDto(organizer, attendees);
-        }).ToList();
+        });
         
         var totalAppointments = await appointmentRepository.CountAsync(cancellationToken);
         var paginatedResult = new AppointmentsPaginatedResult(PageNumber: request.PageNumber, 

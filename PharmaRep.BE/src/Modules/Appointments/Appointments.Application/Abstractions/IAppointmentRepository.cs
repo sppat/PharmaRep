@@ -8,7 +8,7 @@ public interface IAppointmentRepository
 {
     Task<int> CountAsync(CancellationToken cancellationToken);
     Task AddAsync(Appointment appointment, CancellationToken cancellationToken);
-    Task<IEnumerable<Appointment>> GetAllAsync(Guid? userId = null,
+    Task<ICollection<Appointment>> GetAllAsync(Guid? userId = null,
         DateTimeOffset? from = null,
         DateTimeOffset? to = null,
         int pageNumber = 1,

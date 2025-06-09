@@ -16,7 +16,7 @@ public class AppointmentRepository(PharmaRepAppointmentsDbContext dbContext) : I
     public async Task AddAsync(Appointment appointment, CancellationToken cancellationToken)
         => await dbContext.Appointments.AddAsync(appointment, cancellationToken);
 
-    public async Task<IEnumerable<Appointment>> GetAllAsync(Guid? userId = null,
+    public async Task<ICollection<Appointment>> GetAllAsync(Guid? userId = null,
         DateTimeOffset? from = null,
         DateTimeOffset? to = null,
         int pageNumber = 1,
