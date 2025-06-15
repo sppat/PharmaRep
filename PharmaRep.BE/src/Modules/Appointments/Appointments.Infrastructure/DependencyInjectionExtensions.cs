@@ -14,7 +14,7 @@ public static class DependencyInjectionExtensions
     {
         services.AddDbContext<PharmaRepAppointmentsDbContext>(options =>
         {
-            options.UseNpgsql(configuration.GetConnectionString(EfConstants.DefaultConnection), builder =>
+            options.UseSqlServer(configuration.GetConnectionString(EfConstants.DefaultConnection), builder =>
             {
                 builder.MigrationsHistoryTable(EfConstants.MigrationsHistoryTable, EfConstants.Schemas.Appointments);
             });
