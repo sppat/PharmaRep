@@ -8,15 +8,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Tests.Auth;
 using Shared.Tests.Database;
-using Testcontainers.PostgreSql;
+using Testcontainers.MsSql;
 using Xunit;
 
 namespace Shared.Tests;
 
 public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly PostgreSqlContainer _container = new PostgreSqlBuilder()
-        .WithImage("postgres:alpine")
+    private readonly MsSqlContainer _container = new MsSqlBuilder()
+        .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
         .WithPassword("P@ssw0rd")
         .Build();
     
