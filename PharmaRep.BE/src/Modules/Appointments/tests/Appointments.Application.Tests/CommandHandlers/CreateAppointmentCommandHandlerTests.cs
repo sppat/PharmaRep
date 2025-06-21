@@ -1,7 +1,7 @@
 ﻿using Appointments.Application.Abstractions;
-using Appointments.Application.Features;
 using Appointments.Application.Features.Appointment.Create;
 using Appointments.Domain.DomainErrors;
+using Appointments.Domain.Entities;
 using Moq;
 using Shared.Application.Results;
 using Shared.Application.Validation;
@@ -59,7 +59,7 @@ public class CreateAppointmentCommandHandlerTests
         Assert.True(result.IsSuccess);
         Assert.NotEqual(Guid.Empty, result.Value);
         
-        _appointmentRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Domain.Entities.Appointment>(), It.IsAny<CancellationToken>()), Times.Once);
+        _appointmentRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Appointment>(), It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
     
@@ -78,7 +78,7 @@ public class CreateAppointmentCommandHandlerTests
         Assert.Equal(ResultType.ValidationError, result.Type);
         Assert.Contains(expectedError, result.Errors);
         
-        _appointmentRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Domain.Entities.Appointment>(), It.IsAny<CancellationToken>()), Times.Never);
+        _appointmentRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Appointment>(), It.IsAny<CancellationToken>()), Times.Never);
         _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }

@@ -1,5 +1,4 @@
-﻿using Shared.Application.Mediator;
-using Shared.Application.Validation;
+﻿using Shared.Application.Validation;
 
 namespace Appointments.Application.Features;
 

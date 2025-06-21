@@ -1,5 +1,4 @@
 ﻿using Appointments.Domain.Entities;
-using Appointments.Domain.ValueObjects;
 using Appointments.Infrastructure.Database.Configurations.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

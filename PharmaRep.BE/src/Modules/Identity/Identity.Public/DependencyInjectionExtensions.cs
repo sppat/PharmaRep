@@ -1,5 +1,4 @@
 ﻿using Identity.Public.Contracts;
-using Identity.Public.Features;
 using Identity.Public.Features.GetUsersBasicInfo;
 using Identity.Public.Features.UsersExist;
 using Microsoft.Extensions.DependencyInjection;
