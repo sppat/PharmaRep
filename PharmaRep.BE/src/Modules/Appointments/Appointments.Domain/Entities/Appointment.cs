@@ -34,6 +34,15 @@ public class Appointment
         UpdatedBy = null;
         UpdatedAt = null;
     }
+
+    public HashSet<Guid> GetOrganizerAndAttendeesId()
+    {
+        var attendeesId = Attendees?.Select(attendee => attendee.UserId.Value) ?? [];
+        var usersId = new HashSet<Guid>(attendeesId);
+        usersId.UnionWith([CreatedBy.Value]);
+
+        return usersId;
+    }
     
     public static DomainResult<Appointment> Create(DateTimeOffset startDate, 
         DateTimeOffset endDate,

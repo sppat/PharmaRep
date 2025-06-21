@@ -9,5 +9,6 @@ public static class AppointmentsModuleDomainErrors
         public const string EmptyOrganizerId = "The organizer id cannot be empty";
         public const string AttendeeEmptyId = "Attendee id cannot be empty";
         public const string AppointmentEmptyId = "Appointment id cannot be empty";
+        public const string AppointmentNotFound = "Appointment with the given id doesn't exist";
     }
 }

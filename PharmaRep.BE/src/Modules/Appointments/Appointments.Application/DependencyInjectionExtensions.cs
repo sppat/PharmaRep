@@ -1,8 +1,9 @@
-﻿using Appointments.Application.Features;
+﻿using Appointments.Application.Dtos;
+using Appointments.Application.Features;
 using Appointments.Application.Features.Appointment.Create;
 using Appointments.Application.Features.Appointment.Create.Validators;
 using Appointments.Application.Features.Appointment.GetAll;
-using Identity.Application.Features.User.GetAll;
+using Appointments.Application.Features.Appointment.GetAppointment;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Application.Mediator;
 using Shared.Application.Results;
@@ -20,6 +21,7 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IRequestHandler<CreateAppointmentCommand, Result<Guid>>, CreateAppointmentCommandHandler>();
 
         services.AddScoped< IRequestHandler<GetAppointmentsQuery, Result<AppointmentsPaginatedResult>>, GetAppointmentsQueryHandler>();
+        services.AddScoped<IRequestHandler<GetAppointmentQuery, Result<AppointmentDto>>, GetAppointmentQueryHandler>();
 
         return services;
     }

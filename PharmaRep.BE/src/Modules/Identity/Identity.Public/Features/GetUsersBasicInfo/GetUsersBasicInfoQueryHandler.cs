@@ -9,7 +9,7 @@ public class GetUsersBasicInfoQueryHandler(IPublicUserRepository publicUserRepos
 {
     public async Task<Result<IEnumerable<UserBasicInfo>>> HandleAsync(GetUsersBasicInfoQuery request, CancellationToken cancellationToken)
     {
-        var usersBasicInfo = await publicUserRepository.GetUsersBasicInfoAsync(request.UserIds, cancellationToken);
+        var usersBasicInfo = await publicUserRepository.GetUsersBasicInfoAsync(request.UsersId, cancellationToken);
         
         return Result<IEnumerable<UserBasicInfo>>.Success(usersBasicInfo);
     }

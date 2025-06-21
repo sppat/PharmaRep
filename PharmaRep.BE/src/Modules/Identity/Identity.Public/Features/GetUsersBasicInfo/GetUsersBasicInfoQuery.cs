@@ -4,4 +4,4 @@ using Shared.Application.Results;
 
 namespace Identity.Public.Features.GetUsersBasicInfo;
 
-public record GetUsersBasicInfoQuery(IEnumerable<Guid> UserIds) : IRequest<Result<IEnumerable<UserBasicInfo>>>;
+public record GetUsersBasicInfoQuery(IEnumerable<Guid> UsersId) : IRequest<Result<IEnumerable<UserBasicInfo>>>;

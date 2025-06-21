@@ -10,5 +10,6 @@ public static class AppointmentModuleUrls
 
         public const string Create = AppointmentBaseUrl;
         public const string GetAll = AppointmentBaseUrl;
+        public const string GetAppointment = $"{AppointmentBaseUrl}/{{id:guid}}";
     }
 }

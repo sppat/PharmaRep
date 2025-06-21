@@ -1,8 +1,7 @@
 ﻿using Appointments.Application.Abstractions;
-using Appointments.Application.Dtos;
 using Appointments.Domain.Entities;
+using Appointments.Domain.ValueObjects;
 using Appointments.Infrastructure.Database;
-using Identity.Public.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Appointments.Infrastructure.Repositories;
@@ -51,5 +50,19 @@ public class AppointmentRepository(PharmaRepAppointmentsDbContext dbContext) : I
             .Take(pageSize);
         
         return await queryResult.ToListAsync(cancellationToken);
+    }
+
+    public async Task<Appointment> GetByIdAsync(AppointmentId id, bool asNoTracking = false, CancellationToken cancellationToken = default)
+    {
+        var appointment = dbContext.Appointments
+            .Include(appointment => appointment.Attendees)
+            .Where(appointment => appointment.Id == id);
+        
+        if (asNoTracking)
+        {
+            appointment = appointment.AsNoTracking();
+        }
+        
+        return await appointment.SingleOrDefaultAsync(cancellationToken);
     }
 }

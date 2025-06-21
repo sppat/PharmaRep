@@ -1,5 +1,6 @@
 ﻿using Appointments.Application.Dtos;
 using Appointments.Domain.Entities;
+using Appointments.Domain.ValueObjects;
 using Identity.Public.Contracts;
 
 namespace Appointments.Application.Abstractions;
@@ -14,4 +15,5 @@ public interface IAppointmentRepository
         int pageNumber = 1,
         int pageSize = 10,
         CancellationToken cancellationToken = default);
+    Task<Appointment> GetByIdAsync(AppointmentId id, bool asNoTracking = false, CancellationToken cancellationToken = default);
 }
