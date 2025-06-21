@@ -29,8 +29,8 @@ public class GetAppointmentsQueryHandler(IDispatcher dispatcher,
         }
         
         var getUsersQuery = new GetUsersBasicInfoQuery(userIdsToRequest);
-        var usersResult = await dispatcher.SendAsync(getUsersQuery, cancellationToken);
-        var usersInfo = usersResult.Value.ToList();
+        var getUsersResult = await dispatcher.SendAsync(getUsersQuery, cancellationToken);
+        var usersInfo = getUsersResult.Value.ToList();
 
         var appointmentDtos = appointments.Select(appointment =>
         {
