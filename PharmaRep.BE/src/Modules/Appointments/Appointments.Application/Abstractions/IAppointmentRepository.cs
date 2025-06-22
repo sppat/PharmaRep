@@ -1,7 +1,5 @@
-﻿using Appointments.Application.Dtos;
-using Appointments.Domain.Entities;
+﻿using Appointments.Domain.Entities;
 using Appointments.Domain.ValueObjects;
-using Identity.Public.Contracts;
 
 namespace Appointments.Application.Abstractions;
 

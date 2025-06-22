@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using Appointments.Domain.DomainErrors;
+﻿using Appointments.Domain.DomainErrors;
 using Appointments.Domain.ValueObjects;
 using Shared.Domain;
 
