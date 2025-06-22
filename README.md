@@ -2,7 +2,7 @@
 
 **PharmaRep** is a modular-monolith ASP.NET web API for medical representatives. It helps streamline:
 
-- **Appointment booking**: Medical reps can propose visits; doctors & midwives can view nearby reps and confirm appointments.
+- **Appointment booking**: Medical reps can propose visits; doctors and midwives can view nearby reps and confirm appointments.
 - **Onboarding hub**: New reps get key documents and links to get started quickly.
 
 ---
@@ -13,7 +13,6 @@ PharmaRep is designed as a **modular monolith** using Domain-Driven Design (DDD)
 
 - **Identity** – handles registration, login, and user CRUD.
 - **Appointments** – CRUD operations for scheduling visits.
-- *(Future modules: e.g. Documents, ...)*
 
 Modules encapsulate their own models, commands, queries, handlers, database mappings, and API routes—all within the same ASP.NET process.
 
@@ -33,4 +32,10 @@ Modules encapsulate their own models, commands, queries, handlers, database mapp
 1. Clone:
    ```bash
    git clone https://github.com/sppat/PharmaRep.git
+2. Change directory:
+   ```bash
    cd PharmaRep
+3. Run docker compose file:
+   ```bash
+   docker compose up -d
+4. Navigate to [PharmaRep Swagger UI](http://localhost:5000/swagger) for API exploration.
