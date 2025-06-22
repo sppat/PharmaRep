@@ -24,6 +24,7 @@ public static class DependencyInjectionExtensions
             options.UseSqlServer(configuration.GetConnectionString(EfConstants.DefaultConnection), builder =>
             {
                 builder.MigrationsHistoryTable(EfConstants.MigrationsHistoryTable, EfConstants.Schemas.Identity);
+                builder.EnableRetryOnFailure();
             });
         });
 
