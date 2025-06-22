@@ -39,3 +39,9 @@ Modules encapsulate their own models, commands, queries, handlers, database mapp
    ```bash
    docker compose up -d
 4. Navigate to [PharmaRep Swagger UI](http://localhost:5000/swagger) for API exploration.
+
+> In order to be able to pass the authorization you can assign admin role to your user. The respective endpoint is:
+> ```bash
+> POST api/identity/users/{email}/make-admin
+> ```
+> The above endpoint is exposed for development purposes
