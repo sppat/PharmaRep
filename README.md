@@ -27,6 +27,10 @@ Modules encapsulate their own models, commands, queries, handlers, database mapp
 
 ---
 
+## Lisence
+
+PharmaRep is open‑source under the MIT License.
+
 ## Quick Start
 
 1. Clone:
