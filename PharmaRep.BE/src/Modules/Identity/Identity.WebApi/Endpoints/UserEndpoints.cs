@@ -8,7 +8,9 @@ using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Hosting;
 using Shared.Application.Mediator;
 using Shared.WebApi.EndpointMappings;
 using Shared.WebApi.Responses;
@@ -17,7 +19,7 @@ namespace Identity.WebApi.Endpoints;
 
 public static class UserEndpoints
 {
-    public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
+    public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints, WebApplication app)
     {        
         endpoints.MapGet(IdentityModuleUrls.User.GetAll, GetAllAsync)
             .RequireAuthorization(AuthPolicy.AdminPolicy.Name)
@@ -72,6 +74,20 @@ public static class UserEndpoints
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription("Delete user by id.")
             .WithTags(nameof(User));
+
+        if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsEnvironment("Docker"))
+        {
+            // This endpoint is for testing purposes only
+            endpoints.MapPost("api/identity/users/{email}/make-admin", async (string email, UserManager<User> userManager) =>
+            {
+                var user = await userManager.FindByEmailAsync(email);
+                if (user is null) return Results.NotFound($"User with email {email} not found.");
+
+                var result = await userManager.AddToRoleAsync(user, Role.Admin.Name!);
+            
+                return result.Succeeded ? Results.NoContent() : Results.BadRequest(result.Errors);
+            }).WithTags(nameof(User));
+        }
 
         return endpoints;
     }
