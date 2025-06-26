@@ -1,4 +1,6 @@
 using System.Net.Http.Headers;
+using Appointments.Infrastructure.Database;
+using DotNet.Testcontainers.Builders;
 using Identity.Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
@@ -16,18 +18,21 @@ namespace Shared.Tests;
 public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly MsSqlContainer _container = new MsSqlBuilder()
-        .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
-        .WithPassword("P@ssw0rd")
         .Build();
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureTestServices(services =>
         {
-            var identityDbContext = services.FirstOrDefault(s => s.ServiceType == typeof(PharmaRepIdentityDbContext));
+            var identityDbContext = services.FirstOrDefault(serviceDescriptor => serviceDescriptor.ServiceType == typeof(PharmaRepIdentityDbContext));
             if (identityDbContext is not null) services.Remove(identityDbContext);
 
+            var appointmentDbContext = services.FirstOrDefault(serviceDescriptor => serviceDescriptor.ServiceType == typeof(PharmaRepAppointmentsDbContext));
+            if (appointmentDbContext is not null) services.Remove(appointmentDbContext);
+            
             services.AddDbContext<PharmaRepIdentityDbContext>(options => options.UseSqlServer(_container.GetConnectionString()));
+            services.AddDbContext<PharmaRepAppointmentsDbContext>(options => options.UseSqlServer(_container.GetConnectionString()));
+            
             services.AddAuthentication("TestScheme")
                 .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>("TestScheme", _ => { });
         });
