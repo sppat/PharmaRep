@@ -6,7 +6,7 @@ using Shared.Application.Results;
 
 namespace Identity.Public.Features.UsersExist;
 
-public class UsersExistQueryHandler(IUserRepository userRepository, UserManager<User> userManager) : IRequestHandler<UsersExistQuery, Result>
+public class UsersExistQueryHandler(UserManager<User> userManager) : IRequestHandler<UsersExistQuery, Result>
 {
     public Task<Result> HandleAsync(UsersExistQuery request, CancellationToken cancellationToken)
     {
