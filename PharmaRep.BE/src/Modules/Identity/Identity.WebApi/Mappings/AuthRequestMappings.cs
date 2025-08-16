@@ -6,11 +6,20 @@ namespace Identity.WebApi.Mappings;
 
 public static class AuthRequestMappings
 {
-    internal static LoginCommand ToCommand(this LoginRequest request) => new(Email: request.Email, 
-        Password: request.Password);
-    
-    internal static RegisterCommand ToCommand(this RegisterRequest request) => new(FirstName: request.FirstName,
-        LastName: request.LastName,
-        Email: request.Email,
-        Password: request.Password);
+    public static LoginCommand ToCommand(this LoginRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        
+        return new LoginCommand(Email: request.Email, Password: request.Password);
+    }
+
+    public static RegisterCommand ToCommand(this RegisterRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        
+        return new RegisterCommand(FirstName: request.FirstName,
+            LastName: request.LastName,
+            Email: request.Email,
+            Password: request.Password);
+    }
 }

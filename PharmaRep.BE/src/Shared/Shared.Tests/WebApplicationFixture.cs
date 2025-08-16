@@ -1,6 +1,5 @@
 using System.Net.Http.Headers;
 using Appointments.Infrastructure.Database;
-using DotNet.Testcontainers.Builders;
 using Identity.Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;

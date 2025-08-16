@@ -1,5 +1,4 @@
-﻿using Identity.Application.Interfaces;
-using Identity.Domain.Entities;
+﻿using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Shared.Application.Mediator;
 using Shared.Application.Results;
