@@ -1,0 +1,14 @@
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: 75px 1fr;
+  width: 100vw;
+  height: 100vh;
+}
+
+.sidebar {
+  background: cornflowerblue;
+}
+
+.main-content {
+  background: mistyrose;
+}
