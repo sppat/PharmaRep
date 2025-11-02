@@ -1,0 +1,8 @@
+.users-list-table {
+  width: 100%;
+  height: 100%;
+}
+
+.users-list-table thead {
+  text-align: left;
+}
