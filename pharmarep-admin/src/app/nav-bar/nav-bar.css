@@ -14,3 +14,19 @@
 .nav-bar-list li:last-child {
   margin-top: auto;
 }
+
+.nav-bar-item:hover {
+  background-color: lightblue;
+}
+
+.nav-bar-item.active {
+  background-color: lightblue;
+}
+
+.nav-bar-link {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

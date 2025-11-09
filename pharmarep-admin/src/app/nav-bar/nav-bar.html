@@ -1,8 +1,12 @@
 <ul class="nav-bar-list">
-  <li class="nav-bar-item">
-    <app-nav-bar-item image="people.svg" alt="users"/>
+  <li class="nav-bar-item" routerLinkActive="active">
+    <a class="nav-bar-link" routerLink="/users">
+      <img src="/menuIcons/people.svg" alt="users"/>
+    </a>
   </li>
   <li class="nav-bar-item">
-    <app-nav-bar-item image="box-arrow-in-left.svg" alt="logout"/>
+    <a class="nav-bar-link">
+      <img src="/menuIcons/box-arrow-in-left.svg" alt="logout"/>
+    </a>
   </li>
 </ul>
