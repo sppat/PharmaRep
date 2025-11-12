@@ -4,11 +4,11 @@ public class Dispatcher(IServiceProvider serviceProvider) : IDispatcher
 {
     public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
-        var handlerDecoratorType = typeof(RequestHandlerDecoratorImpl<,>).MakeGenericType(request.GetType(), typeof(TResponse));
-        var handlerDecorator = (RequestHandlerDecorator<TResponse>)Activator.CreateInstance(handlerDecoratorType);
-        if (handlerDecorator is null) throw new InvalidCastException("Could not create handler decorator instance.");
+        var handlerInterface = typeof(IRequestHandler<,>).MakeGenericType(request.GetType(), typeof(TResponse));
+        var handler = serviceProvider.GetService(handlerInterface);
+        if (handler is null) throw new InvalidOperationException("Could not create handler instance.");
 
-        return await handlerDecorator.HandleAsync(request, serviceProvider, cancellationToken);
+        return await (Task<TResponse>)((dynamic)handler).HandleAsync((dynamic)request, cancellationToken);
     }
 
     public Task SendAsync(IRequest request, CancellationToken cancellationToken = default)
