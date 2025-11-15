@@ -10,9 +10,4 @@ public class Dispatcher(IServiceProvider serviceProvider) : IDispatcher
 
         return await handlerDecorator.HandleAsync(request, serviceProvider, cancellationToken);
     }
-
-    public Task SendAsync(IRequest request, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
 }
