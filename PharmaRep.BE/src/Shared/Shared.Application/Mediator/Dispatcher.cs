@@ -1,13 +1,38 @@
+using System.Collections.Concurrent;
+using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Shared.Application.Mediator;
 
 public class Dispatcher(IServiceProvider serviceProvider) : IDispatcher
 {
-    public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
+    private delegate Task<object> HandlerDecoratorDelegate(IServiceProvider serviceProvider, object request, CancellationToken cancellationToken);
+    
+    private readonly ConcurrentDictionary<Type, HandlerDecoratorDelegate> _handlers = new();
+    
+    public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken)
     {
-        var handlerDecoratorType = typeof(RequestHandlerDecoratorImpl<,>).MakeGenericType(request.GetType(), typeof(TResponse));
-        var handlerDecorator = (RequestHandlerDecorator<TResponse>)Activator.CreateInstance(handlerDecoratorType);
-        if (handlerDecorator is null) throw new InvalidCastException("Could not create handler decorator instance.");
+        var handlerDecorator = _handlers.GetOrAdd(request.GetType(), type => GetDecorator(request));
+        
+        return (TResponse)await handlerDecorator(serviceProvider, request, cancellationToken);
+    }
 
-        return await handlerDecorator.HandleAsync(request, serviceProvider, cancellationToken);
+    private static HandlerDecoratorDelegate GetDecorator<TResponse>(IRequest<TResponse> request)
+    {
+        var handlerDecoratorMethodInfo = typeof(Dispatcher)
+            .GetMethod(nameof(HandlerDecorator), BindingFlags.NonPublic | BindingFlags.Static)!
+            .MakeGenericMethod(request.GetType(), typeof(TResponse));
+        
+        return (HandlerDecoratorDelegate)Delegate.CreateDelegate(typeof(HandlerDecoratorDelegate), handlerDecoratorMethodInfo);
+    }
+
+    private static async Task<object> HandlerDecorator<TRequest, TResponse>(
+        IServiceProvider serviceProvider, 
+        object request,
+        CancellationToken cancellationToken) where TRequest : IRequest<TResponse>
+    {
+        var handler = serviceProvider.GetRequiredService<IRequestHandler<TRequest, TResponse>>();
+        
+        return await handler.HandleAsync((TRequest)request, cancellationToken);
     }
 }
