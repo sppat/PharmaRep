@@ -11,9 +11,6 @@ public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddPublicIdentityModule(this IServiceCollection services)
     {
-        services.AddScoped<IRequestHandler<GetUsersBasicInfoQuery, Result<IEnumerable<UserBasicInfo>>>, GetUsersBasicInfoQueryHandler>();
-        services.AddScoped<IRequestHandler<UsersExistQuery, Result>, UsersExistQueryHandler>();
-        
         return services;
     }
 }

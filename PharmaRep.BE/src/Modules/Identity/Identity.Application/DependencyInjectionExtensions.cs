@@ -20,17 +20,6 @@ public static class DependencyInjectionExtensions
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         
-        // Commands
-        services.AddScoped<IRequestHandler<RegisterCommand, Result<Guid>>, RegisterCommandHandler>();
-        services.AddScoped<IRequestHandler<LoginCommand, Result<string>>, LoginCommandHandler>();
-        services.AddScoped<IRequestHandler<UpdateRolesCommand, Result>, UpdateRolesCommandHandler>();
-        services.AddScoped<IRequestHandler<DeleteUserCommand, Result>, DeleteUserCommandHandler>();
-        services.AddScoped<IRequestHandler<UpdatePersonalInfoCommand, Result>, UpdatePersonalInfoCommandHandler>();
-
-        // Queries
-        services.AddScoped<IRequestHandler<GetUserByIdQuery, Result<UserDto>>, GetUserByIdQueryHandler>();
-        services.AddScoped<IRequestHandler<GetAllUsersQuery, Result<UsersPaginatedResult>>, GetAllUsersQueryHandler>();
-        
         return services;
     }
 }

@@ -4,8 +4,3 @@ public interface IRequestHandler<in TRequest, TResponse> where TRequest : IReque
 {
     Task<TResponse> HandleAsync(TRequest request, CancellationToken cancellationToken);
 }
-
-public interface IRequestHandler<in TRequest> where TRequest : IRequest
-{
-    Task HandleAsync(TRequest request, CancellationToken cancellationToken);
-}

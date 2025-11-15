@@ -15,14 +15,6 @@ public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddAppointmentsApplication(this IServiceCollection services)
     {
-        services.AddScoped<IValidator<CreateAppointmentCommand>, UserIdsExistValidator>();
-        services.AddScoped<IValidationOrchestrator<CreateAppointmentCommand>, AppointmentValidator<CreateAppointmentCommand>>();
-        
-        services.AddScoped<IRequestHandler<CreateAppointmentCommand, Result<Guid>>, CreateAppointmentCommandHandler>();
-
-        services.AddScoped< IRequestHandler<GetAppointmentsQuery, Result<AppointmentsPaginatedResult>>, GetAppointmentsQueryHandler>();
-        services.AddScoped<IRequestHandler<GetAppointmentQuery, Result<AppointmentDto>>, GetAppointmentQueryHandler>();
-
         return services;
     }
 }

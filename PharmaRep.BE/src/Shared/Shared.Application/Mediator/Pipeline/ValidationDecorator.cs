@@ -5,7 +5,7 @@ namespace Shared.Application.Mediator.Pipeline;
 
 public class ValidationDecorator<TRequest, TResponse>(
     IRequestHandler<TRequest, TResponse> decorated,
-    IEnumerable<IValidator<TRequest>> validators) where TRequest : IRequest<TResponse>
+    IEnumerable<IValidator<TRequest>> validators) : IRequestHandler<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
     public async Task<TResponse> HandleAsync(TRequest request, CancellationToken cancellationToken)
     {
