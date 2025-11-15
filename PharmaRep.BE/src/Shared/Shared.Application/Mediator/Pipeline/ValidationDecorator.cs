@@ -3,12 +3,15 @@ using Shared.Application.Results;
 
 namespace Shared.Application.Mediator.Pipeline;
 
-public class ValidationMiddleware<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) : IDispatcherMiddleware<TRequest, TResponse>
+public class ValidationDecorator<TRequest, TResponse>(
+    IRequestHandler<TRequest, TResponse> decorated,
+    IEnumerable<IValidator<TRequest>> validators) where TRequest : IRequest<TResponse>
 {
-    public async Task<TResponse> HandleAsync(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> HandleAsync(TRequest request, CancellationToken cancellationToken)
     {
         var validationErrors = await GetValidationErrors(request, cancellationToken);
-        if (validationErrors.Count == 0) return await next(cancellationToken); 
+
+        if (validationErrors.Count is 0) return await decorated.HandleAsync(request, cancellationToken);
 
         var responseType = typeof(TResponse);
         if (responseType.IsGenericType)
