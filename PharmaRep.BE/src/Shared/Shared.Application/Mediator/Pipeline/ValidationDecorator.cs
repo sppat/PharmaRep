@@ -21,6 +21,7 @@ public class ValidationDecorator<TRequest, TResponse>(
         return FailedResultFactory(validationErrors, ResultType.ValidationError);
     }
 
+    // TODO: Move this builder to another class
     private static FailedResultDelegate BuildFailedResultDelegate()
     {
         var responseType = typeof(TResponse);
