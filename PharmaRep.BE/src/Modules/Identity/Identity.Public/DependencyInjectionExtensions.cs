@@ -1,9 +1,4 @@
-﻿using Identity.Public.Contracts;
-using Identity.Public.Features.GetUsersBasicInfo;
-using Identity.Public.Features.UsersExist;
-using Microsoft.Extensions.DependencyInjection;
-using Shared.Application.Mediator;
-using Shared.Application.Results;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Public;
 
