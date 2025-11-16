@@ -1,51 +1,32 @@
 namespace Shared.Application.Results;
 
-public class Result
+public class Result<T>
 {
-    public IEnumerable<string> Errors { get; init; }
-    public ResultType Type { get; init; }
+    public T? Value { get; }
+    public IEnumerable<string> Errors { get; } = [];
+    public ResultType Type { get; }
     public bool IsSuccess => !Errors.Any();
-    
-    protected Result(ResultType type)
-    {
-        Type = type;
-        Errors = [];
-    }
 
-    protected Result(ICollection<string> errors, ResultType type)
-    {
-        ArgumentNullException.ThrowIfNull(errors);
-        if (errors.Count is 0)
-        {
-            throw new ArgumentException("Errors must not be empty in failure result");
-        }
-
-        Errors = errors;
-        Type = type;
-    }
-    
-    public static Result Success(ResultType type = ResultType.Success) => new(type);
-    public static Result Failure(ICollection<string> errors, ResultType type) => new(errors, type);
-}
-
-public class Result<T> : Result
-{
-    public T Value { get; }
-
-    private Result(T value, ResultType type) : base(type)
+    private Result(T? value, ResultType type)
     {
         ArgumentNullException.ThrowIfNull(value);
         
         Value = value;
+        Type = type;
     }
 
-    private Result(ICollection<string> errors, ResultType type) : base(errors, type)
+    private Result(ICollection<string> errors, ResultType type)
     {
+        ArgumentNullException.ThrowIfNull(errors);
+        if (errors.Count == 0) throw new ArgumentException($"{nameof(errors)} is empty");
+        
         Value = default;
+        Type = type;
+        Errors = errors;
     }
 
     public static Result<T> Success(T value, ResultType type = ResultType.Success) => new(value, type);
-    public new static Result<T> Failure(ICollection<string> errors, ResultType type) => new(errors, type);
+    public static Result<T> Failure(ICollection<string> errors, ResultType type) => new(errors, type);
 }
 
 public enum ResultType

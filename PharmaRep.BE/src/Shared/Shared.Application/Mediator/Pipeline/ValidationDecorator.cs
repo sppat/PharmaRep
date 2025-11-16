@@ -1,3 +1,4 @@
+using System.Reflection;
 using FluentValidation;
 using Shared.Application.Results;
 
@@ -7,24 +8,29 @@ public class ValidationDecorator<TRequest, TResponse>(
     IRequestHandler<TRequest, TResponse> decorated,
     IEnumerable<IValidator<TRequest>> validators) : IRequestHandler<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
+    private delegate object FailedResultDelegate(ICollection<string> errors, ResultType resultType);
+    
     public async Task<TResponse> HandleAsync(TRequest request, CancellationToken cancellationToken)
     {
         var validationErrors = await GetValidationErrors(request, cancellationToken);
 
         if (validationErrors.Count is 0) return await decorated.HandleAsync(request, cancellationToken);
 
-        var responseType = typeof(TResponse);
-        if (responseType.IsGenericType)
-        {
-            var genericResponseType = typeof(Result<>).MakeGenericType(responseType.GenericTypeArguments);
-            var genericFailureMethod = genericResponseType.GetMethod("Failure");
+        var failedResultDelegate = BuildFailedResultDelegate();
 
-            return (TResponse)genericFailureMethod?.Invoke(null, [validationErrors, ResultType.ValidationError]);
-        }
+        return (TResponse)failedResultDelegate(validationErrors, ResultType.ValidationError);
+    }
+
+    private FailedResultDelegate BuildFailedResultDelegate()
+    {
+        var failedResultMethodInfo = typeof(TResponse).GetMethod(
+            name: "Failure",
+            bindingAttr: BindingFlags.Public | BindingFlags.Static,
+            types: [typeof(ICollection<string>), typeof(ResultType)]);
         
-        var failureMethod = typeof(Result).GetMethod("Failure");
-
-        return (TResponse)failureMethod?.Invoke(null, [validationErrors, ResultType.ValidationError]);
+        ArgumentNullException.ThrowIfNull(failedResultMethodInfo);
+        
+        return (FailedResultDelegate)Delegate.CreateDelegate(typeof(FailedResultDelegate), failedResultMethodInfo);
     }
 
     private async Task<ICollection<string>> GetValidationErrors(TRequest request, CancellationToken cancellationToken)

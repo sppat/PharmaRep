@@ -1,6 +1,8 @@
+using Shared.Application.Results;
+
 namespace Shared.Application.Mediator;
 
 public interface IDispatcher
 {
-    Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default);
+    Task<Result<T>> SendAsync<T>(IRequest<Result<T>> request, CancellationToken cancellationToken = default);
 }

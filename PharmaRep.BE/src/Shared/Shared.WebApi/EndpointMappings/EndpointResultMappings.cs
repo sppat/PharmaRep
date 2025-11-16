@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Shared.Application.Mediator;
 using Shared.Application.Results;
 
 namespace Shared.WebApi.EndpointMappings;
@@ -17,7 +18,7 @@ public static class EndpointResultMappings
             _ => throw new InvalidOperationException("Invalid result type")
         };
     
-    public static IResult ToHttpResult(this Result serviceResult)
+    public static IResult ToHttpResult(this Result<Unit> serviceResult)
         => serviceResult.Type switch
         {
             ResultType.ValidationError => Results.Problem(title: "Bad Request", statusCode: StatusCodes.Status400BadRequest, extensions: serviceResult.GetErrors()),
@@ -30,7 +31,7 @@ public static class EndpointResultMappings
             _ => throw new InvalidOperationException("Invalid result type")
         };
     
-    private static Dictionary<string, object> GetErrors(this Result serviceResult) => new() 
+    private static Dictionary<string, object> GetErrors<T>(this Result<T> serviceResult) => new() 
     {
         { "errors", serviceResult.Errors }
     };

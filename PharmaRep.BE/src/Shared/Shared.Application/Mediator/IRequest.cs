@@ -1,9 +1,6 @@
-namespace Shared.Application.Mediator;
+using Shared.Application.Results;
 
-public interface IRequest
-{
-    
-}
+namespace Shared.Application.Mediator;
 
 public interface IRequest<TResponse>
 {

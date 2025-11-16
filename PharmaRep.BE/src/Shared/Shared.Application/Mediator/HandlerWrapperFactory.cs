@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Application.Results;
 
 namespace Shared.Application.Mediator;
 
@@ -14,7 +15,7 @@ public class HandlerWrapperFactory
         return (Dispatcher.HandlerDecoratorDelegate)Delegate.CreateDelegate(typeof(Dispatcher.HandlerDecoratorDelegate), handlerDecoratorMethodInfo);
     }
 
-    private static async Task<object> HandlerDecorator<TRequest, TResponse>(
+    private static async Task<object?> HandlerDecorator<TRequest, TResponse>(
         IServiceProvider serviceProvider, 
         object request,
         CancellationToken cancellationToken) where TRequest : IRequest<TResponse>

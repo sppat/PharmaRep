@@ -5,14 +5,14 @@ using Shared.Application.Results;
 
 namespace Identity.Application.Features.User.UpdateRoles;
 
-public class UpdateRolesCommandHandler(UserManager<Domain.Entities.User> userManager) : IRequestHandler<UpdateRolesCommand, Result>
+public class UpdateRolesCommandHandler(UserManager<Domain.Entities.User> userManager) : IRequestHandler<UpdateRolesCommand, Result<Unit>>
 {
-    public async Task<Result> HandleAsync(UpdateRolesCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit>> HandleAsync(UpdateRolesCommand request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByIdAsync(request.UserId.ToString());
         if (user is null)
         {
-            return Result.Failure([IdentityModuleDomainErrors.UserErrors.UserNotFound], ResultType.NotFound);
+            return Result<Unit>.Failure([IdentityModuleDomainErrors.UserErrors.UserNotFound], ResultType.NotFound);
         }
         
         var existingRoles = await userManager.GetRolesAsync(user);
@@ -21,17 +21,17 @@ public class UpdateRolesCommandHandler(UserManager<Domain.Entities.User> userMan
         if (!removeRolesResult.Succeeded)
         {
             var removeRolesErrors = removeRolesResult.Errors.Select(e => e.Description).ToArray();
-            return Result.Failure(removeRolesErrors, ResultType.ServerError);     
+            return Result<Unit>.Failure(removeRolesErrors, ResultType.ServerError);     
         }
         
         var rolesToAdd = request.Roles.Except(existingRoles);
         var addRolesResult = await userManager.AddToRolesAsync(user, rolesToAdd);
         if (addRolesResult.Succeeded)
         {
-            return Result.Success(ResultType.Updated);
+            return Result<Unit>.Success(Unit.Value, ResultType.Updated);
         }
         
         var addRolesErrors = addRolesResult.Errors.Select(e => e.Description).ToArray();
-        return Result.Failure(addRolesErrors, ResultType.ServerError);
+        return Result<Unit>.Failure(addRolesErrors, ResultType.ServerError);
     }
 }
