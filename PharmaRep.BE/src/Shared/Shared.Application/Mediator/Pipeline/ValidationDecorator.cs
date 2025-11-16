@@ -21,7 +21,7 @@ public class ValidationDecorator<TRequest, TResponse>(
         return (TResponse)failedResultDelegate(validationErrors, ResultType.ValidationError);
     }
 
-    private FailedResultDelegate BuildFailedResultDelegate()
+    private static FailedResultDelegate BuildFailedResultDelegate()
     {
         var failedResultMethodInfo = typeof(TResponse).GetMethod(
             name: "Failure",

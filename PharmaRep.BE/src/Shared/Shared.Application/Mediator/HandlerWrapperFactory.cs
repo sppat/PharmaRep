@@ -1,6 +1,5 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Application.Results;
 
 namespace Shared.Application.Mediator;
 
