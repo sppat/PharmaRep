@@ -8,23 +8,30 @@ public class ValidationDecorator<TRequest, TResponse>(
     IRequestHandler<TRequest, TResponse> decorated,
     IEnumerable<IValidator<TRequest>> validators) : IRequestHandler<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
-    private delegate object FailedResultDelegate(ICollection<string> errors, ResultType resultType);
+    private delegate TResponse FailedResultDelegate(ICollection<string> errors, ResultType resultType);
+    
+    private static readonly FailedResultDelegate FailedResultFactory = BuildFailedResultDelegate();
     
     public async Task<TResponse> HandleAsync(TRequest request, CancellationToken cancellationToken)
     {
         var validationErrors = await GetValidationErrors(request, cancellationToken);
 
         if (validationErrors.Count is 0) return await decorated.HandleAsync(request, cancellationToken);
-
-        var failedResultDelegate = BuildFailedResultDelegate();
-
-        return (TResponse)failedResultDelegate(validationErrors, ResultType.ValidationError);
+        
+        return FailedResultFactory(validationErrors, ResultType.ValidationError);
     }
 
     private static FailedResultDelegate BuildFailedResultDelegate()
     {
-        var failedResultMethodInfo = typeof(TResponse).GetMethod(
-            name: "Failure",
+        var responseType = typeof(TResponse);
+
+        if (!responseType.IsGenericType || responseType.GetGenericTypeDefinition() != typeof(Result<>))
+        {
+            throw new InvalidOperationException($"ValidationDecorator only supports TResponse of type {typeof(Result<>)}.");
+        }
+        
+        var failedResultMethodInfo = responseType.GetMethod(
+            name: nameof(Result<object>.Failure),
             bindingAttr: BindingFlags.Public | BindingFlags.Static,
             types: [typeof(ICollection<string>), typeof(ResultType)]);
         
