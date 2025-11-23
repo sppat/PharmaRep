@@ -36,7 +36,6 @@ public enum ResultType
     NotFound,
     Success,
     Updated,
-    BadRequest,
     ServerError,
     Deleted
 }
