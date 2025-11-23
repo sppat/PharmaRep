@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Update;
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 
