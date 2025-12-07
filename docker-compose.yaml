@@ -10,7 +10,6 @@ services:
       MSSQL_PID: "Express"
     volumes:
       - sqldata:/var/opt/mssql
-    restart: unless-stopped
   pharmarepbe:
     build:
       context: .
