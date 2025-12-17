@@ -14,7 +14,6 @@ public class PharmaRepAppointmentsDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
         modelBuilder.HasDefaultSchema(EfConstants.Schemas.Appointments);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(PharmaRepAppointmentsDbContext).Assembly);
 
@@ -49,6 +48,8 @@ public class PharmaRepAppointmentsDbContext : DbContext
                 }
             }
         }
+
+        base.OnModelCreating(modelBuilder);
     }
     
     public DbSet<Appointment> Appointments { get; set; }

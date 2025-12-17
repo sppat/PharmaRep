@@ -1,4 +1,5 @@
-﻿using Appointments.Domain.ValueObjects;
+﻿using Appointments.Domain.Exceptions.Appointment;
+using Appointments.Domain.ValueObjects;
 
 namespace Appointments.Domain.Tests.ValueObjectsTests;
 
@@ -12,43 +13,33 @@ public class AppointmentAddressTests
     public void AppointmentAddress_ValidAddress_CreatesAppointmentAddress()
     {
         // Act
-        var appointmentAddressCreated = AppointmentAddress.TryCreate(street: ValidStreet, 
+        var appointmentAddress = AppointmentAddress.Create(street: ValidStreet, 
             number: ValidNumber,
-            zipCode: ValidZipCode,
-            out var appointmentAddress);
+            zipCode: ValidZipCode);
 
         // Assert
-        Assert.True(appointmentAddressCreated);
         Assert.Equal(ValidStreet, appointmentAddress.Street);
         Assert.Equal(ValidNumber, appointmentAddress.Number);
-        Assert.Equal(ValidZipCode, appointmentAddress.ZipCode);
+        Assert.Equal(ValidZipCode, appointmentAddress.ZipCode.Value);
     }
 
     [Fact]
     public void AppointmentAddress_EmptyAddress_ReturnsFalse()
     {
-        // Act
-        var appointmentAddressCreated = AppointmentAddress.TryCreate(street: string.Empty, 
+        // Act & Assert
+        Assert.Throws<EmptyStreetException>(() => AppointmentAddress.Create(
+            street: string.Empty,
             number: ValidNumber,
-            zipCode: ValidZipCode,
-            out var appointmentAddress);
-
-        // Assert
-        Assert.False(appointmentAddressCreated);
-        Assert.Null(appointmentAddress);
+            zipCode: ValidZipCode));
     }
     
     [Fact]
     public void AppointmentAddress_ZeroZipCode_ReturnsFalse()
     {
-        // Act
-        var appointmentAddressCreated = AppointmentAddress.TryCreate(street: ValidStreet, 
+        // Act & Assert
+        Assert.Throws<InvalidZipCodeException>(() => AppointmentAddress.Create(
+            street: ValidStreet,
             number: ValidNumber,
-            zipCode: 0,
-            out var appointmentAddress);
-
-        // Assert
-        Assert.False(appointmentAddressCreated);
-        Assert.Null(appointmentAddress);
+            zipCode: 0));
     }
 }

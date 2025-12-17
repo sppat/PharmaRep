@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Identity.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialAppointmentsMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -182,10 +182,10 @@ namespace Identity.Infrastructure.Database.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("02a12708-fc75-4b6c-9111-10b5f7eadf56"), null, "Admin", "ADMIN" },
-                    { new Guid("06d4065d-4544-4511-9f32-d054a13afe85"), null, "Medical Representative", "MEDICAL REPRESENTATIVE" },
-                    { new Guid("1f1a3cf9-c300-4821-9b5a-e15f8bbdabd0"), null, "Doctor", "DOCTOR" },
-                    { new Guid("8ab04aba-48f0-4b3a-bbae-5601f8da9f66"), null, "Midwife", "MIDWIFE" }
+                    { new Guid("02a12708-fc75-4b6c-9111-10b5f7eadf56"), "e1cd4b01-1537-4a15-b237-9675ae8f2c1f", "Admin", "ADMIN" },
+                    { new Guid("06d4065d-4544-4511-9f32-d054a13afe85"), "0c16cb77-eafe-4e47-a7fa-6ea9d99cfa7f", "Medical Representative", "MEDICAL REPRESENTATIVE" },
+                    { new Guid("1f1a3cf9-c300-4821-9b5a-e15f8bbdabd0"), "72a668ce-2002-49ff-a5c9-13ee177d8501", "Doctor", "DOCTOR" },
+                    { new Guid("8ab04aba-48f0-4b3a-bbae-5601f8da9f66"), "c486fce9-d3e5-4b1a-827a-2354da65445f", "Midwife", "MIDWIFE" }
                 });
 
             migrationBuilder.CreateIndex(

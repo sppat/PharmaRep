@@ -1,66 +1,27 @@
-﻿using Appointments.Domain.ValueObjects;
+﻿using Appointments.Domain.Exceptions.Appointment;
+using Appointments.Domain.ValueObjects;
 
 namespace Appointments.Domain.Tests.ValueObjectsTests;
 
 public class AppointmentDateTests
 {
-    private readonly DateTime _validStartDate = DateTime.UtcNow;
-    private readonly DateTime _validEndDate = DateTime.UtcNow.AddHours(1);
+    private readonly DateTime _validDate = DateTime.UtcNow;
     
     [Fact]
     public void AppointmentDate_ValidDate_CreatesAppointmentDate()
     {
         // Arrange
         // Act
-        var appointmentDateCreated = AppointmentDate.TryCreate(startDate: _validStartDate,
-            endDate: _validEndDate, 
-            out var appointmentDate);
+        var appointmentDate = new AppointmentDate(_validDate);
 
         // Assert
-        Assert.True(appointmentDateCreated);
-        Assert.Equal(_validStartDate, appointmentDate.StartDate);
-        Assert.Equal(_validEndDate, appointmentDate.EndDate);
+        Assert.Equal(_validDate, appointmentDate.Value);
     }
     
     [Fact]
-    public void AppointmentDate_DefaultStartDate_ReturnsFalse()
+    public void AppointmentDate_DefaultDate_ThrowsException()
     {
-        // Act
-        var appointmentDateCreated = AppointmentDate.TryCreate(startDate: default,
-            endDate: _validEndDate,
-            out var appointmentDate);
-        
-        // Assert
-        Assert.False(appointmentDateCreated);
-        Assert.Null(appointmentDate);
-    }
-    
-    [Fact]
-    public void AppointmentDate_DefaultEndDate_ReturnsFalse()
-    {
-        // Act
-        var appointmentDateCreated = AppointmentDate.TryCreate(startDate: _validStartDate,
-            endDate: default,
-            out var appointmentDate);
-        
-        // Assert
-        Assert.False(appointmentDateCreated);
-        Assert.Null(appointmentDate);
-    }
-    
-    [Fact]
-    public void AppointmentDate_EndDateBeforeStartDate_ReturnsFalse()
-    {
-        // Arrange
-        var endDate = _validStartDate.AddHours(-1);
-        
-        // Act
-        var appointmentDateCreated = AppointmentDate.TryCreate(startDate: _validStartDate,
-            endDate: endDate,
-            out var appointmentDate);
-        
-        // Assert
-        Assert.False(appointmentDateCreated);
-        Assert.Null(appointmentDate);
+        // Act & Assert
+        Assert.Throws<EmptyAppointmentDateException>(() => new AppointmentDate(default));
     }
 }

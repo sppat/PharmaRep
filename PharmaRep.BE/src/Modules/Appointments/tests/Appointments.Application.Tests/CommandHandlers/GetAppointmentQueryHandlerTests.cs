@@ -29,7 +29,7 @@ public class GetAppointmentQueryHandlerTests
         // Arrange
         var organizerId = Guid.NewGuid();
         var attendeesIds = new[] { Guid.NewGuid(), Guid.NewGuid() };
-        var expectedAppointmentDomainResult = Appointment.Create(startDate: DateTimeOffset.UtcNow,
+        var expectedAppointment = Appointment.Create(startDate: DateTimeOffset.UtcNow,
             endDate: DateTimeOffset.UtcNow.AddDays(1),
             street: "test str",
             number: 1,
@@ -42,18 +42,18 @@ public class GetAppointmentQueryHandlerTests
             new UserBasicInfo(Id: organizerId, FirstName: "Organizer", LastName: "Test", Email: "test@test.com"),
             new UserBasicInfo(Id: attendeesIds.First(), FirstName: "Attendee", LastName: "One", Email: "attendee@one.com")
         };
-        var appointment = expectedAppointmentDomainResult.Value;
+        var appointment = expectedAppointment;
         var expectedAppointmentDto = new AppointmentDto(Id: appointment!.Id.Value,
-            Start: appointment.Date.StartDate,
-            End:  appointment.Date.EndDate,
+            Start: appointment.StartDate,
+            End:  appointment.EndDate,
             Address:  new AddressDto(Street: appointment.Address.Street,
                 Number: appointment.Address.Number,
                 ZipCode: appointment.Address.ZipCode),
             Organizer: usersInfo.First(),
             Attendees: [usersInfo.Last()]);
         
-        _appointmentRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<AppointmentId>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(expectedAppointmentDomainResult.Value);
+        _appointmentRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(expectedAppointment);
 
         _dispatcherMock.Setup(dispatcher => dispatcher.SendAsync(It.IsAny<GetUsersBasicInfoQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<IEnumerable<UserBasicInfo>>.Success(usersInfo));
@@ -66,22 +66,6 @@ public class GetAppointmentQueryHandlerTests
         Assert.Equivalent(expectedAppointmentDto, result.Value);
     }
     
-    [Fact(DisplayName = "verify that empty appointment id returns validation error result")]
-    public async Task HandleAsync_EmptyAppointmentId_ReturnsNotFound()
-    {
-        // Arrange
-        var query =  new GetAppointmentQuery(Id: Guid.Empty);
-        const string expectedError = AppointmentsModuleDomainErrors.AppointmentErrors.AppointmentEmptyId;
-        
-        // Act
-        var result = await _sut.HandleAsync(query, CancellationToken.None);
-        
-        // Assert
-        Assert.False(result.IsSuccess);
-        Assert.Equal(ResultType.ValidationError, result.Type);
-        Assert.Contains(expectedError, result.Errors);
-    }
-    
     [Fact(DisplayName = "verify that handler returns not found when appointment does not exist")]
     public async Task HandleAsync_AppointmentDoesNotExist_ReturnsNotFound()
     {
@@ -90,7 +74,7 @@ public class GetAppointmentQueryHandlerTests
         const string expectedError = AppointmentsModuleDomainErrors.AppointmentErrors.AppointmentNotFound;
 
         _appointmentRepositoryMock.Setup(repo =>
-                repo.GetByIdAsync(It.IsAny<AppointmentId>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                repo.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Appointment)null);
         
         // Act

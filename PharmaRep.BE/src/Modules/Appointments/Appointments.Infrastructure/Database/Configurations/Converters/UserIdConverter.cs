@@ -15,11 +15,6 @@ public class UserIdConverter : ValueConverter<UserId, Guid?>
     private static readonly Expression<Func<Guid?, UserId>> FromProviderExpression = guid => FromProvider(guid);
     
     private static Guid? ToProvider(UserId userId) => userId?.Value;
-    
-    private static UserId FromProvider(Guid? guid)
-    {
-        UserId.TryCreate(guid ?? Guid.Empty, out var userId);
 
-        return userId;
-    }
+    private static UserId FromProvider(Guid? guid) => guid;
 }

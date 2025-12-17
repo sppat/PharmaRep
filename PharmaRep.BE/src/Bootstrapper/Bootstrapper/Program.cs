@@ -3,7 +3,7 @@ using Bootstrapper;
 using Bootstrapper.Configurations;
 using Identity.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Shared.Application;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,19 +24,9 @@ builder.Services.AddSwaggerGen(options =>
         In = ParameterLocation.Header,
         Description = "Enter your valid token in the text input below."
     });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
     {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = JwtBearerDefaults.AuthenticationScheme
-                }
-            },
-            []
-        }
+        [new OpenApiSecuritySchemeReference("bearer", document)] = []
     });
 });
 builder.Services.AddCors(options =>

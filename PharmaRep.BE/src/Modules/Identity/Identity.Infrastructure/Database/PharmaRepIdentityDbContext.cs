@@ -15,7 +15,7 @@ public class PharmaRepIdentityDbContext : IdentityDbContext<User, Role, Guid, Id
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        
+
         builder.HasDefaultSchema(EfConstants.Schemas.Identity);
         builder.ApplyConfigurationsFromAssembly(typeof(PharmaRepIdentityDbContext).Assembly);
     }

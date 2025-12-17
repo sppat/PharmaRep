@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Appointments.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialAppointmentsMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,19 +20,38 @@ namespace Appointments.Infrastructure.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Address_Number = table.Column<int>(type: "int", nullable: false),
-                    Address_Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address_ZipCode = table.Column<long>(type: "bigint", nullable: false),
-                    Date_EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Date_StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                schema: "appointments",
+                columns: table => new
+                {
+                    AppointmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    ZipCode = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.AppointmentId);
+                    table.ForeignKey(
+                        name: "FK_Addresses_Appointments_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalSchema: "appointments",
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,6 +73,13 @@ namespace Appointments.Infrastructure.Database.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_AppointmentId",
+                schema: "appointments",
+                table: "Addresses",
+                column: "AppointmentId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_CreatedBy",
@@ -78,6 +104,10 @@ namespace Appointments.Infrastructure.Database.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Addresses",
+                schema: "appointments");
+
             migrationBuilder.DropTable(
                 name: "Attendees",
                 schema: "appointments");

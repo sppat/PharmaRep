@@ -1,13 +1,13 @@
-﻿using Appointments.Domain.DomainErrors;
+﻿using Appointments.Domain.Exceptions.Appointment;
 using Appointments.Domain.ValueObjects;
-using Shared.Domain;
 
 namespace Appointments.Domain.Entities;
 
 public class Appointment
 {
     public AppointmentId Id { get; private set; }
-    public AppointmentDate Date { get; private set; }
+    public AppointmentDate StartDate { get; private set; }
+    public AppointmentDate EndDate { get; private set; }
     public AppointmentAddress Address { get; private set; }
     public IEnumerable<Attendee> Attendees { get; private set; }
     
@@ -17,15 +17,23 @@ public class Appointment
     public DateTimeOffset? UpdatedAt { get; private set; }
 
     private Appointment() { }
-    
-    private Appointment(AppointmentId id,
-        AppointmentDate date,
+
+    private Appointment(
+        Guid appointmentId,
+        DateTimeOffset startDate,
+        DateTimeOffset endDate,
         AppointmentAddress address,
-        UserId createdBy,
+        Guid createdBy,
         IEnumerable<Attendee> attendees)
     {
-        Id = id;
-        Date = date;
+        if (startDate == endDate || startDate > endDate)
+        {
+            throw new AppointmentStartDateException();
+        }
+
+        Id = appointmentId;
+        StartDate = startDate;
+        EndDate = endDate;
         Address = address;
         CreatedBy = createdBy;
         CreatedAt = DateTimeOffset.UtcNow;
@@ -43,7 +51,7 @@ public class Appointment
         return usersId;
     }
     
-    public static DomainResult<Appointment> Create(DateTimeOffset startDate, 
+    public static Appointment Create(DateTimeOffset startDate, 
         DateTimeOffset endDate,
         string street,
         ushort number,
@@ -51,37 +59,22 @@ public class Appointment
         Guid organizerId,
         IEnumerable<Guid> attendeeIds)
     {
-        var appointmentAddressIsValid = AppointmentAddress.TryCreate(street, number, zipCode, out var address);
-        if (!appointmentAddressIsValid)
-        {
-            return AppointmentsModuleDomainErrors.AppointmentErrors.InvalidAddress;
-        }
-        
-        var appointmentDateIsValid = AppointmentDate.TryCreate(startDate, endDate, out var date);
-        if (!appointmentDateIsValid)
-        {
-            return AppointmentsModuleDomainErrors.AppointmentErrors.InvalidDate;
-        }
-        
-        var organizerIdIsValid = UserId.TryCreate(organizerId, out var organizer);
-        if (!organizerIdIsValid)
-        {
-            return AppointmentsModuleDomainErrors.AppointmentErrors.EmptyOrganizerId;
-        }
-
-        AppointmentId.TryCreate(Guid.NewGuid(), out var appointmentId);
+        var appointmentId = Guid.NewGuid();
+        var appointmentAddress = AppointmentAddress.Create(street, number, zipCode);
         var attendees = new List<Attendee>();
         foreach (var attendeeId in attendeeIds ?? [])
         {
-            var attendeeIdIsValid = UserId.TryCreate(attendeeId, out _);
-            if (!attendeeIdIsValid) return AppointmentsModuleDomainErrors.AppointmentErrors.AttendeeEmptyId;
+            var attendee = Attendee.Create(userId: attendeeId, appointmentId: appointmentId);
             
-            var attendeeResult = Attendee.Create(userId: attendeeId, appointmentId: appointmentId.Value);
-            if (!attendeeResult.IsSuccess) return attendeeResult.ErrorMessage;
-            
-            attendees.Add(attendeeResult.Value);
+            attendees.Add(attendee);
         }
         
-        return new Appointment(appointmentId, date, address, organizer, attendees);
+        return new Appointment(
+            appointmentId: appointmentId, 
+            startDate: startDate, 
+            endDate: endDate, 
+            address: appointmentAddress, 
+            createdBy: organizerId, 
+            attendees: attendees);
     }
 }

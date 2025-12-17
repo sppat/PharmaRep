@@ -38,12 +38,12 @@ public class AppointmentRepository(PharmaRepAppointmentsDbContext dbContext) : I
 
         if (from.HasValue)
         {
-            appointments = appointments.Where(appointment => appointment.Date.StartDate >= from.Value);
+            appointments = appointments.Where(appointment => appointment.StartDate >= from.Value);
         }
         
         if (to.HasValue)
         {
-            appointments = appointments.Where(appointment => appointment.Date.EndDate <= to.Value);
+            appointments = appointments.Where(appointment => appointment.EndDate <= to.Value);
         }
         
         var queryResult = appointments.Skip((pageNumber - 1) * pageSize)
@@ -52,11 +52,11 @@ public class AppointmentRepository(PharmaRepAppointmentsDbContext dbContext) : I
         return await queryResult.ToListAsync(cancellationToken);
     }
 
-    public async Task<Appointment> GetByIdAsync(AppointmentId id, bool asNoTracking = false, CancellationToken cancellationToken = default)
+    public async Task<Appointment> GetByIdAsync(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default)
     {
         var appointment = dbContext.Appointments
             .Include(appointment => appointment.Attendees)
-            .Where(appointment => appointment.Id == id);
+            .Where(appointment => appointment.Id.Value == id);
         
         if (asNoTracking)
         {

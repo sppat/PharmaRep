@@ -1,6 +1,4 @@
-﻿using Appointments.Domain.DomainErrors;
-using Appointments.Domain.ValueObjects;
-using Shared.Domain;
+﻿using Appointments.Domain.ValueObjects;
 
 namespace Appointments.Domain.Entities;
 
@@ -16,22 +14,6 @@ public class Attendee
         UserId = userId;
         AppointmentId = appointmentId;
     }
-    
-    public static DomainResult<Attendee> Create(Guid userId, Guid appointmentId)
-    {
-        var userIdIsValid = UserId.TryCreate(userId, out var userIdResult);
-        if (!userIdIsValid)
-        {
-            return AppointmentsModuleDomainErrors.AppointmentErrors.AttendeeEmptyId;
-        }
-        
-        var appointmentIdIsValid = AppointmentId.TryCreate(appointmentId, out var appointmentIdResult);
-        if (!appointmentIdIsValid)
-        {
-            return AppointmentsModuleDomainErrors.AppointmentErrors.AppointmentEmptyId;
-        }
 
-        var attendee = new Attendee(userIdResult, appointmentIdResult);
-        return attendee;
-    }
+    public static Attendee Create(Guid userId, Guid appointmentId) => new(userId: userId, appointmentId: appointmentId);
 }

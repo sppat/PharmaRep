@@ -13,5 +13,5 @@ public interface IAppointmentRepository
         int pageNumber = 1,
         int pageSize = 10,
         CancellationToken cancellationToken = default);
-    Task<Appointment> GetByIdAsync(AppointmentId id, bool asNoTracking = false, CancellationToken cancellationToken = default);
+    Task<Appointment> GetByIdAsync(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default);
 }

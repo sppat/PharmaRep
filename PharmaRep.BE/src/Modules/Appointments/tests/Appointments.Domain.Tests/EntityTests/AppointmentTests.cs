@@ -1,5 +1,6 @@
 ﻿using Appointments.Domain.DomainErrors;
 using Appointments.Domain.Entities;
+using Appointments.Domain.Exceptions.Appointment;
 
 namespace Appointments.Domain.Tests.EntityTests;
 
@@ -19,10 +20,10 @@ public class AppointmentTests
     ];
     
     [Fact]
-    public void Create_ValidData_ReturnsSuccessDomainResult()
+    public void Create_ValidData_ReturnsAppointment()
     {
         // Act
-        var result = Appointment.Create(startDate: _validStartDate,
+        var appointment = Appointment.Create(startDate: _validStartDate,
             endDate: _validEndDate,
             street: ValidStreet,
             number: ValidNumber,
@@ -31,41 +32,34 @@ public class AppointmentTests
             attendeeIds: _validAttendeeIds);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.True(result.IsSuccess);
-        Assert.NotNull(result.Value);
+        Assert.NotNull(appointment);
         
-        var appointment = result.Value;
         Assert.NotEqual(Guid.Empty, appointment.Id.Value);
-        Assert.Equal(_validStartDate, appointment.Date.StartDate);
-        Assert.Equal(_validEndDate, appointment.Date.EndDate);
+        Assert.Equal(_validStartDate, appointment.StartDate.Value);
+        Assert.Equal(_validEndDate, appointment.EndDate.Value);
         Assert.Equal(ValidStreet, appointment.Address.Street);
         Assert.Equal(ValidNumber, appointment.Address.Number);
-        Assert.Equal(ValidZipCode, appointment.Address.ZipCode);
+        Assert.Equal(ValidZipCode, appointment.Address.ZipCode.Value);
         Assert.Equal(_validOrganizerId, appointment.CreatedBy.Value);
         Assert.Equal(_validAttendeeIds, appointment.Attendees.Select(attendee => attendee.UserId.Value).ToArray());
     }
     
     [Fact]
-    public void Create_EndDateBeforeStartDate_ReturnFailDomainResult()
+    public void Create_EndDateBeforeStartDate_ThrowsAppointmentStartDateException()
     {
         // Arrange
         var endDate = new DateTime(year: 2000, month: 1, day: 1);
 
-        // Act
-        var result = Appointment.Create(startDate: _validStartDate,
-            endDate: endDate,
-            street: ValidStreet,
-            number: ValidNumber,
-            zipCode: ValidZipCode,
-            organizerId: _validOrganizerId,
-            attendeeIds: _validAttendeeIds);
-        
-        // Assert
-        Assert.False(result.IsSuccess);
-        Assert.Null(result.Value);
-        Assert.NotNull(result.ErrorMessage);
-        Assert.Equal(AppointmentsModuleDomainErrors.AppointmentErrors.InvalidDate, result.ErrorMessage);
+        // Act & Assert
+        Assert.Throws<AppointmentStartDateException>(() =>
+            Appointment.Create(
+                startDate: _validStartDate,
+                endDate: endDate,
+                street: ValidStreet,
+                number: ValidNumber,
+                zipCode: ValidZipCode,
+                organizerId: _validOrganizerId,
+                attendeeIds: _validAttendeeIds));
     }
     
     [Fact]
@@ -74,20 +68,15 @@ public class AppointmentTests
         // Arrange
         var street = string.Empty;
 
-        // Act
-        var result = Appointment.Create(startDate: _validStartDate,
-            endDate: _validEndDate,
-            street: street,
-            number: ValidNumber,
-            zipCode: ValidZipCode,
-            organizerId: _validOrganizerId,
-            attendeeIds: _validAttendeeIds);
-        
-        // Assert
-        Assert.False(result.IsSuccess);
-        Assert.Null(result.Value);
-        Assert.NotNull(result.ErrorMessage);
-        Assert.Equal(AppointmentsModuleDomainErrors.AppointmentErrors.InvalidAddress, result.ErrorMessage);
+        // Act & Assert
+        Assert.Throws<EmptyStreetException>(() => 
+            Appointment.Create(startDate: _validStartDate,
+                endDate: _validEndDate,
+                street: street,
+                number: ValidNumber,
+                zipCode: ValidZipCode,
+                organizerId: _validOrganizerId,
+                attendeeIds: _validAttendeeIds));
     }
     
     [Fact]
@@ -96,20 +85,15 @@ public class AppointmentTests
         // Arrange
         const uint zipCode = 0u;
 
-        // Act
-        var result = Appointment.Create(startDate: _validStartDate,
-            endDate: _validEndDate,
-            street: ValidStreet,
-            number: ValidNumber,
-            zipCode: zipCode,
-            organizerId: _validOrganizerId,
-            attendeeIds: _validAttendeeIds);
-        
-        // Assert
-        Assert.False(result.IsSuccess);
-        Assert.Null(result.Value);
-        Assert.NotNull(result.ErrorMessage);
-        Assert.Equal(AppointmentsModuleDomainErrors.AppointmentErrors.InvalidAddress, result.ErrorMessage);
+        // Act & Assert
+        Assert.Throws<InvalidZipCodeException>(() => 
+            Appointment.Create(startDate: _validStartDate,
+                endDate: _validEndDate,
+                street: ValidStreet,
+                number: ValidNumber,
+                zipCode: zipCode,
+                organizerId: _validOrganizerId,
+                attendeeIds: _validAttendeeIds));
     }
     
     [Fact]
@@ -117,21 +101,16 @@ public class AppointmentTests
     {
         // Arrange
         var organizerId = Guid.Empty;
-        
-        // Act
-        var result = Appointment.Create(startDate: _validStartDate,
-            endDate: _validEndDate,
-            street: ValidStreet,
-            number: ValidNumber,
-            zipCode: ValidZipCode,
-            organizerId: organizerId,
-            attendeeIds: _validAttendeeIds);
-        
-        // Assert
-        Assert.False(result.IsSuccess);
-        Assert.Null(result.Value);
-        Assert.NotNull(result.ErrorMessage);
-        Assert.Equal(AppointmentsModuleDomainErrors.AppointmentErrors.EmptyOrganizerId, result.ErrorMessage);
+
+        // Act & Assert
+        Assert.Throws<EmptyUserIdException>(() =>
+            Appointment.Create(startDate: _validStartDate,
+                endDate: _validEndDate,
+                street: ValidStreet,
+                number: ValidNumber,
+                zipCode: ValidZipCode,
+                organizerId: organizerId,
+                attendeeIds: _validAttendeeIds));
     }
     
     [Fact]
@@ -140,19 +119,14 @@ public class AppointmentTests
         // Arrange
         var attendeeIds = new[] { Guid.Empty };
 
-        // Act
-        var result = Appointment.Create(startDate: _validStartDate,
-            endDate: _validEndDate,
-            street: ValidStreet,
-            number: ValidNumber,
-            zipCode: ValidZipCode,
-            organizerId: _validOrganizerId,
-            attendeeIds: attendeeIds);
-        
-        // Assert
-        Assert.False(result.IsSuccess);
-        Assert.Null(result.Value);
-        Assert.NotNull(result.ErrorMessage);
-        Assert.Equal(AppointmentsModuleDomainErrors.AppointmentErrors.AttendeeEmptyId, result.ErrorMessage);
+        // Act & Assert
+        Assert.Throws<EmptyUserIdException>(() =>
+            Appointment.Create(startDate: _validStartDate,
+                endDate: _validEndDate,
+                street: ValidStreet,
+                number: ValidNumber,
+                zipCode: ValidZipCode,
+                organizerId: _validOrganizerId,
+                attendeeIds: attendeeIds));
     }
 }

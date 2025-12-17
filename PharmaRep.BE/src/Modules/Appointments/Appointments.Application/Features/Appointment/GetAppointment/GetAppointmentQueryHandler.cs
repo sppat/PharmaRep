@@ -13,13 +13,7 @@ public class GetAppointmentQueryHandler(IDispatcher dispatcher, IAppointmentRepo
 {
     public async Task<Result<AppointmentDto>> HandleAsync(GetAppointmentQuery request, CancellationToken cancellationToken)
     {
-        var validAppointmentId = AppointmentId.TryCreate(request.Id, out var appointmentId);
-        if (!validAppointmentId)
-        {
-            return Result<AppointmentDto>.Failure([AppointmentsModuleDomainErrors.AppointmentErrors.AppointmentEmptyId], ResultType.ValidationError);
-        }
-        
-        var appointment = await appointmentRepository.GetByIdAsync(id: appointmentId, asNoTracking: true, cancellationToken: cancellationToken);
+        var appointment = await appointmentRepository.GetByIdAsync(id: request.Id, asNoTracking: true, cancellationToken: cancellationToken);
         if (appointment is null)
         {
             return Result<AppointmentDto>.Failure([AppointmentsModuleDomainErrors.AppointmentErrors.AppointmentNotFound], ResultType.NotFound);

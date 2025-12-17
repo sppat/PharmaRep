@@ -15,11 +15,6 @@ public class AppointmentIdConverter : ValueConverter<AppointmentId, Guid>
     private static readonly Expression<Func<Guid, AppointmentId>> FromProviderExpression = guid => FromProvider(guid);
     
     private static Guid ToProvider(AppointmentId appointmentId) => appointmentId.Value;
-    
-    private static AppointmentId FromProvider(Guid guid)
-    {
-        AppointmentId.TryCreate(guid, out var appointmentId);
 
-        return appointmentId;
-    }
+    private static AppointmentId FromProvider(Guid guid) => guid;
 }

@@ -17,24 +17,13 @@ public class CreateAppointmentCommandHandler(IValidationOrchestrator<CreateAppoi
             return Result<Guid>.Failure(validationResult.Errors, ResultType.ValidationError);
         }
         
-        var domainResult = Domain.Entities.Appointment.Create(startDate: request.StartDate,
+        var appointment = Domain.Entities.Appointment.Create(startDate: request.StartDate,
             endDate: request.EndDate,
             street: request.Street,
             number: request.Number,
             zipCode: request.ZipCode,
             organizerId: request.OrganizerId,
             attendeeIds: request.AttendeeIds);
-
-        if (!domainResult.IsSuccess)
-        {
-            return Result<Guid>.Failure([domainResult.ErrorMessage], ResultType.ValidationError);
-        }
-        
-        var appointment = domainResult.Value;
-        if (appointment is null)
-        {
-            return Result<Guid>.Failure(["Failed to create appointment."], ResultType.ServerError);
-        }
         
         await appointmentRepository.AddAsync(appointment, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

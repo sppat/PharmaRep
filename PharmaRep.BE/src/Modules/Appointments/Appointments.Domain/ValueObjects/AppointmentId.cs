@@ -1,4 +1,6 @@
-﻿namespace Appointments.Domain.ValueObjects;
+﻿using Appointments.Domain.Exceptions.Appointment;
+
+namespace Appointments.Domain.ValueObjects;
 
 public record AppointmentId
 {
@@ -6,20 +8,16 @@ public record AppointmentId
     
     private AppointmentId() { }
 
-    private AppointmentId(Guid value)
+    public AppointmentId(Guid value)
     {
+        if (value == Guid.Empty)
+        {
+            throw new EmptyAppointmentIdException(nameof(AppointmentId));
+        }
+
         Value = value;
     }
     
-    public static bool TryCreate(Guid id, out AppointmentId appointmentId)
-    {
-        if (id == Guid.Empty)
-        {
-            appointmentId = null;
-            return false;
-        }
-
-        appointmentId = new AppointmentId(id);
-        return true;
-    }
+    public static implicit operator Guid(AppointmentId appointmentId) => appointmentId.Value;
+    public static implicit operator AppointmentId(Guid value) => new(value);
 }

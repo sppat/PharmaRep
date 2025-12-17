@@ -1,27 +1,21 @@
-﻿namespace Appointments.Domain.ValueObjects;
+﻿using Appointments.Domain.Exceptions.Appointment;
+
+namespace Appointments.Domain.ValueObjects;
 
 public record AppointmentDate
 {
-    public DateTimeOffset StartDate { get; private set; }
-    public DateTimeOffset EndDate { get; private set; }
-
-    private AppointmentDate() { }
+    public DateTimeOffset Value { get; private set; }
     
-    private AppointmentDate(DateTimeOffset startDate, DateTimeOffset endDate)
+    public AppointmentDate(DateTimeOffset value)
     {
-        StartDate = startDate;
-        EndDate = endDate;
-    }
-
-    public static bool TryCreate(DateTimeOffset startDate, DateTimeOffset endDate, out AppointmentDate appointmentDate)
-    {
-        if (startDate == default || endDate == default || startDate > endDate)
+        if (value == default)
         {
-            appointmentDate = null;
-            return false;
+            throw new EmptyAppointmentDateException(nameof(AppointmentDate));
         }
 
-        appointmentDate = new AppointmentDate(startDate, endDate);
-        return true;
+        Value = value;
     }
+
+    public static implicit operator DateTimeOffset(AppointmentDate appointmentDate) => appointmentDate.Value;
+    public static implicit operator AppointmentDate(DateTimeOffset date) => new(date);
 }

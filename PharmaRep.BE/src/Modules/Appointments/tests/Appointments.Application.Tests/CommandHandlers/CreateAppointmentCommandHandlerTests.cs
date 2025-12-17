@@ -62,23 +62,4 @@ public class CreateAppointmentCommandHandlerTests
         _appointmentRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Appointment>(), It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
-    
-    [Fact(DisplayName = "Verify that HandleAsync method returns failure result for invalid command")]
-    public async Task HandleAsync_InvalidCommand_ReturnsFailureResult()
-    {
-        // Arrange
-        var invalidCommand = _validCommand with { OrganizerId = Guid.Empty };
-        const string expectedError = AppointmentsModuleDomainErrors.AppointmentErrors.EmptyOrganizerId;
-
-        // Act
-        var result = await _sut.HandleAsync(invalidCommand, CancellationToken.None);
-
-        // Assert
-        Assert.False(result.IsSuccess);
-        Assert.Equal(ResultType.ValidationError, result.Type);
-        Assert.Contains(expectedError, result.Errors);
-        
-        _appointmentRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Appointment>(), It.IsAny<CancellationToken>()), Times.Never);
-        _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-    }
 }

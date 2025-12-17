@@ -13,8 +13,8 @@ public static class AppointmentMappings
             ZipCode: appointment.Address.ZipCode);
         
         return new AppointmentDto(Id: appointment.Id.Value,
-            Start: appointment.Date.StartDate,
-            End: appointment.Date.EndDate,
+            Start: appointment.StartDate,
+            End: appointment.EndDate,
             Address: addressDto,
             Organizer: organizer,
             Attendees: attendees ?? []);

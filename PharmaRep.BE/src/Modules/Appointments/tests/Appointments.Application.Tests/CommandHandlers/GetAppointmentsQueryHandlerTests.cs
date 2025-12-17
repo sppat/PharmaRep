@@ -114,7 +114,7 @@ public class GetAppointmentsQueryHandlerTests
             organizerId: _organizerTwoId,
             attendeeIds: [.._attendeeIds, _organizerOneId]);
 
-        return [appointmentOne.Value, appointmentTwo.Value, appointmentThree.Value, appointmentFour.Value];
+        return [appointmentOne, appointmentTwo, appointmentThree, appointmentFour];
     }
 
     private IEnumerable<UserBasicInfo> GetTestUsersInfo() => 

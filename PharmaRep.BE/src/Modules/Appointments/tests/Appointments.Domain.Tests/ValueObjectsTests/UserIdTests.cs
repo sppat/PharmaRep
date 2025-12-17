@@ -1,4 +1,5 @@
-﻿using Appointments.Domain.ValueObjects;
+﻿using Appointments.Domain.Exceptions.Appointment;
+using Appointments.Domain.ValueObjects;
 
 namespace Appointments.Domain.Tests.ValueObjectsTests;
 
@@ -11,24 +12,16 @@ public class UserIdTests
         var validId = Guid.NewGuid();
 
         // Act
-        var userIdCreated = UserId.TryCreate(validId, out var userId);
+        var userId = new UserId(validId);
 
         // Assert
-        Assert.True(userIdCreated);
         Assert.Equal(validId, userId.Value);
     }
     
     [Fact]
-    public void TryCreate_EmptyId_ReturnsFalse()
+    public void TryCreate_EmptyId_ThrowsException()
     {
-        // Arrange
-        var emptyId = Guid.Empty;
-
         // Act
-        var userIdCreated = UserId.TryCreate(emptyId, out var userId);
-
-        // Assert
-        Assert.False(userIdCreated);
-        Assert.Null(userId);
+        Assert.Throws<EmptyUserIdException>(() => new UserId(Guid.Empty));
     }
 }

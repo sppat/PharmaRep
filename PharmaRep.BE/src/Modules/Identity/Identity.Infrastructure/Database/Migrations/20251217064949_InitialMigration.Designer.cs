@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Identity.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(PharmaRepIdentityDbContext))]
-    [Migration("20250615173945_InitialAppointmentsMigration")]
-    partial class InitialAppointmentsMigration
+    [Migration("20251217064949_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace Identity.Infrastructure.Database.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("identity")
-                .HasAnnotation("ProductVersion", "9.0.6")
+                .HasAnnotation("ProductVersion", "10.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -57,24 +57,28 @@ namespace Identity.Infrastructure.Database.Migrations
                         new
                         {
                             Id = new Guid("02a12708-fc75-4b6c-9111-10b5f7eadf56"),
+                            ConcurrencyStamp = "e1cd4b01-1537-4a15-b237-9675ae8f2c1f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("1f1a3cf9-c300-4821-9b5a-e15f8bbdabd0"),
+                            ConcurrencyStamp = "72a668ce-2002-49ff-a5c9-13ee177d8501",
                             Name = "Doctor",
                             NormalizedName = "DOCTOR"
                         },
                         new
                         {
                             Id = new Guid("8ab04aba-48f0-4b3a-bbae-5601f8da9f66"),
+                            ConcurrencyStamp = "c486fce9-d3e5-4b1a-827a-2354da65445f",
                             Name = "Midwife",
                             NormalizedName = "MIDWIFE"
                         },
                         new
                         {
                             Id = new Guid("06d4065d-4544-4511-9f32-d054a13afe85"),
+                            ConcurrencyStamp = "0c16cb77-eafe-4e47-a7fa-6ea9d99cfa7f",
                             Name = "Medical Representative",
                             NormalizedName = "MEDICAL REPRESENTATIVE"
                         });

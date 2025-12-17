@@ -1,12 +1,14 @@
-﻿namespace Appointments.Domain.ValueObjects;
+﻿using Appointments.Domain.Exceptions.Appointment;
+
+namespace Appointments.Domain.ValueObjects;
 
 public record AppointmentAddress
 {
-    public string Street { get; private set; }
+    public AppointmentAddressStreet Street { get; private set; }
     public ushort Number { get; private set; }
-    public uint ZipCode { get; private set; }
-    
-    private AppointmentAddress() { }
+    public AppointmentAddressZipCode ZipCode { get; private set; }
+
+    private AppointmentAddress() {}
 
     private AppointmentAddress(string street, ushort number, uint zipCode)
     {
@@ -15,15 +17,5 @@ public record AppointmentAddress
         ZipCode = zipCode;
     }
     
-    public static bool TryCreate(string street, ushort number, uint zipCode, out AppointmentAddress address)
-    {
-        if (string.IsNullOrWhiteSpace(street) || zipCode == 0)
-        {
-            address = null;
-            return false;
-        }
-
-        address = new AppointmentAddress(street, number, zipCode);
-        return true;
-    }
+    public static AppointmentAddress Create(string street, ushort number, uint zipCode) => new(street, number, zipCode);
 }
