@@ -1,11 +1,14 @@
+using Appointments.Application.Dtos;
+using Appointments.Domain.Entities;
 using Identity.Application.Dtos;
 using Identity.Domain.Entities;
+using Identity.Public.Contracts;
 
 namespace Shared.Tests.Database;
 
 public static class MockData
 {
-    public static IEnumerable<UserDto> Users => 
+    public static List<UserDto> Users => 
     [
         new(Id: Guid.Parse("23b42b97-972b-40e9-9f43-baa9b2d3d1ad"),
             FirstName: "User",
@@ -33,4 +36,26 @@ public static class MockData
             Email: "user@five.com",
             Roles: [Role.MedicalRepresentative.Name])
     ];
+
+    public static List<AppointmentDto> Appointments => [.. Users.Select((organizer, i) => 
+        new AppointmentDto(
+            Id: Guid.NewGuid(),
+            Start: DateTimeOffset.Now.AddHours(3 + i),
+            End: DateTimeOffset.Now.AddHours(4 + i),
+            Address: new AddressDto(
+                Street: $"Test Street {i + 1}",
+                Number: 1,
+                ZipCode: 12345),
+            Organizer: new UserBasicInfo(
+                Id: organizer.Id,
+                FirstName: organizer.FirstName,
+                LastName: organizer.LastName,
+                Email: organizer.Email),
+            Attendees: Users
+                .Where(u => u.Id != organizer.Id)
+                .Select(u => new UserBasicInfo(
+                    Id: u.Id,
+                    FirstName: u.FirstName,
+                    LastName: u.LastName,
+                    Email: u.Email))))];
 }

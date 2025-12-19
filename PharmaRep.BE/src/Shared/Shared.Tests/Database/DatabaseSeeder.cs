@@ -43,6 +43,60 @@ public static class DatabaseSeeder
             }
             
             return queryBuilder.ToString();
-        }   
+        }
     }
+
+	public static class AppointmentsModuleSeeder
+	{
+		public static string SeedAppointment()
+        {
+            var queryBuilder = new StringBuilder();
+            foreach (var appointment in MockData.Appointments)
+            {
+                var addAppointmentQuery = $"""
+                                    INSERT INTO [appointments].[Appointments] (Id,
+                                                                               StartDate, 
+                                                                               EndDate,
+                                                                               CreatedBy,
+                                                                               CreatedAt,
+                                                                               UpdatedBy,
+                                                                               UpdatedAt)
+                                    VALUES ('{appointment.Id}',
+                                            '{appointment.Start}',
+                                            '{appointment.End}',
+                                            '{appointment.Organizer.Id}',
+                                            '{DateTimeOffset.UtcNow}',
+                                            null,
+                                            null);
+                                    """;
+                queryBuilder.Append(addAppointmentQuery);
+                queryBuilder.AppendLine();
+
+                var addAddressQuery = $"""
+                                        INSERT INTO [appointments].[Addresses] (AppointmentId,
+                                                                                Street,
+                                                                                Number,
+                                                                                ZipCode)
+                                        VALUES ('{appointment.Id}',
+                                                '{appointment.Address.Street}',
+                                                {appointment.Address.Number},
+                                                '{appointment.Address.ZipCode}');
+                                        """;
+
+				foreach (var attendee in appointment.Attendees)
+                {
+                    var addAttendeeQuery = $"""
+                                            INSERT INTO [appointments].[Attendees] (UserId,
+                                                                                    AppointmentId)
+                                            VALUES ('{attendee.Id}',
+                                                    '{appointment.Id}');
+                                            """;
+                    queryBuilder.Append(addAttendeeQuery);
+                    queryBuilder.AppendLine();
+                }
+			}
+
+			return queryBuilder.ToString();
+		}
+	}
 }

@@ -53,18 +53,19 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
         await _container.StartAsync();
         
         using var scope = Services.CreateScope();
-        await SeedIdentityModule(scope);
-    }
+        await SeedModule<PharmaRepIdentityDbContext>(scope, DatabaseSeeder.IdentityModuleSeeder.SeedTestUsersQuery());
+        await SeedModule<PharmaRepAppointmentsDbContext>(scope, DatabaseSeeder.AppointmentsModuleSeeder.SeedAppointment());
+	}
 
     public new async Task DisposeAsync()
     {
         await _container.DisposeAsync();
     }
 
-    private static async Task SeedIdentityModule(IServiceScope scope)
-    {
-        var dbContext = scope.ServiceProvider.GetRequiredService<PharmaRepIdentityDbContext>();
-        
-        await dbContext.Database.ExecuteSqlRawAsync(DatabaseSeeder.IdentityModuleSeeder.SeedTestUsersQuery());
-    }
+    private static async Task SeedModule<TContext>(IServiceScope scope, string query) where TContext : DbContext
+	{
+        var dbContext = scope.ServiceProvider.GetRequiredService<TContext>();
+
+        await dbContext.Database.ExecuteSqlRawAsync(query);
+	}
 }
