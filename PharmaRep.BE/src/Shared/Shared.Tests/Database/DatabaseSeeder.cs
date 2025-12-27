@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using Identity.Domain.Entities;
 
@@ -62,10 +63,10 @@ public static class DatabaseSeeder
                                                                                UpdatedBy,
                                                                                UpdatedAt)
                                     VALUES ('{appointment.Id}',
-                                            '{appointment.Start}',
-                                            '{appointment.End}',
+                                            '{appointment.Start.ToString("O", CultureInfo.InvariantCulture)}',
+                                            '{appointment.End.ToString("O", CultureInfo.InvariantCulture)}',
                                             '{appointment.Organizer.Id}',
-                                            '{DateTimeOffset.UtcNow}',
+                                            '{DateTimeOffset.UtcNow.ToString("O", CultureInfo.InvariantCulture)}',
                                             null,
                                             null);
                                     """;
@@ -80,8 +81,11 @@ public static class DatabaseSeeder
                                         VALUES ('{appointment.Id}',
                                                 '{appointment.Address.Street}',
                                                 {appointment.Address.Number},
-                                                '{appointment.Address.ZipCode}');
+                                                {appointment.Address.ZipCode});
                                         """;
+
+                queryBuilder.Append(addAddressQuery);
+                queryBuilder.AppendLine();
 
 				foreach (var attendee in appointment.Attendees)
                 {
