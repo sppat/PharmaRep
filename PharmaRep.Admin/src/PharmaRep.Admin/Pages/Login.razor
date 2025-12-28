@@ -1,0 +1,32 @@
+@page "/auth/login"
+@using PharmaRep.Admin.Models.Auth
+
+<h3>Login</h3>
+
+<EditForm Model="_loginModel" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <InputText id="email" @bind-Value="_loginModel.Email" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <InputText id="password"
+                   @bind-Value="_loginModel.Password"
+                   class="form-control"
+                   type="password"></InputText>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <ValidationSummary></ValidationSummary>
+</EditForm>
+
+@code {
+
+    private readonly LoginModel _loginModel = new();
+
+    private void HandleLogin()
+    {
+        Console.WriteLine($"Email: {_loginModel.Email} - Password: {_loginModel.Password}");
+    }
+
+}
