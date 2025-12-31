@@ -1,10 +1,31 @@
-﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+﻿@using PharmaRep.Admin.Utils
+@using System.Security.Claims
+@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-    <main>
-        @Body
-    </main>
-</div>
+<AuthorizeView>
+    <Authorized>
+        <div class="page">
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+
+            <main>
+                <h3>@context.User.FindFirst(ClaimTypes.Email)?.Value</h3>
+                @Body
+            </main>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <h3>Unauthorized</h3>
+        <button class="btn btn-primary" type="button" @onclick="Login">Login</button>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private void Login()
+    {
+        var authProvider = (AuthStateProvider)AuthenticationStateProvider;
+        authProvider.AuthenticateUser("test@email.com");
+    }
+}
