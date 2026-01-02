@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using Identity.Application.Dtos;
 using Identity.Application.Features.User.Delete;
 using Identity.Application.Features.User.GetById;
+using Identity.Application.Features.User.GetMe;
 using Identity.Domain.Entities;
 using Identity.Infrastructure;
 using Identity.WebApi.Mappings;
@@ -75,6 +77,15 @@ public static class UserEndpoints
             .WithDescription("Delete user by id.")
             .WithTags(nameof(User));
 
+        endpoints.MapGet(IdentityModuleUrls.User.Me, GetMeAsync)
+            .RequireAuthorization()
+            .Produces<GetMeResponse>()
+            .ProducesProblem(StatusCodes.Status401Unauthorized)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithDescription("Retrieves information about the logged in user.")
+            .WithTags(nameof(User));
+
         if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsEnvironment("Docker"))
         {
             // This endpoint is for testing purposes only
@@ -130,5 +141,16 @@ public static class UserEndpoints
         var result = await dispatcher.SendAsync(command, cancellationToken);
         
         return result.ToHttpResult();
+    }
+
+    private static async Task<IResult> GetMeAsync(IDispatcher dispatcher, HttpContext httpContext, CancellationToken cancellationToken)
+    {
+        var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = userIdClaim is null ? Guid.Empty : Guid.Parse(userIdClaim);
+
+        var query = new GetMeQuery(userId);
+        var result = await dispatcher.SendAsync(query, cancellationToken);
+
+        return result.ToHttpResult(UserResponseMappings.ToGetMeResponse);
     }
 }

@@ -1,4 +1,5 @@
-﻿@using PharmaRep.Admin.Utils
+﻿@using PharmaRep.Admin.Pages
+@using PharmaRep.Admin.Utils
 @using System.Security.Claims
 @inherits LayoutComponentBase
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -17,15 +18,6 @@
         </div>
     </Authorized>
     <NotAuthorized>
-        <h3>Unauthorized</h3>
-        <button class="btn btn-primary" type="button" @onclick="Login">Login</button>
+        <Login />
     </NotAuthorized>
 </AuthorizeView>
-
-@code {
-    private void Login()
-    {
-        var authProvider = (AuthStateProvider)AuthenticationStateProvider;
-        authProvider.AuthenticateUser("test@email.com");
-    }
-}

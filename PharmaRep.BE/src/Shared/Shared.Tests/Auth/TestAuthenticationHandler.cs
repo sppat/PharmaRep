@@ -14,14 +14,20 @@ public class TestAuthenticationHandler : AuthenticationHandler<AuthenticationSch
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
+        var claims = new List<Claim>();
+
+        var hasId = Context.Request.Headers.TryGetValue("id", out var id);
+        if (hasId)
+        {
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, id));    
+        }
+
         var hasRoles = Context.Request.Headers.TryGetValue("roles", out var roles);
         if (!hasRoles)
         {
             var noResult = AuthenticateResult.Fail("User has no roles");
             return Task.FromResult(noResult);
         }
-        
-        var claims = new List<Claim>();
         
         foreach (var role in roles)
         {

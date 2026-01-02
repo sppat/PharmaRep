@@ -29,4 +29,8 @@
       <ProjectReference Include="..\..\Identity.Application\Identity.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="QueryHandlers\" />
+    </ItemGroup>
+
 </Project>

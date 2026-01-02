@@ -1,5 +1,8 @@
 @page "/auth/login"
 @using PharmaRep.Admin.Models.Auth
+@using PharmaRep.Admin.Services
+@using PharmaRep.Admin.Utils
+@inject AuthenticationStateProvider authStateProvider
 
 <h3>Login</h3>
 
@@ -24,9 +27,5 @@
 
     private readonly LoginModel _loginModel = new();
 
-    private void HandleLogin()
-    {
-        Console.WriteLine($"Email: {_loginModel.Email} - Password: {_loginModel.Password}");
-    }
-
+    private async Task HandleLogin() => await ((AuthStateProvider)authStateProvider).AuthenticateAsync(_loginModel.Email, _loginModel.Password);
 }

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Features\Auth\" />
+    <Folder Include="Features\User\GetMe\" />
   </ItemGroup>
 
 </Project>

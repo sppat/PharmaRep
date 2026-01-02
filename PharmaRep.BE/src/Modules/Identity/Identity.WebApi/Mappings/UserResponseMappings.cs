@@ -18,4 +18,11 @@ public static class UserResponseMappings
             pageSize: paginatedUsers.PageSize,
             total: paginatedUsers.Total,
             items: paginatedUsers.Items.ToList());
+
+    internal static GetMeResponse ToGetMeResponse(MeDto meDto) => new(
+        Id: meDto.Id,
+        Email: meDto.Email,
+        FirstName: meDto.FirstName,
+        LastName: meDto.LastName,
+        Roles: meDto.Roles);
 }

@@ -13,6 +13,7 @@ public static class IdentityModuleUrls
         public const string UpdateRoles = $"{UserBaseUrl}/{{id:guid}}/roles";
         public const string UpdatePersonalInfo = $"{UserBaseUrl}/{{id:guid}}/personal-info";
         public const string Delete = $"{UserBaseUrl}/{{id:guid}}";
+        public const string Me = $"{UserBaseUrl}/me";
     }
 
     public static class Authentication

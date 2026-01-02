@@ -416,4 +416,50 @@ public class UserEndpointsTests(WebApplicationFixture fixture)
     }
 
     #endregion
+
+    #region Get Me
+
+    [Fact]
+    public async Task GetMe_ValidRequest_ReturnsSuccess()
+    {
+        // Arrange
+        var expectedUser = MockData.Users.First();
+        var client = fixture.GetAuthorizedClient([Role.Doctor.Name], expectedUser.Id.ToString());
+        
+        // Act
+        var response = await client.GetAsync(IdentityModuleUrls.User.Me);
+        var responseContent = await response.Content.ReadFromJsonAsync<GetMeResponse>();
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equivalent(expectedUser, responseContent);
+    }
+
+    [Fact]
+    public async Task GetMe_UnauthorizedRequest_ReturnsUnauthorized()
+    {
+        // Act
+        var response = await _unauthorizedHttpClient.GetAsync(IdentityModuleUrls.User.Me);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetMe_UserNotFound_ReturnsNotFound()
+    {
+        // Arrange
+        var client = fixture.GetAuthorizedClient([Role.Doctor.Name], Guid.Empty.ToString());
+        var expectedErrors = new[] { IdentityModuleDomainErrors.UserErrors.UserNotFound };
+
+        // Act
+        var response = await client.GetAsync(IdentityModuleUrls.User.Me);
+        var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        AssertProblemDetails.HasErrors(expectedErrors, responseContent.GetErrors());
+    }
+
+    #endregion
 }

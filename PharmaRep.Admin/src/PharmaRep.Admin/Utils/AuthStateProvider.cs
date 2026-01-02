@@ -1,29 +1,56 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.JSInterop;
+using PharmaRep.Admin.Constants;
+using PharmaRep.Admin.Services;
 using System.Security.Claims;
 
 namespace PharmaRep.Admin.Utils;
 
-public class AuthStateProvider : AuthenticationStateProvider
+public class AuthStateProvider(AuthenticationService authenticationService, UserService userService, IJSRuntime jSRuntime) : AuthenticationStateProvider
 {
-	public override Task<AuthenticationState> GetAuthenticationStateAsync()
-	{
-		var identity = new ClaimsIdentity();
-		var user = new ClaimsPrincipal(identity);
-		var authenticationState = new AuthenticationState(user);
+	private readonly ClaimsPrincipal _anonymous = new();
 
-		return Task.FromResult(authenticationState);
+	public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+	{
+		var token = await jSRuntime.InvokeAsync<string>(JSConstants.GetItemFunction, AuthConstants.AuthTokenKey);
+		if (token is null) return new AuthenticationState(_anonymous);
+
+		var user = await userService.GetCurrentUserAsync(token);
+		var claims = new List<Claim>
+		{
+			new(Constants.ClaimTypes.FirstName, user.FirstName),
+			new(Constants.ClaimTypes.LastName, user.LastName),
+			new(System.Security.Claims.ClaimTypes.Email, user.Email),
+			new(System.Security.Claims.ClaimTypes.NameIdentifier, user.Id.ToString())
+		};
+		var claimsIdentity = new ClaimsIdentity(claims, "api_auth");
+		var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+		
+		return new AuthenticationState(claimsPrincipal);
 	}
 
-	public void AuthenticateUser(string email)
+	public async Task AuthenticateAsync(string email, string password)
 	{
-		var identity = new ClaimsIdentity(
-		[
-			new(ClaimTypes.Email, email)
-		], "Bearer");
+		var user = await authenticationService.LoginAsync(email, password);
 
-		var user = new ClaimsPrincipal(identity);
-		var authenticationState = new AuthenticationState(user);
+		if (user is null)
+		{
+			NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_anonymous)));
+			return;
+		}
 
-		NotifyAuthenticationStateChanged(Task.FromResult(authenticationState));
+		var claims = new List<Claim>
+		{
+			new(Constants.ClaimTypes.FirstName, user.FirstName),
+			new(Constants.ClaimTypes.LastName, user.LastName),
+			new(System.Security.Claims.ClaimTypes.Email, user.Email),
+			new(System.Security.Claims.ClaimTypes.NameIdentifier, user.Id.ToString())
+		};
+
+		var claimsIdentity = new ClaimsIdentity(claims, "api_auth");
+		var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+		var authState = new AuthenticationState(claimsPrincipal);
+
+		NotifyAuthenticationStateChanged(Task.FromResult(authState));
 	}
 }

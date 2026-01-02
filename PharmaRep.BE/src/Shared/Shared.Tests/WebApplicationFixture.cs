@@ -39,12 +39,17 @@ public class WebApplicationFixture : WebApplicationFactory<Program>, IAsyncLifet
 
     public HttpClient GetUnauthorizedClient() => CreateClient();
 
-    public HttpClient GetAuthorizedClient(string[] roles)
+    public HttpClient GetAuthorizedClient(string[] roles, string id = null)
     {
         var client = CreateClient();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("TestScheme");
         client.DefaultRequestHeaders.Add("roles", roles);
-
+        
+        if (id is not null)
+        {
+            client.DefaultRequestHeaders.Add("id", id);
+        }
+        
         return client;
     }
 
