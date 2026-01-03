@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Configurations/" />
     <Folder Include="Constants\" />
     <Folder Include="Contracts\" />
     <Folder Include="Contracts\Requests\" />

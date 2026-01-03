@@ -27,5 +27,6 @@
 
     private readonly LoginModel _loginModel = new();
 
-    private async Task HandleLogin() => await ((AuthStateProvider)authStateProvider).AuthenticateAsync(_loginModel.Email, _loginModel.Password);
+    private async Task HandleLogin() 
+        => await ((AuthStateProvider)authStateProvider).AuthenticateAsync(_loginModel.Email, _loginModel.Password);
 }
