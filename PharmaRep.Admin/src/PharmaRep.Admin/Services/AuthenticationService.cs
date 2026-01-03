@@ -6,7 +6,10 @@ using PharmaRep.Admin.Contracts.Responses;
 
 namespace PharmaRep.Admin.Services;
 
-public class AuthenticationService(HttpClient httpClient, IJSRuntime jSRuntime)
+public class AuthenticationService(
+    HttpClient httpClient, 
+    UserService userService,
+    IJSRuntime jSRuntime)
 {
     public async Task<MeResponse?> LoginAsync(string email, string password)
     {
@@ -19,18 +22,10 @@ public class AuthenticationService(HttpClient httpClient, IJSRuntime jSRuntime)
         
         if (responseContent is null) return null;
 
-        using var meRequest = new HttpRequestMessage(HttpMethod.Get, new Uri("identity/users/me", UriKind.Relative))
-        {
-            Headers =
-            {
-                { "Authorization", $"Bearer {responseContent.Token}" }
-            }
-        };
-        var meResponse = await httpClient.SendAsync(meRequest);
-        var meResponseContent = await meResponse.Content.ReadFromJsonAsync<MeResponse>();
-
         await jSRuntime.InvokeVoidAsync(JSConstants.SetItemFunction, AuthConstants.AuthTokenKey, responseContent.Token);
+        
+        var user = await userService.GetCurrentUserAsync(responseContent.Token);
 
-        return meResponseContent;
+        return user;
     }
 }
