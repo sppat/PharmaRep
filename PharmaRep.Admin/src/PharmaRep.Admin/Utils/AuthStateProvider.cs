@@ -23,7 +23,7 @@ public class AuthStateProvider(AuthenticationService authenticationService, User
 			new(System.Security.Claims.ClaimTypes.Email, user.Email),
 			new(System.Security.Claims.ClaimTypes.NameIdentifier, user.Id.ToString())
 		};
-		var claimsIdentity = new ClaimsIdentity(claims, "api_auth");
+		var claimsIdentity = new ClaimsIdentity(claims, Constants.ClaimTypes.ClaimsIdentity);
 		var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 		
 		return new AuthenticationState(claimsPrincipal);
@@ -47,7 +47,7 @@ public class AuthStateProvider(AuthenticationService authenticationService, User
 			new(System.Security.Claims.ClaimTypes.NameIdentifier, user.Id.ToString())
 		};
 
-		var claimsIdentity = new ClaimsIdentity(claims, "api_auth");
+		var claimsIdentity = new ClaimsIdentity(claims, Constants.ClaimTypes.ClaimsIdentity);
 		var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 		var authState = new AuthenticationState(claimsPrincipal);
 
