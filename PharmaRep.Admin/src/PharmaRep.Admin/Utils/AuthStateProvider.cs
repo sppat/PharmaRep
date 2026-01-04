@@ -21,14 +21,15 @@ public class AuthStateProvider(AuthenticationService authenticationService, User
 
 	public async Task AuthenticateAsync(string email, string password)
 	{
-		var user = await authenticationService.LoginAsync(email, password);
+		var token = await authenticationService.LoginAsync(email, password);
 
-		if (user is null)
+		if (token is null)
 		{
 			NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_anonymous)));
 			return;
 		}
 
+		var user = await userService.GetCurrentUserAsync(token);
 		var authState = new AuthenticationState(user.ToClaimsPrincipal());
 
 		NotifyAuthenticationStateChanged(Task.FromResult(authState));
