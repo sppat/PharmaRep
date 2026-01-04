@@ -5,4 +5,4 @@ public record MeResponse(
     string Email,
     string FirstName,
     string LastName,
-    IEnumerable<string> Roles);
+    ICollection<string> Roles);

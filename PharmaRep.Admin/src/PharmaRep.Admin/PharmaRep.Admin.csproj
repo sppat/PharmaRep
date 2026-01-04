@@ -19,6 +19,8 @@
     <Folder Include="Contracts\" />
     <Folder Include="Contracts\Requests\" />
     <Folder Include="Contracts\Responses\" />
+    <Folder Include="Entities/" />
+    <Folder Include="Mappings/" />
     <Folder Include="Services\" />
     <Folder Include="wwwroot/svg/" />
   </ItemGroup>

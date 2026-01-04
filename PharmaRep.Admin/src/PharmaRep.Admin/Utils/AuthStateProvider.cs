@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
-using PharmaRep.Admin.Constants;
 using PharmaRep.Admin.Services;
 using System.Security.Claims;
 
@@ -12,21 +11,12 @@ public class AuthStateProvider(AuthenticationService authenticationService, User
 
 	public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 	{
-		var token = await jSRuntime.InvokeAsync<string>(JSConstants.GetItemFunction, AuthConstants.AuthTokenKey);
+		var token = await jSRuntime.InvokeAsync<string>(Constants.JSConstants.GetItemFunction, Constants.AuthConstants.AuthTokenKey);
 		if (token is null) return new AuthenticationState(_anonymous);
 
 		var user = await userService.GetCurrentUserAsync(token);
-		var claims = new List<Claim>
-		{
-			new(Constants.ClaimTypes.FirstName, user.FirstName),
-			new(Constants.ClaimTypes.LastName, user.LastName),
-			new(System.Security.Claims.ClaimTypes.Email, user.Email),
-			new(System.Security.Claims.ClaimTypes.NameIdentifier, user.Id.ToString())
-		};
-		var claimsIdentity = new ClaimsIdentity(claims, Constants.ClaimTypes.ClaimsIdentity);
-		var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 		
-		return new AuthenticationState(claimsPrincipal);
+		return new AuthenticationState(user.ToClaimsPrincipal());
 	}
 
 	public async Task AuthenticateAsync(string email, string password)
@@ -39,17 +29,7 @@ public class AuthStateProvider(AuthenticationService authenticationService, User
 			return;
 		}
 
-		var claims = new List<Claim>
-		{
-			new(Constants.ClaimTypes.FirstName, user.FirstName),
-			new(Constants.ClaimTypes.LastName, user.LastName),
-			new(System.Security.Claims.ClaimTypes.Email, user.Email),
-			new(System.Security.Claims.ClaimTypes.NameIdentifier, user.Id.ToString())
-		};
-
-		var claimsIdentity = new ClaimsIdentity(claims, Constants.ClaimTypes.ClaimsIdentity);
-		var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-		var authState = new AuthenticationState(claimsPrincipal);
+		var authState = new AuthenticationState(user.ToClaimsPrincipal());
 
 		NotifyAuthenticationStateChanged(Task.FromResult(authState));
 	}
