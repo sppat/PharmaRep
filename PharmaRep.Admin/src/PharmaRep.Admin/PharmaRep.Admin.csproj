@@ -20,6 +20,7 @@
     <Folder Include="Contracts\Requests\" />
     <Folder Include="Contracts\Responses\" />
     <Folder Include="Services\" />
+    <Folder Include="wwwroot/svg/" />
   </ItemGroup>
 
 </Project>

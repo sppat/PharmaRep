@@ -1,8 +1,6 @@
 ﻿@using PharmaRep.Admin.Pages
-@using PharmaRep.Admin.Utils
 @using System.Security.Claims
 @inherits LayoutComponentBase
-@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <AuthorizeView>
     <Authorized>
@@ -10,9 +8,7 @@
             <div class="sidebar">
                 <NavMenu />
             </div>
-
             <main>
-                <h3>@context.User.FindFirst(ClaimTypes.Email)?.Value</h3>
                 @Body
             </main>
         </div>

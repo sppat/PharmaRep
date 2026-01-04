@@ -1,7 +1,11 @@
 ﻿@page "/"
+@inject NavigationManager NavManager
 
-<PageTitle>Home</PageTitle>
+@code {
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+        NavManager.NavigateTo(uri: "/users", replace: true);
+    }
+}
