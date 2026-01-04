@@ -21,6 +21,7 @@
     <Folder Include="Contracts\Responses\" />
     <Folder Include="Entities/" />
     <Folder Include="Mappings/" />
+    <Folder Include="Pages/Components/" />
     <Folder Include="Services\" />
     <Folder Include="wwwroot/svg/" />
   </ItemGroup>
