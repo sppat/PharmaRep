@@ -11,4 +11,11 @@ public static class UserMappings
             lastName: meResponse.LastName, 
             email: meResponse.Email, 
             roles: meResponse.Roles);
+    
+    public static User ToUser(this UserResponse meResponse)
+        => new(id: meResponse.Id, 
+            firstName: meResponse.FirstName, 
+            lastName: meResponse.LastName, 
+            email: meResponse.Email, 
+            roles: meResponse.Roles);
 }

@@ -16,9 +16,7 @@
   <ItemGroup>
     <Folder Include="Configurations/" />
     <Folder Include="Constants\" />
-    <Folder Include="Contracts\" />
     <Folder Include="Contracts\Requests\" />
-    <Folder Include="Contracts\Responses\" />
     <Folder Include="Entities/" />
     <Folder Include="Mappings/" />
     <Folder Include="Pages/Components/" />

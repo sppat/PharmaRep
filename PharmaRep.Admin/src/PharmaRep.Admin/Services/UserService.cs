@@ -2,25 +2,30 @@ using System.Net.Http.Json;
 using PharmaRep.Admin.Contracts.Responses;
 using PharmaRep.Admin.Entities;
 using PharmaRep.Admin.Mappings;
+using PharmaRep.Admin.Utils.Client;
 
 namespace PharmaRep.Admin.Services;
 
-public class UserService(HttpClient httpClient)
+public class UserService(UserApiClient userApiClient)
 {
-    public async Task<User> GetCurrentUserAsync(string token)
+    public async Task<PaginatedResponse<User>> GetUsersAsync()
     {
-        var uri = new Uri("identity/users/me", UriKind.Relative);
-        using var request = new HttpRequestMessage(HttpMethod.Get, uri)
-        {
-            Headers =
-            {
-                { "Authorization", $"Bearer {token}" }
-            }
-        };
+		var userResponse = await userApiClient.GetUsersAsync();
 
-        var response = await httpClient.SendAsync(request);
-        var responseContent = await response.Content.ReadFromJsonAsync<MeResponse>();
+        var users = userResponse.Items
+            .Select(userResponse => userResponse.ToUser())
+            .ToList();
 
-        return responseContent!.ToUser();
+        return new(pageNumber: userResponse.PageNumber,
+            pageSize: userResponse.PageSize, 
+            total: userResponse.Total, 
+            items: users);
+	}
+
+    public async Task<User> GetCurrentUserAsync()
+    {
+        var meResponse = await userApiClient.GetCurrentUserAsync();
+
+        return meResponse!.ToUser();
     }
 }

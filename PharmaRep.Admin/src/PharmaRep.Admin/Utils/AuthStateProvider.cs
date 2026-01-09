@@ -14,7 +14,7 @@ public class AuthStateProvider(AuthenticationService authenticationService, User
 		var token = await jSRuntime.InvokeAsync<string>(Constants.JSConstants.GetItemFunction, Constants.AuthConstants.AuthTokenKey);
 		if (token is null) return new AuthenticationState(_anonymous);
 
-		var user = await userService.GetCurrentUserAsync(token);
+		var user = await userService.GetCurrentUserAsync();
 		
 		return new AuthenticationState(user.ToClaimsPrincipal());
 	}
@@ -29,7 +29,7 @@ public class AuthStateProvider(AuthenticationService authenticationService, User
 			return;
 		}
 
-		var user = await userService.GetCurrentUserAsync(token);
+		var user = await userService.GetCurrentUserAsync();
 		var authState = new AuthenticationState(user.ToClaimsPrincipal());
 
 		NotifyAuthenticationStateChanged(Task.FromResult(authState));
