@@ -26,6 +26,15 @@
         align-items: center;
         line-height: 3rem;
     }
+    
+    .nav-item ::deep button {
+        color: #d7d7d7;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+    }
 
 .nav-item ::deep a.active {
     background-color: rgba(255,255,255,0.37);
@@ -33,6 +42,11 @@
 }
 
 .nav-item ::deep a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.nav-item ::deep button:hover {
     background-color: rgba(255,255,255,0.1);
     color: white;
 }

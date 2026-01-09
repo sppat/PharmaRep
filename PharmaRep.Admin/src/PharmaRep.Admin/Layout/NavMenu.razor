@@ -1,9 +1,24 @@
-﻿<div>
+﻿@inject IJSRuntime jsRuntime
+@inject AuthenticationService authService
+
+<div>
     <nav class="nav flex-column">
         <div class="nav-item">
             <NavLink class="nav-link" href="/users" Match="NavLinkMatch.Prefix">
                 <img src="svg/people-fill.svg" width="24" height="24" />
             </NavLink>
         </div>
+        <div class="nav-item">
+            <button class="btn btn-link" type="button" onclick="@LogoutAsync">
+                <img src="svg/box-arrow-right.svg" width="24" height="24" />
+            </button>
+        </div>
     </nav>
 </div>
+
+@code {
+    private async Task LogoutAsync()
+    {
+		await authService.LogoutAsync();
+    }
+}

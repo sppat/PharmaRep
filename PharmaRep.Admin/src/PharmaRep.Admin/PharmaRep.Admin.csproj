@@ -21,7 +21,6 @@
     <Folder Include="Mappings/" />
     <Folder Include="Pages/Components/" />
     <Folder Include="Services\" />
-    <Folder Include="wwwroot/svg/" />
   </ItemGroup>
 
 </Project>

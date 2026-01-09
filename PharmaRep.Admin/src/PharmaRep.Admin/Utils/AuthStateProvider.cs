@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
+using PharmaRep.Admin.Entities;
 using PharmaRep.Admin.Services;
 using System.Security.Claims;
 
 namespace PharmaRep.Admin.Utils;
 
-public class AuthStateProvider(AuthenticationService authenticationService, UserService userService, IJSRuntime jSRuntime) : AuthenticationStateProvider
+public class AuthStateProvider(UserService userService, IJSRuntime jSRuntime) : AuthenticationStateProvider
 {
 	private readonly ClaimsPrincipal _anonymous = new();
 
@@ -19,19 +20,9 @@ public class AuthStateProvider(AuthenticationService authenticationService, User
 		return new AuthenticationState(user.ToClaimsPrincipal());
 	}
 
-	public async Task AuthenticateAsync(string email, string password)
-	{
-		var token = await authenticationService.LoginAsync(email, password);
+	public void NotifyLogin(User user)
+		=> NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user.ToClaimsPrincipal())));
 
-		if (token is null)
-		{
-			NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_anonymous)));
-			return;
-		}
-
-		var user = await userService.GetCurrentUserAsync();
-		var authState = new AuthenticationState(user.ToClaimsPrincipal());
-
-		NotifyAuthenticationStateChanged(Task.FromResult(authState));
-	}
+	public void NotifyLogout()
+		=> NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_anonymous)));
 }
