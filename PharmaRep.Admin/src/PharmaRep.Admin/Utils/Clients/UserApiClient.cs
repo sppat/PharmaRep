@@ -1,7 +1,7 @@
 ﻿using PharmaRep.Admin.Contracts.Responses;
 using System.Net.Http.Json;
 
-namespace PharmaRep.Admin.Utils.Client;
+namespace PharmaRep.Admin.Utils.Clients;
 
 public class UserApiClient(HttpClient httpClient)
 {
@@ -10,8 +10,8 @@ public class UserApiClient(HttpClient httpClient)
 		var uri = new Uri("identity/users", UriKind.Relative);
 		using var request = new HttpRequestMessage(HttpMethod.Get, uri);
 
-		var response = await httpClient.SendAsync(request);
-		var content = await response.Content.ReadFromJsonAsync<PaginatedResponse<UserResponse>>();
+		var response = await httpClient.SendAsync(request, cancellationToken);
+		var content = await response.Content.ReadFromJsonAsync<PaginatedResponse<UserResponse>>(cancellationToken);
 
 		return content ?? new PaginatedResponse<UserResponse>(pageNumber: default, 
 			pageSize: default, 
@@ -24,8 +24,8 @@ public class UserApiClient(HttpClient httpClient)
 		var uri = new Uri("identity/users/me", UriKind.Relative);
 		using var request = new HttpRequestMessage(HttpMethod.Get, uri);
 
-		var response = await httpClient.SendAsync(request);
-		var content = await response.Content.ReadFromJsonAsync<MeResponse>();
+		var response = await httpClient.SendAsync(request, cancellationToken);
+		var content = await response.Content.ReadFromJsonAsync<MeResponse>(cancellationToken);
 
 		return content;
 	}

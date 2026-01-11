@@ -6,7 +6,7 @@ using PharmaRep.Admin;
 using PharmaRep.Admin.Configurations;
 using PharmaRep.Admin.Services;
 using PharmaRep.Admin.Utils;
-using PharmaRep.Admin.Utils.Client;
+using PharmaRep.Admin.Utils.Clients;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -32,6 +32,7 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddScoped<UserApiClient>();
+builder.Services.AddScoped<AuthApiClient>();
 
 builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<UserService>();

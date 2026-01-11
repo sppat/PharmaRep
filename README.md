@@ -36,12 +36,20 @@ PharmaRep is open‑source under the MIT License.
 1. Clone:
    ```bash
    git clone https://github.com/sppat/PharmaRep.git
+   ```
 2. Change directory:
    ```bash
    cd PharmaRep
+   ```
 3. Run docker compose file:
    ```bash
    docker compose up -d
+   ```
+   If you change `MSSQL_SA_PASSWORD` later, remove the existing SQL Server volume so the new password is applied:
+   ```bash
+   docker compose down -v
+   docker compose up -d
+   ```
 4. Navigate to [PharmaRep Swagger UI](http://localhost:5000/swagger) for API exploration.
 
 > In order to be able to pass the authorization you can assign admin role to your user. The respective endpoint is:

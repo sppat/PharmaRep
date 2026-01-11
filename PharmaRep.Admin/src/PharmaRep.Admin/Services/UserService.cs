@@ -2,7 +2,7 @@ using System.Net.Http.Json;
 using PharmaRep.Admin.Contracts.Responses;
 using PharmaRep.Admin.Entities;
 using PharmaRep.Admin.Mappings;
-using PharmaRep.Admin.Utils.Client;
+using PharmaRep.Admin.Utils.Clients;
 
 namespace PharmaRep.Admin.Services;
 
