@@ -4,29 +4,32 @@
 @using PharmaRep.Admin.Utils
 @inject AuthenticationService authService
 
-<h3>Login</h3>
-
-<EditForm Model="_loginModel" OnValidSubmit="HandleLogin">
-    <DataAnnotationsValidator></DataAnnotationsValidator>
-    <div class="form-group">
-        <label for="email">Email</label>
-        <InputText id="email" @bind-Value="_loginModel.Email" class="form-control"></InputText>
+<div class="container min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="row w-100 justify-content-center border">
+        <div class="col-6">
+            <h3>Login</h3>
+            <EditForm Model="_loginModel" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator></DataAnnotationsValidator>
+                <div class="form-group mb-3">
+                    <label class="form-label" for="email">Email</label>
+                    <InputText id="email" @bind-Value="_loginModel.Email" class="form-control"></InputText>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label" for="password">Password</label>
+                    <InputText id="password" @bind-Value="_loginModel.Password" class="form-control" type="password">
+                    </InputText>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <ValidationSummary></ValidationSummary>
+            </EditForm>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <InputText id="password"
-                   @bind-Value="_loginModel.Password"
-                   class="form-control"
-                   type="password"></InputText>
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-    <ValidationSummary></ValidationSummary>
-</EditForm>
+</div>
 
 @code {
 
     private readonly LoginModel _loginModel = new();
 
-    private async Task HandleLogin() 
-		=> await authService.LoginAsync(email: _loginModel.Email, password: _loginModel.Password);
+    private async Task HandleLogin()
+    => await authService.LoginAsync(email: _loginModel.Email, password: _loginModel.Password);
 }
