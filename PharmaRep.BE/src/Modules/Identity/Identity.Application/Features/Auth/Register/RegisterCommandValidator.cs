@@ -1,4 +1,5 @@
 using FluentValidation;
+
 using Identity.Domain.DomainErrors;
 using Identity.Domain.RegexConstants;
 
@@ -6,74 +7,74 @@ namespace Identity.Application.Features.Auth.Register;
 
 public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {
-    private const int MaxNameLength = 50;
-    private const int MaxEmailLength = 100;
-    
-    public RegisterCommandValidator()
-    {
-        #region FirstName
+	private const int MaxNameLength = 50;
+	private const int MaxEmailLength = 100;
 
-        RuleFor(req => req.FirstName)
-            .NotNull()
-            .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidFirstName);
-        
-        When(req => req.FirstName is not null, () =>
-        {
-            RuleFor(req => req.FirstName)
-                .MaximumLength(MaxNameLength)
-                .WithMessage(IdentityModuleDomainErrors.UserErrors.NameOutOfRange);
-            
-            RuleFor(req => req.FirstName)
-                .Must(UserRegex.NameFormat().IsMatch)
-                .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidFirstName);
-        });
+	public RegisterCommandValidator()
+	{
+		#region FirstName
 
-        #endregion
+		RuleFor(req => req.FirstName)
+			.NotNull()
+			.WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidFirstName);
 
-        #region LastName
+		When(req => req.FirstName is not null, () =>
+		{
+			RuleFor(req => req.FirstName)
+				.MaximumLength(MaxNameLength)
+				.WithMessage(IdentityModuleDomainErrors.UserErrors.NameOutOfRange);
 
-        RuleFor(req => req.LastName)
-            .NotNull()
-            .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidLastName);
-        
-        When(req => req.LastName is not null, () =>
-        {
-            RuleFor(req => req.LastName)
-                .MaximumLength(MaxNameLength)
-                .WithMessage(IdentityModuleDomainErrors.UserErrors.NameOutOfRange);
-            
-            RuleFor(req => req.LastName)
-                .Must(UserRegex.NameFormat().IsMatch)
-                .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidLastName);
-        });
+			RuleFor(req => req.FirstName)
+				.Must(UserRegex.NameFormat().IsMatch)
+				.WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidFirstName);
+		});
 
-        #endregion
+		#endregion
 
-        #region Email
+		#region LastName
 
-        RuleFor(req => req.Email)
-            .NotNull()
-            .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidEmail);
+		RuleFor(req => req.LastName)
+			.NotNull()
+			.WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidLastName);
 
-        When(req => req.Email is not null, () =>
-        {
-            RuleFor(req => req.Email)
-                .MaximumLength(MaxEmailLength)
-                .WithMessage(IdentityModuleDomainErrors.UserErrors.EmailOutOfRange);
-            
-            RuleFor(req => req.Email)
-                .Must(UserRegex.EmailFormat().IsMatch)
-                .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidEmail);
-        });
+		When(req => req.LastName is not null, () =>
+		{
+			RuleFor(req => req.LastName)
+				.MaximumLength(MaxNameLength)
+				.WithMessage(IdentityModuleDomainErrors.UserErrors.NameOutOfRange);
 
-        #endregion
+			RuleFor(req => req.LastName)
+				.Must(UserRegex.NameFormat().IsMatch)
+				.WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidLastName);
+		});
 
-        #region Password
+		#endregion
 
-        RuleFor(req => req.Password)
-            .NotEmpty()
-            .WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidPassword);
+		#region Email
 
-        #endregion
-    }
+		RuleFor(req => req.Email)
+			.NotNull()
+			.WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidEmail);
+
+		When(req => req.Email is not null, () =>
+		{
+			RuleFor(req => req.Email)
+				.MaximumLength(MaxEmailLength)
+				.WithMessage(IdentityModuleDomainErrors.UserErrors.EmailOutOfRange);
+
+			RuleFor(req => req.Email)
+				.Must(UserRegex.EmailFormat().IsMatch)
+				.WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidEmail);
+		});
+
+		#endregion
+
+		#region Password
+
+		RuleFor(req => req.Password)
+			.NotEmpty()
+			.WithMessage(IdentityModuleDomainErrors.UserErrors.InvalidPassword);
+
+		#endregion
+	}
 }

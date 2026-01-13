@@ -1,4 +1,5 @@
-﻿using Identity.Public.Contracts;
+using Identity.Public.Contracts;
+
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 

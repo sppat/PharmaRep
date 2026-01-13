@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Options;
+
 using PharmaRep.Admin;
 using PharmaRep.Admin.Configurations;
 using PharmaRep.Admin.Services;
@@ -16,14 +17,14 @@ builder.Services.Configure<ApiClientConfiguration>(builder.Configuration.GetSect
 builder.Services.AddScoped<BearerTokenHandler>();
 builder.Services.AddScoped(serviceProvider =>
 {
-    var apiClientConfiguration = serviceProvider.GetRequiredService<IOptions<ApiClientConfiguration>>()?.Value;
-    if (string.IsNullOrWhiteSpace(apiClientConfiguration?.BaseAddress))
-    {
-        throw new ArgumentNullException(nameof(ApiClientConfiguration.BaseAddress));
-    }
+	var apiClientConfiguration = serviceProvider.GetRequiredService<IOptions<ApiClientConfiguration>>()?.Value;
+	if (string.IsNullOrWhiteSpace(apiClientConfiguration?.BaseAddress))
+	{
+		throw new ArgumentNullException(nameof(ApiClientConfiguration.BaseAddress));
+	}
 
-    var bearerHandler = serviceProvider.GetRequiredService<BearerTokenHandler>();
-    bearerHandler.InnerHandler = new HttpClientHandler();
+	var bearerHandler = serviceProvider.GetRequiredService<BearerTokenHandler>();
+	bearerHandler.InnerHandler = new HttpClientHandler();
 
 	return new HttpClient(bearerHandler) { BaseAddress = new Uri(apiClientConfiguration.BaseAddress) };
 });

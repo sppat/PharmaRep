@@ -1,5 +1,6 @@
-﻿using PharmaRep.Admin.Contracts.Responses;
 using System.Net.Http.Json;
+
+using PharmaRep.Admin.Contracts.Responses;
 
 namespace PharmaRep.Admin.Utils.Clients;
 
@@ -13,9 +14,9 @@ public class UserApiClient(HttpClient httpClient)
 		var response = await httpClient.SendAsync(request, cancellationToken);
 		var content = await response.Content.ReadFromJsonAsync<PaginatedResponse<UserResponse>>(cancellationToken);
 
-		return content ?? new PaginatedResponse<UserResponse>(pageNumber: default, 
-			pageSize: default, 
-			total: default, 
+		return content ?? new PaginatedResponse<UserResponse>(pageNumber: default,
+			pageSize: default,
+			total: default,
 			items: []);
 	}
 

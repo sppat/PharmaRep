@@ -1,3 +1,3 @@
-﻿namespace Appointments.WebApi.Responses;
+namespace Appointments.WebApi.Responses;
 
 public record CreateAppointmentResponse(Guid AppointmentId);

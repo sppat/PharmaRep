@@ -1,6 +1,6 @@
-﻿namespace Shared.Application.Validation;
+namespace Shared.Application.Validation;
 
 public interface IValidator<in T>
 {
-    Task<ValidationResult> ValidateAsync(T request, CancellationToken cancellationToken);
+	Task<ValidationResult> ValidateAsync(T request, CancellationToken cancellationToken);
 }

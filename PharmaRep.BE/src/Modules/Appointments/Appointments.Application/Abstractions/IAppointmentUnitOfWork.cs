@@ -1,6 +1,6 @@
-﻿namespace Appointments.Application.Abstractions;
+namespace Appointments.Application.Abstractions;
 
 public interface IAppointmentUnitOfWork
 {
-    Task SaveChangesAsync(CancellationToken cancellationToken);
+	Task SaveChangesAsync(CancellationToken cancellationToken);
 }

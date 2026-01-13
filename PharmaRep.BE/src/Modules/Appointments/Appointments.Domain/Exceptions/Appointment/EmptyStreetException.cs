@@ -1,4 +1,5 @@
-﻿using Appointments.Domain.DomainErrors;
+using Appointments.Domain.DomainErrors;
+
 using Shared.Domain.Exceptions;
 
 namespace Appointments.Domain.Exceptions.Appointment;

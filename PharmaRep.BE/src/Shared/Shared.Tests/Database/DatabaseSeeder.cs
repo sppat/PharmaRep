@@ -1,19 +1,20 @@
 using System.Globalization;
 using System.Text;
+
 using Identity.Domain.Entities;
 
 namespace Shared.Tests.Database;
 
 public static class DatabaseSeeder
 {
-    public static class IdentityModuleSeeder
-    {
-        public static string SeedTestUsersQuery()
-        {
-            var queryBuilder = new StringBuilder();
-            foreach (var user in MockData.Users)
-            {
-                var addUserQuery = $"""
+	public static class IdentityModuleSeeder
+	{
+		public static string SeedTestUsersQuery()
+		{
+			var queryBuilder = new StringBuilder();
+			foreach (var user in MockData.Users)
+			{
+				var addUserQuery = $"""
                                     INSERT INTO [identity].[AspNetUsers] (Id,
                                                                           FirstName, 
                                                                           LastName, 
@@ -39,22 +40,22 @@ public static class DatabaseSeeder
                                     INSERT INTO [identity].[AspNetUserRoles] ("UserId", "RoleId")
                                     VALUES ('{user.Id}', '{Role.MedicalRepresentative.Id}');
                                     """;
-                queryBuilder.Append(addUserQuery);
-                queryBuilder.AppendLine();
-            }
-            
-            return queryBuilder.ToString();
-        }
-    }
+				queryBuilder.Append(addUserQuery);
+				queryBuilder.AppendLine();
+			}
+
+			return queryBuilder.ToString();
+		}
+	}
 
 	public static class AppointmentsModuleSeeder
 	{
 		public static string SeedAppointment()
-        {
-            var queryBuilder = new StringBuilder();
-            foreach (var appointment in MockData.Appointments)
-            {
-                var addAppointmentQuery = $"""
+		{
+			var queryBuilder = new StringBuilder();
+			foreach (var appointment in MockData.Appointments)
+			{
+				var addAppointmentQuery = $"""
                                     INSERT INTO [appointments].[Appointments] (Id,
                                                                                StartDate, 
                                                                                EndDate,
@@ -70,10 +71,10 @@ public static class DatabaseSeeder
                                             null,
                                             null);
                                     """;
-                queryBuilder.Append(addAppointmentQuery);
-                queryBuilder.AppendLine();
+				queryBuilder.Append(addAppointmentQuery);
+				queryBuilder.AppendLine();
 
-                var addAddressQuery = $"""
+				var addAddressQuery = $"""
                                         INSERT INTO [appointments].[Addresses] (AppointmentId,
                                                                                 Street,
                                                                                 Number,
@@ -84,20 +85,20 @@ public static class DatabaseSeeder
                                                 {appointment.Address.ZipCode});
                                         """;
 
-                queryBuilder.Append(addAddressQuery);
-                queryBuilder.AppendLine();
+				queryBuilder.Append(addAddressQuery);
+				queryBuilder.AppendLine();
 
 				foreach (var attendee in appointment.Attendees)
-                {
-                    var addAttendeeQuery = $"""
+				{
+					var addAttendeeQuery = $"""
                                             INSERT INTO [appointments].[Attendees] (UserId,
                                                                                     AppointmentId)
                                             VALUES ('{attendee.Id}',
                                                     '{appointment.Id}');
                                             """;
-                    queryBuilder.Append(addAttendeeQuery);
-                    queryBuilder.AppendLine();
-                }
+					queryBuilder.Append(addAttendeeQuery);
+					queryBuilder.AppendLine();
+				}
 			}
 
 			return queryBuilder.ToString();

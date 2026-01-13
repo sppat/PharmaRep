@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
+
 using PharmaRep.Admin.Constants;
 using PharmaRep.Admin.Utils;
 using PharmaRep.Admin.Utils.Clients;
@@ -7,26 +8,29 @@ using PharmaRep.Admin.Utils.Clients;
 namespace PharmaRep.Admin.Services;
 
 public class AuthenticationService(
-    AuthApiClient authClient,
-    IJSRuntime jsRuntime,
-    AuthenticationStateProvider authenticationStateProvider,
-    UserService userService)
+	AuthApiClient authClient,
+	IJSRuntime jsRuntime,
+	AuthenticationStateProvider authenticationStateProvider,
+	UserService userService)
 {
-    public async Task LoginAsync(string email, string password)
-    {
-        var response = await authClient.LoginAsync(email: email, password: password);
-        
-        if (string.IsNullOrEmpty(response?.Token)) ((AuthStateProvider)authenticationStateProvider).NotifyLogout();
+	public async Task LoginAsync(string email, string password)
+	{
+		var response = await authClient.LoginAsync(email: email, password: password);
 
-        await jsRuntime.InvokeVoidAsync(JSConstants.SetItemFunction, AuthConstants.AuthTokenKey, response!.Token);
+		if (string.IsNullOrEmpty(response?.Token))
+		{
+			((AuthStateProvider)authenticationStateProvider).NotifyLogout();
+		}
 
-        var user = await userService.GetCurrentUserAsync();
+		await jsRuntime.InvokeVoidAsync(JSConstants.SetItemFunction, AuthConstants.AuthTokenKey, response!.Token);
+
+		var user = await userService.GetCurrentUserAsync();
 
 		((AuthStateProvider)authenticationStateProvider).NotifyLogin(user);
-    }
+	}
 
-    public async Task LogoutAsync()
-    {
+	public async Task LogoutAsync()
+	{
 		await jsRuntime.InvokeVoidAsync(JSConstants.RemoveItemFunction, AuthConstants.AuthTokenKey);
 		((AuthStateProvider)authenticationStateProvider).NotifyLogout();
 	}

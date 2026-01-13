@@ -1,4 +1,4 @@
-﻿namespace PharmaRep.Admin.Models.User;
+namespace PharmaRep.Admin.Models.User;
 
 public record UserListModel(string FirstName,
 	string LastName,

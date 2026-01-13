@@ -1,4 +1,4 @@
-﻿namespace PharmaRep.Admin.Contracts.Responses;
+namespace PharmaRep.Admin.Contracts.Responses;
 
 public record UserResponse(Guid Id,
 	string FirstName,
