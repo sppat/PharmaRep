@@ -160,11 +160,11 @@ dotnet_diagnostic.IDE0055.severity = suggestion
 # Razor files (optional)
 ############################
 [*.razor]
-tab_width = 2
+tab_width = 4
 indent_style = tab
-indent_size = 2
+indent_size = 4
 
 [*.cshtml]
-tab_width = 2
+tab_width = 4
 indent_style = tab
-indent_size = 2
+indent_size = 4

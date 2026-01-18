@@ -3,33 +3,34 @@
 @inject AuthenticationService AuthService
 
 <div id="login-form" class="w-100 h-100">
-    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
-        <div class="row w-100 justify-content-center">
-            <div class="col-6">
-                <h3 class="mb-3 text-center">Login</h3>
-                <EditForm Model="_loginModel" OnValidSubmit="HandleLogin">
-                    <DataAnnotationsValidator></DataAnnotationsValidator>
-                    <div class="form-group mb-3">
-                        <label class="form-label" for="email">Email</label>
-                        <InputText id="email" @bind-Value="_loginModel.Email" class="form-control"></InputText>
-                        <ValidationMessage For="() => _loginModel.Email"></ValidationMessage>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label class="form-label" for="password">Password</label>
-                        <InputText id="password" @bind-Value="_loginModel.Password" class="form-control" type="password"></InputText>
-                        <ValidationMessage For="() => _loginModel.Password"></ValidationMessage>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
-                </EditForm>
-            </div>
-        </div>
-    </div>
+	<div class="container min-vh-100 d-flex align-items-center justify-content-center">
+		<div class="row w-100 justify-content-center">
+			<div class="col-6">
+				<h3 class="mb-3 text-center">Login</h3>
+				<EditForm Model="_loginModel" OnValidSubmit="HandleLogin">
+					<DataAnnotationsValidator></DataAnnotationsValidator>
+					<div class="form-group mb-3">
+						<label class="form-label" for="email">Email</label>
+						<InputText id="email" @bind-Value="_loginModel.Email" class="form-control"></InputText>
+						<ValidationMessage For="() => _loginModel.Email"></ValidationMessage>
+					</div>
+					<div class="form-group mb-3">
+						<label class="form-label" for="password">Password</label>
+						<InputText id="password" @bind-Value="_loginModel.Password" class="form-control"
+						           type="password"></InputText>
+						<ValidationMessage For="() => _loginModel.Password"></ValidationMessage>
+					</div>
+					<button type="submit" class="btn btn-primary">Login</button>
+				</EditForm>
+			</div>
+		</div>
+	</div>
 </div>
 
 @code {
+	private readonly LoginModel _loginModel = new();
 
-    private readonly LoginModel _loginModel = new();
+	private async Task HandleLogin()
+		=> await AuthService.LoginAsync(email: _loginModel.Email, password: _loginModel.Password);
 
-    private async Task HandleLogin()
-        => await AuthService.LoginAsync(email: _loginModel.Email, password: _loginModel.Password);
 }
