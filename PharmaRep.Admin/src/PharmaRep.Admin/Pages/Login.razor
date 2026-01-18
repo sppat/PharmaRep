@@ -1,8 +1,6 @@
 @page "/auth/login"
 @using PharmaRep.Admin.Models.Auth
-@using PharmaRep.Admin.Services
-@using PharmaRep.Admin.Utils
-@inject AuthenticationService authService
+@inject AuthenticationService AuthService
 
 <div id="login-form" class="w-100 h-100">
     <div class="container min-vh-100 d-flex align-items-center justify-content-center">
@@ -33,5 +31,5 @@
     private readonly LoginModel _loginModel = new();
 
     private async Task HandleLogin()
-        => await authService.LoginAsync(email: _loginModel.Email, password: _loginModel.Password);
+        => await AuthService.LoginAsync(email: _loginModel.Email, password: _loginModel.Password);
 }
