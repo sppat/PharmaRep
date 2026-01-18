@@ -14,7 +14,7 @@ public class AuthStateProvider(UserService userService, IJSRuntime jSRuntime) : 
 
 	public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 	{
-		var token = await jSRuntime.InvokeAsync<string>(Constants.JSConstants.GetItemFunction, Constants.AuthConstants.AuthTokenKey);
+		var token = await jSRuntime.InvokeAsync<string?>(Constants.JsConstants.GetItemFunction, Constants.AuthConstants.AuthTokenKey);
 		if (token is null)
 		{
 			return new AuthenticationState(_anonymous);

@@ -17,8 +17,8 @@ builder.Services.Configure<ApiClientConfiguration>(builder.Configuration.GetSect
 builder.Services.AddScoped<BearerTokenHandler>();
 builder.Services.AddScoped(serviceProvider =>
 {
-	var apiClientConfiguration = serviceProvider.GetRequiredService<IOptions<ApiClientConfiguration>>()?.Value;
-	if (string.IsNullOrWhiteSpace(apiClientConfiguration?.BaseAddress))
+	var apiClientConfiguration = serviceProvider.GetRequiredService<IOptions<ApiClientConfiguration>>().Value;
+	if (string.IsNullOrWhiteSpace(apiClientConfiguration.BaseAddress))
 	{
 		throw new ArgumentNullException(nameof(ApiClientConfiguration.BaseAddress));
 	}

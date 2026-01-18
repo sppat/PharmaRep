@@ -1,8 +1,8 @@
 namespace PharmaRep.Admin.Configurations;
 
-public sealed class ApiClientConfiguration
+public record ApiClientConfiguration
 {
 	public const string Section = "ApiClient";
 
-	public string BaseAddress { get; set; } = string.Empty;
+	public string BaseAddress { get; init; } = string.Empty;
 }

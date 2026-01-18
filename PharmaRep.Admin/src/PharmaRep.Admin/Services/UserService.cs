@@ -9,16 +9,16 @@ public class UserService(UserApiClient userApiClient)
 {
 	public async Task<PaginatedResponse<User>> GetUsersAsync()
 	{
-		var userResponse = await userApiClient.GetUsersAsync();
+		var response = await userApiClient.GetUsersAsync();
 
-		var users = userResponse.Items
+		var users = response.Items
 			.Select(userResponse => userResponse.ToUser())
 			.ToList();
 
-		return new(pageNumber: userResponse.PageNumber,
-			pageSize: userResponse.PageSize,
-			total: userResponse.Total,
-			items: users);
+		return new PaginatedResponse<User>(PageNumber: response.PageNumber,
+			PageSize: response.PageSize,
+			Total: response.Total,
+			Items: users);
 	}
 
 	public async Task<User> GetCurrentUserAsync()

@@ -10,14 +10,14 @@ public class User(
 	ICollection<string> roles)
 {
 	public Guid Id { get; } = id;
-	public string FirstName { get; } = firstName ?? string.Empty;
-	public string LastName { get; } = lastName ?? string.Empty;
-	public string Email { get; } = email ?? string.Empty;
-	public ICollection<string> Roles = roles ?? [];
+	public string FirstName { get; } = firstName;
+	public string LastName { get; } = lastName;
+	public string Email { get; } = email;
+	public readonly ICollection<string> Roles = roles;
 
 	public ClaimsPrincipal ToClaimsPrincipal()
 	{
-		var claims = new List<Claim>()
+		var claims = new List<Claim>
 		{
 			new(Constants.ClaimTypes.FirstName, FirstName),
 			new(Constants.ClaimTypes.LastName, LastName),
@@ -25,10 +25,8 @@ public class User(
 			new(ClaimTypes.NameIdentifier, Id.ToString())
 		};
 
-		foreach (var role in Roles)
-		{
-			claims.Add(new(ClaimTypes.Role, role));
-		}
+		var roleClaims = Roles.Select(role => new Claim(ClaimTypes.Role, role));
+		claims.AddRange(roleClaims);
 
 		var identity = new ClaimsIdentity(claims, Constants.ClaimTypes.ClaimsIdentityType);
 

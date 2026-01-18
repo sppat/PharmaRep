@@ -53,7 +53,7 @@ csharp_indent_labels = one_less_than_current
 # 'var' preferences (common team default)
 csharp_style_var_for_built_in_types = true:suggestion
 csharp_style_var_when_type_is_apparent = true:suggestion
-csharp_style_var_elsewhere = false:suggestion
+csharp_style_var_elsewhere = false:none
 
 # Namespace style (modern default for .NET 6+ codebases)
 csharp_style_namespace_declarations = file_scoped:suggestion
@@ -150,7 +150,7 @@ dotnet_diagnostic.IDE0041.severity = suggestion
 dotnet_diagnostic.IDE0044.severity = suggestion
 
 # Use explicit type instead of 'var' where type is not apparent (if you keep csharp_style_var_elsewhere=false)
-dotnet_diagnostic.IDE0008.severity = suggestion
+dotnet_diagnostic.IDE0008.severity = none
 
 # Format document (IDE0055 can show in editor; CI typically uses dotnet format)
 dotnet_diagnostic.IDE0055.severity = suggestion

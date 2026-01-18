@@ -14,10 +14,10 @@ public class UserApiClient(HttpClient httpClient)
 		var response = await httpClient.SendAsync(request, cancellationToken);
 		var content = await response.Content.ReadFromJsonAsync<PaginatedResponse<UserResponse>>(cancellationToken);
 
-		return content ?? new PaginatedResponse<UserResponse>(pageNumber: default,
-			pageSize: default,
-			total: default,
-			items: []);
+		return content ?? new PaginatedResponse<UserResponse>(PageNumber: 0,
+			PageSize: 0,
+			Total: 0,
+			Items: []);
 	}
 
 	public async Task<MeResponse?> GetCurrentUserAsync(CancellationToken cancellationToken = default)

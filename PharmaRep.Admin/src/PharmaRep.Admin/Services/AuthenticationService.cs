@@ -22,7 +22,7 @@ public class AuthenticationService(
 			((AuthStateProvider)authenticationStateProvider).NotifyLogout();
 		}
 
-		await jsRuntime.InvokeVoidAsync(JSConstants.SetItemFunction, AuthConstants.AuthTokenKey, response!.Token);
+		await jsRuntime.InvokeVoidAsync(JsConstants.SetItemFunction, AuthConstants.AuthTokenKey, response!.Token);
 
 		var user = await userService.GetCurrentUserAsync();
 
@@ -31,7 +31,7 @@ public class AuthenticationService(
 
 	public async Task LogoutAsync()
 	{
-		await jsRuntime.InvokeVoidAsync(JSConstants.RemoveItemFunction, AuthConstants.AuthTokenKey);
+		await jsRuntime.InvokeVoidAsync(JsConstants.RemoveItemFunction, AuthConstants.AuthTokenKey);
 		((AuthStateProvider)authenticationStateProvider).NotifyLogout();
 	}
 }

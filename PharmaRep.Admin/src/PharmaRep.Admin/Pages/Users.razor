@@ -16,7 +16,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var user in _paginatedResponse?.Items ?? [])
+                        @foreach (var user in _paginatedResponse.Items)
                         {
                             <tr>
                                 <td>@user.FirstName</td>

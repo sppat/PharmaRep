@@ -1,6 +1,6 @@
 namespace PharmaRep.Admin.Constants;
 
-public class ClaimTypes
+public static class ClaimTypes
 {
 	public const string ClaimsIdentityType = "bearer_api_auth";
 
