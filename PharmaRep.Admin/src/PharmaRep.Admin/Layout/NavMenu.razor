@@ -1,19 +1,17 @@
-﻿@inject AuthenticationService authService
+@inject AuthenticationService authService
 
-<div>
-    <nav class="nav flex-column">
-        <div class="nav-item">
-            <NavLink class="nav-link" href="/users" Match="NavLinkMatch.Prefix">
-	            <img src="svg/people-fill.svg" width="24" height="24" alt="users"/>
-            </NavLink>
-        </div>
-        <div class="nav-item">
-            <button class="btn btn-link" type="button" @onclick="LogoutAsync">
-                <img src="svg/box-arrow-right.svg" width="24" height="24" alt="logout" />
-            </button>
-        </div>
-    </nav>
-</div>
+<nav class="nav h-100 flex-column">
+    <div class="nav-item">
+        <NavLink class="nav-link" href="/users" Match="NavLinkMatch.Prefix">
+	        <img src="svg/people-fill.svg" width="24" height="24" alt="users"/>
+        </NavLink>
+    </div>
+    <div class="nav-item mt-auto">
+        <button class="btn btn-link" type="button" @onclick="LogoutAsync">
+            <img src="svg/box-arrow-right.svg" width="24" height="24" alt="logout" />
+        </button>
+    </div>
+</nav>
 
 @code {
     private async Task LogoutAsync()
