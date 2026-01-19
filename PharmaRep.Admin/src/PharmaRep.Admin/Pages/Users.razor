@@ -41,13 +41,13 @@
 </div>
 
 @code {
-    private PaginatedResponse<User> _paginatedResponse = new(PageNumber: 0,
-	    PageSize: 0,
-	    Total: 0,
-	    Items: []);
+	private PaginatedResponse<User> _paginatedResponse = new(PageNumber: 0,
+		PageSize: 0,
+		Total: 0,
+		Items: []);
 
-    protected override async Task OnInitializedAsync()
-    {
-        _paginatedResponse = await userService.GetUsersAsync();
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		_paginatedResponse = await userService.GetUsersAsync();
+	}
 }
