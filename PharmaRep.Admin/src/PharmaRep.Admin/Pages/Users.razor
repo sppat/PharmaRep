@@ -16,22 +16,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var user in _paginatedResponse.Items)
-                        {
-                            <tr>
-                                <td>@user.FirstName</td>
-                                <td>@user.LastName</td>
-                                <td>@user.Email</td>
-                                <td>
-                                    <button class="btn btn-primary me-1" type="button">
-                                        <img src="svg/pencil-fill.svg" alt="Edit" />
-                                    </button>
-                                    <button class="btn btn-danger" type="button">
-                                        <img src="svg/trash-fill.svg" alt="Delete" />
-                                    </button>
-                                </td>
-                            </tr>
-                        }
+						@foreach (var user in _paginatedResponse.Items)
+						{
+							<tr>
+								<td>@user.FirstName</td>
+								<td>@user.LastName</td>
+								<td>@user.Email</td>
+								<td>
+									<button class="btn btn-primary me-1" type="button">
+										<img src="svg/pencil-fill.svg" alt="Edit"/>
+									</button>
+									<button class="btn btn-danger" type="button">
+										<img src="svg/trash-fill.svg" alt="Delete"/>
+									</button>
+								</td>
+							</tr>
+						}
                     </tbody>
                 </table>
             </div>
@@ -40,7 +40,10 @@
 </div>
 
 @code {
-    private PaginatedResponse<User> _paginatedResponse = null!;
+    private PaginatedResponse<User> _paginatedResponse = new(PageNumber: 0,
+	    PageSize: 0,
+	    Total: 0,
+	    Items: []);
 
     protected override async Task OnInitializedAsync()
     {
