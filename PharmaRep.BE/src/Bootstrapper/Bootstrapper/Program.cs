@@ -5,34 +5,13 @@ using Bootstrapper.Configurations;
 
 using Identity.WebApi;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.OpenApi;
+using Scalar.AspNetCore;
 
 using Shared.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
-builder.Services.AddSwaggerGen(options =>
-{
-	options.SwaggerDoc("v1", new OpenApiInfo
-	{
-		Title = "PharmaRep Web API",
-		Version = "v1"
-	});
-	options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
-	{
-		Name = "Authorization",
-		Type = SecuritySchemeType.Http,
-		Scheme = JwtBearerDefaults.AuthenticationScheme,
-		In = ParameterLocation.Header,
-		Description = "Enter your valid token in the text input below."
-	});
-	options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
-	{
-		[new OpenApiSecuritySchemeReference("Bearer", document)] = []
-	});
-});
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("PharmaRepClientPolicy", corsPolicyBuilder =>
@@ -53,8 +32,8 @@ var app = builder.Build();
 
 if (!app.Environment.IsProduction())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+	app.MapOpenApi();
+	app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
