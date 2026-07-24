@@ -2,7 +2,6 @@ using Appointments.Application;
 using Appointments.Infrastructure;
 using Appointments.Infrastructure.Database;
 using Appointments.WebApi.Endpoints;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

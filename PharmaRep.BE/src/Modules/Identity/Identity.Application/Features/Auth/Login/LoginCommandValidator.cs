@@ -1,5 +1,4 @@
 using FluentValidation;
-
 using Identity.Domain.DomainErrors;
 using Identity.Domain.RegexConstants;
 

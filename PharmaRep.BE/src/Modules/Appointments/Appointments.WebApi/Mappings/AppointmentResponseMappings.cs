@@ -1,7 +1,6 @@
 using Appointments.Application.Dtos;
 using Appointments.Application.Features.Appointment.GetAll;
 using Appointments.WebApi.Responses;
-
 using Shared.WebApi.Responses;
 
 namespace Appointments.WebApi.Mappings;

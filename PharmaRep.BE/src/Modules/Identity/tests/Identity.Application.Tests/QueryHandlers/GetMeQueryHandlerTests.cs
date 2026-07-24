@@ -2,11 +2,8 @@ using Identity.Application.Dtos;
 using Identity.Application.Features.User.GetMe;
 using Identity.Domain.DomainErrors;
 using Identity.Domain.Entities;
-
 using Microsoft.AspNetCore.Identity;
-
 using Moq;
-
 using Shared.Application.Results;
 using Shared.Tests;
 

@@ -3,12 +3,9 @@ using Appointments.Application.Dtos;
 using Appointments.Application.Features.Appointment.GetAppointment;
 using Appointments.Domain.DomainErrors;
 using Appointments.Domain.Entities;
-
 using Identity.Public.Contracts;
 using Identity.Public.Features.GetUsersBasicInfo;
-
 using Moq;
-
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 

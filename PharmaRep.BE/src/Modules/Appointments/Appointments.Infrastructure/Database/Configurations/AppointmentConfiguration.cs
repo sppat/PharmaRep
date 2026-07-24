@@ -1,9 +1,7 @@
 using Appointments.Domain.Entities;
 using Appointments.Infrastructure.Database.Configurations.Converters;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 using Shared.Infrastructure.Constants;
 
 namespace Appointments.Infrastructure.Database.Configurations;

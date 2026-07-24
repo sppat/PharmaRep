@@ -1,6 +1,5 @@
 using Appointments.Domain.Entities;
 using Appointments.Infrastructure.Database.Configurations.Converters;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

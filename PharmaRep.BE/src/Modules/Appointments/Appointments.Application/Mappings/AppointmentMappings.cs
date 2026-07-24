@@ -1,6 +1,5 @@
 using Appointments.Application.Dtos;
 using Appointments.Domain.Entities;
-
 using Identity.Public.Contracts;
 
 namespace Appointments.Application.Mappings;

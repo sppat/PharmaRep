@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-
 using Shared.Application.Mediator;
 using Shared.Application.Mediator.Pipeline;
 using Shared.Application.Validation;

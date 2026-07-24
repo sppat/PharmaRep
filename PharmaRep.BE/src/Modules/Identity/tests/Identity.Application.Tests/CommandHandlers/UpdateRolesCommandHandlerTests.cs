@@ -1,10 +1,7 @@
 using Identity.Application.Features.User.UpdateRoles;
 using Identity.Domain.Entities;
-
 using Microsoft.AspNetCore.Identity;
-
 using Moq;
-
 using Shared.Application.Results;
 
 namespace Identity.Application.Tests.CommandHandlers;

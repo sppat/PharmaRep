@@ -1,5 +1,4 @@
 using FluentValidation;
-
 using Shared.Application.Errors;
 
 namespace Identity.Application.Features.User.GetAll;

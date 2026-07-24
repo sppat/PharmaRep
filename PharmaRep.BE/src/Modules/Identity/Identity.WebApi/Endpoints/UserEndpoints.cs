@@ -1,5 +1,4 @@
 using System.Security.Claims;
-
 using Identity.Application.Dtos;
 using Identity.Application.Features.User.Delete;
 using Identity.Application.Features.User.GetById;
@@ -9,13 +8,11 @@ using Identity.Infrastructure;
 using Identity.WebApi.Mappings;
 using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Hosting;
-
 using Shared.Application.Mediator;
 using Shared.WebApi.EndpointMappings;
 using Shared.WebApi.Responses;

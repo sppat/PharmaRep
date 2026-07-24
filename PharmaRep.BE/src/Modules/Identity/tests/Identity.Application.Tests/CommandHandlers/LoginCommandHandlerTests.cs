@@ -2,15 +2,12 @@ using Identity.Application.Features.Auth.Login;
 using Identity.Application.Interfaces;
 using Identity.Domain.DomainErrors;
 using Identity.Domain.Entities;
-
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
 using Moq;
-
 using Shared.Application.Results;
 
 namespace Identity.Application.Tests.CommandHandlers;

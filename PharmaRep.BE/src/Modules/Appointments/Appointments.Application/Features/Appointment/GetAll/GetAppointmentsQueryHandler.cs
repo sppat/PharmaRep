@@ -1,8 +1,6 @@
 using Appointments.Application.Abstractions;
 using Appointments.Application.Mappings;
-
 using Identity.Public.Features.GetUsersBasicInfo;
-
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 

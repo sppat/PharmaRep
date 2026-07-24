@@ -1,6 +1,5 @@
 using Identity.Application.Interfaces;
 using Identity.Domain.DomainErrors;
-
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 

@@ -1,12 +1,9 @@
 using Appointments.Application.Abstractions;
 using Appointments.Application.Features.Appointment.GetAll;
 using Appointments.Domain.Entities;
-
 using Identity.Public.Contracts;
 using Identity.Public.Features.GetUsersBasicInfo;
-
 using Moq;
-
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 

@@ -1,11 +1,9 @@
 using Appointments.Application.Abstractions;
 using Appointments.Infrastructure.Database;
 using Appointments.Infrastructure.Repositories;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using Shared.Infrastructure.Constants;
 
 namespace Appointments.Infrastructure;

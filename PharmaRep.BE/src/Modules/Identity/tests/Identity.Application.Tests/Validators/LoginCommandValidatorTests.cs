@@ -1,5 +1,4 @@
 using FluentValidation.TestHelper;
-
 using Identity.Application.Features.Auth.Login;
 using Identity.Domain.DomainErrors;
 

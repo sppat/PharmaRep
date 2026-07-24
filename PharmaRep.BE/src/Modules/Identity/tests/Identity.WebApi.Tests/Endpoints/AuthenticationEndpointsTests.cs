@@ -1,13 +1,10 @@
 using System.Net;
 using System.Net.Http.Json;
-
 using Identity.Domain.DomainErrors;
 using Identity.WebApi.Endpoints;
 using Identity.WebApi.Requests;
 using Identity.WebApi.Responses;
-
 using Microsoft.AspNetCore.Mvc;
-
 using Shared.Tests;
 
 namespace Identity.WebApi.Tests.Endpoints;

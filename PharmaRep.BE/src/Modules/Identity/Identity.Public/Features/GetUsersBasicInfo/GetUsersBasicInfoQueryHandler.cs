@@ -1,6 +1,5 @@
 using Identity.Public.Abstractions;
 using Identity.Public.Contracts;
-
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 

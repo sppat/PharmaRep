@@ -1,7 +1,6 @@
 using Identity.Domain.DomainErrors;
 using Identity.Domain.Exceptions.UserExceptions;
 using Identity.Domain.RegexConstants;
-
 using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Domain.Entities;

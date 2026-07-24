@@ -1,21 +1,15 @@
 using System.Net.Http.Headers;
-
 using Appointments.Infrastructure.Database;
-
 using Identity.Infrastructure.Database;
-
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-
 using Shared.Tests.Auth;
 using Shared.Tests.Database;
-
 using Testcontainers.MsSql;
-
 using Xunit;
 
 namespace Shared.Tests;

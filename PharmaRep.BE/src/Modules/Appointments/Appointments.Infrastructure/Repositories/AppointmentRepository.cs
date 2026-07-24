@@ -1,7 +1,6 @@
 using Appointments.Application.Abstractions;
 using Appointments.Domain.Entities;
 using Appointments.Infrastructure.Database;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace Appointments.Infrastructure.Repositories;

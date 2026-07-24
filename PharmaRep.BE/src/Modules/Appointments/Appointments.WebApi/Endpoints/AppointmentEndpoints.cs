@@ -3,11 +3,9 @@ using Appointments.Application.Features.Appointment.GetAppointment;
 using Appointments.Domain.Entities;
 using Appointments.WebApi.Mappings;
 using Appointments.WebApi.Requests;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-
 using Shared.Application.Mediator;
 using Shared.WebApi.EndpointMappings;
 using Shared.WebApi.Responses;

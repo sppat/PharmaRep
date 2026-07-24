@@ -1,5 +1,4 @@
 using FluentValidation;
-
 using Identity.Domain.DomainErrors;
 
 namespace Identity.Application.Features.User.Delete;

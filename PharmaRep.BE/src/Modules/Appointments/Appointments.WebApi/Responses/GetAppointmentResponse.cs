@@ -1,5 +1,4 @@
 using Appointments.Application.Dtos;
-
 using Identity.Public.Contracts;
 
 namespace Appointments.WebApi.Responses;

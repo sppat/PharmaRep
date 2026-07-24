@@ -2,9 +2,7 @@ using Appointments.Application.Abstractions;
 using Appointments.Application.Dtos;
 using Appointments.Application.Mappings;
 using Appointments.Domain.DomainErrors;
-
 using Identity.Public.Features.GetUsersBasicInfo;
-
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 

@@ -1,5 +1,4 @@
 using FluentValidation.TestHelper;
-
 using Identity.Application.Features.User.UpdatePersonalInfo;
 using Identity.Domain.DomainErrors;
 

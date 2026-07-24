@@ -1,7 +1,5 @@
 using System.Linq.Expressions;
-
 using Appointments.Domain.ValueObjects;
-
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Appointments.Infrastructure.Database.Configurations.Converters;

@@ -2,7 +2,6 @@ using Identity.Infrastructure.Database;
 using Identity.Public.Abstractions;
 using Identity.Public.Contracts;
 using Identity.Public.Mappings;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Repositories;

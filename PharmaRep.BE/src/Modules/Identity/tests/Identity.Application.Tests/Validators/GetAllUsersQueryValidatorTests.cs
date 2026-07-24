@@ -1,7 +1,5 @@
 using FluentValidation.TestHelper;
-
 using Identity.Application.Features.User.GetAll;
-
 using Shared.Application.Errors;
 
 namespace Identity.Application.Tests.Validators;

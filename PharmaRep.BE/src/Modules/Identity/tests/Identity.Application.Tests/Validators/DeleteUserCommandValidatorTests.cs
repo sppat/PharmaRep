@@ -1,5 +1,4 @@
 using FluentValidation.TestHelper;
-
 using Identity.Application.Features.User.Delete;
 
 namespace Identity.Application.Tests.Validators;

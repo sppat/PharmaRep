@@ -1,9 +1,7 @@
 using Appointments.Application.Abstractions;
 using Appointments.Application.Features.Appointment.Create;
 using Appointments.Domain.Entities;
-
 using Moq;
-
 using Shared.Application.Results;
 using Shared.Application.Validation;
 

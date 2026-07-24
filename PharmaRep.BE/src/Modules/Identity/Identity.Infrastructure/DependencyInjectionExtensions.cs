@@ -1,19 +1,16 @@
 using System.Text;
-
 using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
 using Identity.Infrastructure.Authentication;
 using Identity.Infrastructure.Database;
 using Identity.Infrastructure.Repositories;
 using Identity.Public.Abstractions;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-
 using Shared.Infrastructure.Constants;
 
 namespace Identity.Infrastructure;

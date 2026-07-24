@@ -1,12 +1,8 @@
 using Appointments.WebApi;
-
 using Bootstrapper;
 using Bootstrapper.Configurations;
-
 using Identity.WebApi;
-
 using Scalar.AspNetCore;
-
 using Shared.Application;
 
 var builder = WebApplication.CreateBuilder(args);

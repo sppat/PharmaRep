@@ -1,5 +1,4 @@
 using Identity.Public.Features.UsersExist;
-
 using Shared.Application.Mediator;
 using Shared.Application.Validation;
 

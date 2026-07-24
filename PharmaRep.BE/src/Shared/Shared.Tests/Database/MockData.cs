@@ -1,5 +1,4 @@
 using Appointments.Application.Dtos;
-
 using Identity.Application.Dtos;
 using Identity.Domain.Entities;
 using Identity.Public.Contracts;

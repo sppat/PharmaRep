@@ -1,5 +1,4 @@
 using Appointments.Application.Abstractions;
-
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 using Shared.Application.Validation;

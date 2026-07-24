@@ -1,7 +1,5 @@
 using System.Reflection;
-
 using FluentValidation;
-
 using Shared.Application.Results;
 
 namespace Shared.Application.Mediator.Pipeline;

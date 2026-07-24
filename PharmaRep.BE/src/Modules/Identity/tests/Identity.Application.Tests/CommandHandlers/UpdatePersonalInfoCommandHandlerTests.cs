@@ -3,9 +3,7 @@ using Identity.Application.Interfaces;
 using Identity.Domain.DomainErrors;
 using Identity.Domain.Entities;
 using Identity.Domain.Exceptions.UserExceptions;
-
 using Moq;
-
 using Shared.Application.Results;
 
 namespace Identity.Application.Tests.CommandHandlers;

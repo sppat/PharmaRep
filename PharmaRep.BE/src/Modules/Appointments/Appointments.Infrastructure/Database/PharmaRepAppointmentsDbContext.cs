@@ -1,7 +1,5 @@
 using Appointments.Domain.Entities;
-
 using Microsoft.EntityFrameworkCore;
-
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Converters;
 

@@ -1,5 +1,4 @@
 using FluentValidation.TestHelper;
-
 using Identity.Application.Features.User.UpdateRoles;
 using Identity.Domain.DomainErrors;
 

@@ -1,5 +1,4 @@
 using System.Collections.Concurrent;
-
 using Shared.Application.Results;
 
 namespace Shared.Application.Mediator;

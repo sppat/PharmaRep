@@ -9,9 +9,7 @@ charset = utf-8
 end_of_line = crlf
 insert_final_newline = true
 trim_trailing_whitespace = true
-tab_width = 4
 indent_style = tab
-indent_size = 4
 
 # Optional: keep line length consistent (editors may or may not enforce visually)
 max_line_length = 120
@@ -25,13 +23,11 @@ max_line_length = 120
 [*.{sln,csproj,props,targets}]
 tab_width = 2
 indent_style = tab
-indent_size = 2
 
 # JSON/YAML (often used in ASP.NET Core: appsettings.json, etc.)
 [*.{json,yml,yaml}]
 tab_width = 2
 indent_style = tab
-indent_size = 2
 
 
 ############################
@@ -72,7 +68,7 @@ csharp_prefer_braces = true:warning
 
 # 'using' directive organization
 dotnet_sort_system_directives_first = true
-dotnet_separate_import_directive_groups = true
+dotnet_separate_import_directive_groups = false
 
 # Qualification preferences (keep code clean)
 dotnet_style_qualification_for_field = false:suggestion

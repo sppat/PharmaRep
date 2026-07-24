@@ -3,7 +3,6 @@ using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
 using Identity.Infrastructure.Database;
 using Identity.Infrastructure.Mappings;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Repositories;

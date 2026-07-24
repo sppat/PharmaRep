@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Text;
-
 using Identity.Domain.Entities;
 
 namespace Shared.Tests.Database;

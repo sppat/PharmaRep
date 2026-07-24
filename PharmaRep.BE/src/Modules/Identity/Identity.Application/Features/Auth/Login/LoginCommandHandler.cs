@@ -1,8 +1,6 @@
 using Identity.Application.Interfaces;
 using Identity.Domain.DomainErrors;
-
 using Microsoft.AspNetCore.Identity;
-
 using Shared.Application.Mediator;
 using Shared.Application.Results;
 

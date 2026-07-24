@@ -1,5 +1,4 @@
 using Identity.Domain.Entities;
-
 using Microsoft.AspNetCore.Authorization;
 
 namespace Identity.Infrastructure;
